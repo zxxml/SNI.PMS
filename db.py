@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 from configparser import ConfigParser
 from datetime import datetime, timedelta
-from uuid import uuid1
+from uuid import UUID, uuid1
 
 from pony import orm
 
-db = orm.Database()
+db_sql = orm.Database()
 config = ConfigParser()
 config.read('sni.ini')
 
@@ -35,24 +35,24 @@ class EntityMeta(orm.core.EntityMeta):
 
 @orm.db_session
 def delete_db(self):
-    db.Entity.delete(self)
+    db_sql.Entity.delete(self)
 
 
 @orm.db_session
 def set_db(self, **kwargs):
-    db.Entity.set(self, **kwargs)
+    db_sql.Entity.set(self, **kwargs)
 
 
-db.Entity.delete_db = delete_db
-db.Entity.set_db = set_db
+db_sql.Entity.delete_db = delete_db
+db_sql.Entity.set_db = set_db
 
 
-class User(db.Entity, metaclass=EntityMeta):
+class User(db_sql.Entity, metaclass=EntityMeta):
     """User maintains the core information of the user.
     A.k.a the attrs of the user entity in the ER Diagram.
     """
     uid = orm.PrimaryKey(int, auto=True)
-    username = orm.Required(str, unique=True)
+    username = orm.Required(str, unique=True, index=True)
     nickname = orm.Required(str)
     password = orm.Required(str)
     real_name = orm.Optional(str)
@@ -74,12 +74,12 @@ class Reader(User):
     pass
 
 
-class Session(db.Entity, metaclass=EntityMeta):
+class Session(db_sql.Entity, metaclass=EntityMeta):
     """Session maintains the core information of the session.
     A.k.a the attrs of the session entity in the ER Diagram.
     """
     uid = orm.PrimaryKey(int, auto=False)
-    sid = orm.Required(str, unique=True)
+    sid = orm.Required(UUID, unique=True, index=True)
     expires = orm.Required(datetime)
 
     @staticmethod
@@ -107,10 +107,13 @@ class Session(db.Entity, metaclass=EntityMeta):
     @staticmethod
     def new_sid(uid):
         node = int(config['uuid']['node'], 16)
-        return uuid1(node, uid).hex
+        return uuid1(node, uid)
 
 
-class Journal(db.Entity, metaclass=EntityMeta):
+class Journal(db_sql.Entity, metaclass=EntityMeta):
+    """Journal maintains the core information of the journal.
+    A.k.a the attrs of the journal entity in the ER Diagram.
+    """
     jid = orm.PrimaryKey(int, auto=True)
     # name and some codes
     name = orm.Required(str)
@@ -125,17 +128,14 @@ class Journal(db.Entity, metaclass=EntityMeta):
     used = orm.Optional(str)
 
 
-class Subscription(db.Entity, metaclass=EntityMeta):
-    jid = orm.Required(int)
-    year = orm.Required(int)
-    vol = orm.Required(int)
-    iss = orm.Required(int)
-
-
-class Article(db.Entity, metaclass=EntityMeta):
+class Article(db_sql.Entity, metaclass=EntityMeta):
+    """Article maintains the core information of the article.
+    A.k.a the attrs of the article entity in the ER Diagram.
+    """
     aid = orm.PrimaryKey(int, auto=True)
     title = orm.Required(str)
     author = orm.Required(str)
+    content = orm.Required(str)
     keyword_1 = orm.Optional(str)
     keyword_2 = orm.Optional(str)
     keyword_3 = orm.Optional(str)
@@ -143,7 +143,14 @@ class Article(db.Entity, metaclass=EntityMeta):
     keyword_5 = orm.Optional(str)
 
 
-class Borrow(db.Entity, metaclass=EntityMeta):
+class Subscription(db_sql.Entity, metaclass=EntityMeta):
+    jid = orm.Required(int)
+    year = orm.Required(int)
+    vol = orm.Required(int)
+    iss = orm.Required(int)
+
+
+class Borrow(db_sql.Entity, metaclass=EntityMeta):
     uid = orm.Required(int)
     aid = orm.Required(int)
     borrow_date = orm.Required(datetime)
@@ -152,6 +159,6 @@ class Borrow(db.Entity, metaclass=EntityMeta):
 
 
 if __name__ == '__main__':
-    # db.bind('sqlite', ':memory:', create_db=True)
-    db.bind('sqlite', 'sni.db', create_db=True)
-    db.generate_mapping(create_tables=True)
+    db_sql.bind('sqlite', ':memory:', create_db=True)
+    # db_sql.bind('sqlite', 'sni.db', create_db=True)
+    db_sql.generate_mapping(create_tables=True)

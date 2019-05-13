@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from pony import orm
 
-from db import Session, User, db
+from db import Session, User, db_sql
 from utils import check_bcrypt, hash_bcrypt, hash_sha512
 
 
@@ -47,6 +47,6 @@ def sign_out(sid):
 
 
 if __name__ == '__main__':
-    db.bind('sqlite', ':memory:', create_db=True)
-    # db.bind('sqlite', 'sni.db', create_db=True)
-    db.generate_mapping(create_tables=True)
+    db_sql.bind('sqlite', ':memory:', create_db=True)
+    # db_sql.bind('sqlite', 'sni.db', create_db=True)
+    db_sql.generate_mapping(create_tables=True)
