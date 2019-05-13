@@ -33,11 +33,18 @@ class EntityMeta(orm.core.EntityMeta):
         return cls.select(*args)
 
 
-# hack the db.Entity for the same purpose with EntityMeta
-db.Entity.delete_db = lambda x: db.Entity.delete(x)
-db.Entity.set_db = lambda x, **kwargs: db.Entity.set(x, **kwargs)
-db.Entity.delete_db = orm.db_session(db.Entity.delete_db)
-db.Entity.set_db = orm.db_session(db.Entity.set_db)
+@orm.db_session
+def delete_db(self):
+    db.Entity.delete(self)
+
+
+@orm.db_session
+def set_db(self, **kwargs):
+    db.Entity.set(self, **kwargs)
+
+
+db.Entity.delete_db = delete_db
+db.Entity.set_db = set_db
 
 
 class User(db.Entity, metaclass=EntityMeta):
@@ -49,6 +56,7 @@ class User(db.Entity, metaclass=EntityMeta):
     nickname = orm.Required(str)
     password = orm.Required(str)
     real_name = orm.Optional(str)
+    mail_addr = orm.Optional(str)
     telephone = orm.Optional(str)
 
 
@@ -104,22 +112,24 @@ class Session(db.Entity, metaclass=EntityMeta):
 
 class Journal(db.Entity, metaclass=EntityMeta):
     jid = orm.PrimaryKey(int, auto=True)
+    # name and some codes
     name = orm.Required(str)
-    publish_period = orm.Required(str)
-    publish_addres = orm.Required(str)
-    publish_langua = orm.Required(str)
-    issn_code = orm.Required(str)
-    cn_code = orm.Required(str)
-    pd_code = orm.Required(str)
-    used_name = orm.Required(str)
-    publish_year = orm.Required(str)
+    issn = orm.Required(str)
+    cnc = orm.Optional(str)
+    pdc = orm.Optional(str)
+    # publication details
+    freq = orm.Required(str)
+    addr = orm.Required(str)
+    lang = orm.Required(str)
+    hist = orm.Required(str)
+    used = orm.Optional(str)
 
 
 class Subscription(db.Entity, metaclass=EntityMeta):
     jid = orm.Required(int)
     year = orm.Required(int)
     vol = orm.Required(int)
-    no = orm.Required(int)
+    iss = orm.Required(int)
 
 
 class Article(db.Entity, metaclass=EntityMeta):
@@ -133,11 +143,12 @@ class Article(db.Entity, metaclass=EntityMeta):
     keyword_5 = orm.Optional(str)
 
 
-class Lending(db.Entity, metaclass=EntityMeta):
+class Borrow(db.Entity, metaclass=EntityMeta):
     uid = orm.Required(int)
     aid = orm.Required(int)
-    start = orm.Required(datetime)
-    end = orm.Required(datetime)
+    borrow_date = orm.Required(datetime)
+    expect_date = orm.Required(datetime)
+    return_date = orm.Required(datetime)
 
 
 if __name__ == '__main__':
