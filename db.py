@@ -132,10 +132,14 @@ class Article(db_sql.Entity, metaclass=EntityMeta):
     """Article maintains the core information of the article.
     A.k.a the attrs of the article entity in the ER Diagram.
     """
+    # primary and foreign key
     aid = orm.PrimaryKey(int, auto=True)
+    jid = orm.Required(int)
+    # the most important info
     title = orm.Required(str)
     author = orm.Required(str)
     content = orm.Required(str)
+    # list all five keywords
     keyword_1 = orm.Optional(str)
     keyword_2 = orm.Optional(str)
     keyword_3 = orm.Optional(str)
@@ -144,6 +148,17 @@ class Article(db_sql.Entity, metaclass=EntityMeta):
 
 
 class Subscription(db_sql.Entity, metaclass=EntityMeta):
+    """Subscription maintains the core information of the subscription.
+    A.k.a the attrs of the subscription relationship in the ER Diagram.
+    """
+    jid = orm.Required(int)
+    year = orm.Required(int)
+
+
+class Storage(db_sql.Entity, metaclass=EntityMeta):
+    """Storage maintains the core information of the storage.
+    A.k.a the attrs of the storage relationship in the ER Diagram.
+    """
     jid = orm.Required(int)
     year = orm.Required(int)
     vol = orm.Required(int)

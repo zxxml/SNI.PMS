@@ -1,4 +1,6 @@
 Faker==1.0.5
 bcrypt==3.1.6
+dataclasses==0.6
+lxml==4.3.3
 pony==0.7.10
 spyne==2.12.16

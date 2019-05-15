@@ -1,37 +1,26 @@
 #!/usr/bin/env/python3
 # -*- coding: utf-8 -*-
 from hashlib import sha512
-from typing import Union as U
+from importlib import import_module
 
 import bcrypt
 
 
-def encode_sb(sb: U[str, bytes], encoding: str = 'utf-8'):
-    return sb.encode(encoding) if isinstance(sb, str) else sb
-
-
-def hash_sha512(sb: U[str, bytes]) -> str:
-    """hash_sha512 helps to sha512 a str or bytes.
-    When str is given, it should be utf-8 encoded.
+def hash_pw(pw: str) -> str:
+    """hash_pw helps to hash the password for storage.
+    This function used salted slow hashing for safety.
     """
-    sb = encode_sb(sb, 'utf-8')
-    return sha512(sb).hexdigest()
+    pw_sha512 = sha512(pw.encode('utf-8'))
+    pw_bcrypt = bcrypt.hashpw(pw_sha512, bcrypt.gensalt())
+    return pw_bcrypt.decode('utf-8')
 
 
-def hash_bcrypt(sb: U[str, bytes],
-                salt: bytes = None) -> str:
-    """hash_bcrypt helps to sha512 a str or bytes.
-    If sb is a string, it should be utf-8 encoded.
-    Recommend not to specific the salt for safety.
-    """
-    sb = encode_sb(sb, 'utf-8')
-    salt = salt or bcrypt.gensalt()
-    result = bcrypt.hashpw(sb, salt)
-    return result.decode('utf-8')
+def check_pw(pw: str, pw_hashed: str) -> bool:
+    pw_sha512 = sha512(pw.encode('utf-8'))
+    pw_bcrypt = pw_hashed.encode('utf-8')
+    return bcrypt.checkpw(pw_sha512, pw_bcrypt)
 
 
-def check_bcrypt(sb: U[str, bytes],
-                 sb_hashed: U[str, bytes]) -> bool:
-    sb = encode_sb(sb, 'utf-8')
-    sb_hashed = encode_sb(sb_hashed, 'utf-8')
-    return bcrypt.checkpw(sb, sb_hashed)
+def import_class(module_name, class_name):
+    module = import_module(module_name)
+    return getattr(module, class_name)
