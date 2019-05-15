@@ -5,7 +5,7 @@ from wsgiref.simple_server import make_server
 
 from spyne import Application, ServiceBase, rpc
 from spyne import ComplexModel, Integer, Unicode
-from spyne.protocol.soap import Soap11
+from spyne.protocol.soap import Soap12
 from spyne.server.wsgi import WsgiApplication
 
 from db import Session, User, db_sql
@@ -43,6 +43,9 @@ class StatusModel(ComplexModel):
 
 
 class UserModel(ComplexModel):
+    """UserModel is the model of db.User, which means
+    it has all attributes db.User has in spyne's way.
+    """
     username = Unicode
     nickname = Unicode
     password = Unicode
@@ -58,14 +61,14 @@ class UserModel(ComplexModel):
 
 class UserService(ServiceBase):
     @rpc(UserModel, _returns=(str, StatusModel))
-    def user_sign_up(self, user):
+    def signUp(self, user):
         user.password = hash_pw(user.password)
         user = User.new_db(**user.as_dict())
         sess = Session.new_db(user.uid)
         return sess.sid.hex, Status.success.model
 
     @rpc(Unicode, Unicode, _returns=(str, StatusModel))
-    def user_sign_in(self, username, password):
+    def signIn(self, username, password):
         if not User.exists_db(username=username):
             return '', Status.username_400.model
         user = User.get_db(username=username)
@@ -76,7 +79,7 @@ class UserService(ServiceBase):
         return sess.sid.hex, Status.success.model
 
     @rpc(Unicode, _returns=StatusModel)
-    def user_sign_out(self, sid):
+    def signOut(self, sid):
         if not Session.exists_db(sid=sid):
             return '', Status.session_400.model
         sess = Session.get_db(sid=sid)
@@ -91,8 +94,8 @@ class UserService(ServiceBase):
 
 class SNIApplication(Application):
     def __init__(self, services, tns, **kwargs):
-        kwargs.setdefault('in_protocol', Soap11(validator='lxml'))
-        kwargs.setdefault('out_protocol', Soap11(validator='lxml'))
+        kwargs.setdefault('in_protocol', Soap12(validator='lxml'))
+        kwargs.setdefault('out_protocol', Soap12())
         super().__init__(services, tns, 'SNIApplication', **kwargs)
 
     def serve_forever(self, host, port, **kwargs):
