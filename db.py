@@ -1,14 +1,13 @@
 #!/usr/bin/env/python3
 # -*- coding: utf-8 -*-
-from configparser import ConfigParser
 from datetime import datetime, timedelta
 from uuid import UUID, uuid1
 
 from pony import orm
 
 db_sql = orm.Database()
-config = ConfigParser()
-config.read('sni.ini')
+# config = ConfigParser()
+# config.read('sni.ini')
 
 
 class EntityMeta(orm.core.EntityMeta):
@@ -106,7 +105,8 @@ class Session(db_sql.Entity, metaclass=EntityMeta):
 
     @staticmethod
     def new_sid(uid):
-        node = int(config['uuid']['node'], 16)
+        # node = int(config['uuid']['node'], 16)
+        node = 0x00000db32364
         return uuid1(node, uid)
 
 

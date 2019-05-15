@@ -1,19 +1,20 @@
 #!/usr/bin/env/python3
 # -*- coding: utf-8 -*-
 from enum import Enum
+from wsgiref.simple_server import make_server
 
-from spyne import ComplexModel, Integer, ServiceBase, Unicode, srpc
+from spyne import Application, ServiceBase, rpc
+from spyne import ComplexModel, Integer, Unicode
+from spyne.protocol.soap import Soap11
+from spyne.server.wsgi import WsgiApplication
 
 from db import Session, User, db_sql
-from utils import hash_pw
+from utils import check_pw, hash_pw
 
 
-class StatusModel(ComplexModel):
-    """This class is designed as return value for every service.
-    You should use a tuple simply rather than create it clearly.
-    """
-    status = Integer
-    reason = Unicode
+# ////////////////////////////////////////
+#             Model Structures
+# ////////////////////////////////////////
 
 
 class Status(Enum):
@@ -23,14 +24,22 @@ class Status(Enum):
     username_400 = 0x1001  # username doesn't exists
     password_400 = 0x1002  # password doesn't match
     # sess related error
-    session_400 = 0x1000  # session doesn't exists
-    session_403 = 0x1001  # session's user is forbidden
+    session_400 = 0x2000  # session doesn't exists
+    session_403 = 0x2001  # session's user is forbidden
 
     @property
     def model(self):
         status = self.value
         reason = self.name
         return status, reason
+
+
+class StatusModel(ComplexModel):
+    """This class is designed as return value for every service.
+    You should use a tuple simply rather than create it clearly.
+    """
+    status = Integer
+    reason = Unicode
 
 
 class UserModel(ComplexModel):
@@ -42,50 +51,59 @@ class UserModel(ComplexModel):
     telephone = Unicode
 
 
-# noinspection PyMethodParameters
-class SNIWebService(ServiceBase):
-    @srpc(UserModel, _returns=(str, StatusModel))
-    def sign_in(user):
-        user = User.new_db(user.username,
-                           user.nickname,
-                           hash_pw(user.password),
-                           user.real_name,
-                           user.mail_addr,
-                           user.telephone)
+# ////////////////////////////////////////
+#               Web Services
+# ////////////////////////////////////////
+
+
+class UserService(ServiceBase):
+    @rpc(UserModel, _returns=(str, StatusModel))
+    def user_sign_up(self, user):
+        user.password = hash_pw(user.password)
+        user = User.new_db(**user.as_dict())
         sess = Session.new_db(user.uid)
         return sess.sid.hex, Status.success.model
 
-    # @staticmethod
-    @srpc(UserModel, _returns=(str, StatusModel))
-    def sign_up(user):
-        user = User.get_db(username=user.username)
-        Session.update_db(uid=user.uid)
+    @rpc(Unicode, Unicode, _returns=(str, StatusModel))
+    def user_sign_in(self, username, password):
+        if not User.exists_db(username=username):
+            return '', Status.username_400.model
+        user = User.get_db(username=username)
+        if not check_pw(password, user.password):
+            return '', Status.password_400.model
+        Session.update_db(user.uid)
         sess = Session.get_db(uid=user.uid)
         return sess.sid.hex, Status.success.model
 
-    # @staticmethod
-    @srpc(Unicode, _returns=StatusModel)
-    def sign_out(sid):
+    @rpc(Unicode, _returns=StatusModel)
+    def user_sign_out(self, sid):
+        if not Session.exists_db(sid=sid):
+            return '', Status.session_400.model
         sess = Session.get_db(sid=sid)
         Session.touch_db(sess.uid, 0, 0)
         return Status.success.model
 
 
-def mainloop():
-    from spyne.application import Application
-    from spyne.protocol.soap import Soap11
-    from spyne.server.wsgi import WsgiApplication
-    from wsgiref.simple_server import make_server
-    app = Application([SNIWebService], 'spyne.examples.hello.http',
-                      in_protocol=Soap11(validator='lxml'),
-                      out_protocol=Soap11(),
-                      )
-    server = make_server('127.0.0.1', 8080, WsgiApplication(app))
-    server.serve_forever()
+# ////////////////////////////////////////
+#           Customer Application
+# ////////////////////////////////////////
+
+
+class SNIApplication(Application):
+    def __init__(self, services, tns, **kwargs):
+        kwargs.setdefault('in_protocol', Soap11(validator='lxml'))
+        kwargs.setdefault('out_protocol', Soap11(validator='lxml'))
+        super().__init__(services, tns, 'SNIApplication', **kwargs)
+
+    def serve_forever(self, host, port, **kwargs):
+        wsgi_app = WsgiApplication(self, **kwargs)
+        server = make_server(host, port, wsgi_app)
+        server.serve_forever(0.5)
 
 
 if __name__ == '__main__':
     db_sql.bind('sqlite', ':memory:', create_db=True)
     # db_sql.bind('sqlite', 'sni.db', create_db=True)
     db_sql.generate_mapping(create_tables=True)
-    mainloop()
+    app = SNIApplication([UserService], 'SNI.PMS.SOAP')
+    app.serve_forever('127.0.0.1', 8080)
