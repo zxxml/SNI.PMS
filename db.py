@@ -6,6 +6,8 @@ from uuid import UUID, uuid1
 from pony import orm
 
 db_sql = orm.Database()
+
+
 # config = ConfigParser()
 # config.read('sni.ini')
 
@@ -117,9 +119,9 @@ class Journal(db_sql.Entity, metaclass=EntityMeta):
     jid = orm.PrimaryKey(int, auto=True)
     # name and some codes
     name = orm.Required(str)
-    issn = orm.Required(str)
-    cnc = orm.Optional(str)
-    pdc = orm.Optional(str)
+    issn = orm.Required(str, unique=True)
+    cnc = orm.Required(str, unique=True)
+    pdc = orm.Required(str, unique=True)
     # publication details
     freq = orm.Required(str)
     addr = orm.Required(str)

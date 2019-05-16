@@ -60,6 +60,21 @@ class UserModel(ComplexModel):
     telephone = String(min_occurs=0)
 
 
+class JournalModel(ComplexModel):
+    """JournalModel is the model of db.Journal, which means
+    it has all attributes db.Journal has in spyne's way.
+    """
+    name = String
+    issn = String
+    cnc = String
+    pdc = String
+    freq = String
+    addr = String
+    lang = String
+    hist = String
+    used = String(min_occurs=0)
+
+
 # ////////////////////////////////////////
 #               Web Services
 # ////////////////////////////////////////
@@ -107,6 +122,10 @@ class UserService(ServiceBase):
         sess = Session.get_db(sid=sid)
         flag = Reader.exists_db(uid=sess.uid)
         return flag, Status.success.model
+
+
+class JournalService(ServiceBase):
+    pass
 
 
 # ////////////////////////////////////////
