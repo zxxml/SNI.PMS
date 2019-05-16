@@ -3,12 +3,12 @@
 from enum import Enum
 from wsgiref.simple_server import make_server
 
-from spyne import Application, ServiceBase, rpc
-from spyne import ComplexModel, Integer, ModelBase, String
+from spyne import (Application, Boolean, ComplexModel, Integer,
+                   ModelBase, ServiceBase, String, rpc)
 from spyne.protocol.soap import Soap12
 from spyne.server.wsgi import WsgiApplication
 
-from db import Session, User, db_sql
+from db import Administrator, Reader, Session, User, db_sql
 from utils import check_pw, hash_pw
 
 # ////////////////////////////////////////
@@ -67,14 +67,14 @@ class UserModel(ComplexModel):
 
 class UserService(ServiceBase):
     @rpc(UserModel, _returns=(String, StatusModel))
-    def signUp(self, user):
+    def signIn(self, user):
         user.password = hash_pw(user.password)
         user = User.new_db(**user.as_dict())
         sess = Session.new_db(user.uid)
         return sess.sid.hex, Status.success.model
 
     @rpc(String, String, _returns=(String, StatusModel))
-    def signIn(self, username, password):
+    def signUp(self, username, password):
         if not User.exists_db(username=username):
             return '', Status.username_400.model
         user = User.get_db(username=username)
@@ -87,10 +87,26 @@ class UserService(ServiceBase):
     @rpc(String, _returns=StatusModel)
     def signOut(self, sid):
         if not Session.exists_db(sid=sid):
-            return '', Status.session_400.model
+            return Status.session_400.model
         sess = Session.get_db(sid=sid)
         Session.touch_db(sess.uid, 0, 0)
         return Status.success.model
+
+    @rpc(String, _returns=(Boolean, StatusModel))
+    def isAdministrator(self, sid):
+        if not Session.exists_db(sid=sid):
+            return False, Status.session_400.model
+        sess = Session.get_db(sid=sid)
+        flag = Administrator.exists_db(uid=sess.uid)
+        return flag, Status.success.model
+
+    @rpc(String, _returns=(Boolean, StatusModel))
+    def isReader(self, sid):
+        if not Session.exists_db(sid=sid):
+            return False, Status.session_400.model
+        sess = Session.get_db(sid=sid)
+        flag = Reader.exists_db(uid=sess.uid)
+        return flag, Status.success.model
 
 
 # ////////////////////////////////////////
