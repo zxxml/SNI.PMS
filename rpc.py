@@ -4,17 +4,23 @@ from enum import Enum
 from wsgiref.simple_server import make_server
 
 from spyne import Application, ServiceBase, rpc
-from spyne import ComplexModel, Integer, Unicode
+from spyne import ComplexModel, Integer, ModelBase, String
 from spyne.protocol.soap import Soap12
 from spyne.server.wsgi import WsgiApplication
 
 from db import Session, User, db_sql
 from utils import check_pw, hash_pw
 
-
 # ////////////////////////////////////////
 #             Model Structures
 # ////////////////////////////////////////
+
+
+# make all model mandatory by default
+# why spyne makes those damn twisted?
+ModelBase.Attributes.nillable = False
+ModelBase.Attributes.min_occurs = 1
+ModelBase.Attributes.max_occurs = 1
 
 
 class Status(Enum):
@@ -39,19 +45,19 @@ class StatusModel(ComplexModel):
     You should use a tuple simply rather than create it clearly.
     """
     status = Integer
-    reason = Unicode
+    reason = String
 
 
 class UserModel(ComplexModel):
     """UserModel is the model of db.User, which means
     it has all attributes db.User has in spyne's way.
     """
-    username = Unicode
-    nickname = Unicode
-    password = Unicode
-    real_name = Unicode
-    mail_addr = Unicode
-    telephone = Unicode
+    username = String
+    nickname = String
+    password = String
+    real_name = String(min_occurs=0)
+    mail_addr = String(min_occurs=0)
+    telephone = String(min_occurs=0)
 
 
 # ////////////////////////////////////////
@@ -60,14 +66,14 @@ class UserModel(ComplexModel):
 
 
 class UserService(ServiceBase):
-    @rpc(UserModel, _returns=(str, StatusModel))
+    @rpc(UserModel, _returns=(String, StatusModel))
     def signUp(self, user):
         user.password = hash_pw(user.password)
         user = User.new_db(**user.as_dict())
         sess = Session.new_db(user.uid)
         return sess.sid.hex, Status.success.model
 
-    @rpc(Unicode, Unicode, _returns=(str, StatusModel))
+    @rpc(String, String, _returns=(String, StatusModel))
     def signIn(self, username, password):
         if not User.exists_db(username=username):
             return '', Status.username_400.model
@@ -78,7 +84,7 @@ class UserService(ServiceBase):
         sess = Session.get_db(uid=user.uid)
         return sess.sid.hex, Status.success.model
 
-    @rpc(Unicode, _returns=StatusModel)
+    @rpc(String, _returns=StatusModel)
     def signOut(self, sid):
         if not Session.exists_db(sid=sid):
             return '', Status.session_400.model
