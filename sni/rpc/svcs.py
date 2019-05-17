@@ -4,9 +4,9 @@ from spyne import rpc
 from spyne.model import Boolean, Unicode
 from spyne.service import ServiceBase
 
-from db import Administrator, Reader, Session, User
-from mods import Status, StatusModel, UserModel
-from utils import check_pw, hash_pw
+from sni.db import Administrator, Reader, Session, User
+from sni.rpc.mods import Status, StatusModel, UserModel
+from sni.utils import check_pw, hash_pw
 
 
 class UserService(ServiceBase):
