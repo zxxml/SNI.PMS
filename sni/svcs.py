@@ -11,9 +11,16 @@ from sni.utils import check_pw, hash_pw
 
 class UserService(ServiceBase):
     @rpc(UserModel, _returns=(Unicode, StatusModel))
-    def signUp(self, user):
+    def signUpAdmin(self, user):
         user.password = hash_pw(user.password)
-        user = User.new_db(**user.as_dict())
+        user = Administrator.new_db(**user.as_dict())
+        sess = Session.new_db(user.uid)
+        return sess.sid.hex, Status.success.model
+
+    @rpc(UserModel, _returns=(Unicode, StatusModel))
+    def signUpReader(self, user):
+        user.password = hash_pw(user.password)
+        user = Reader.new_db(**user.as_dict())
         sess = Session.new_db(user.uid)
         return sess.sid.hex, Status.success.model
 
@@ -37,7 +44,7 @@ class UserService(ServiceBase):
         return Status.success.model
 
     @rpc(Unicode, _returns=(Boolean, StatusModel))
-    def isAdministrator(self, sid):
+    def isAdmin(self, sid):
         if not Session.exists_db(sid=sid):
             return False, Status.session_400.model
         sess = Session.get_db(sid=sid)
