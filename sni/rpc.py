@@ -20,7 +20,7 @@ class RPCApplication(Application):
 
 
 if __name__ == '__main__':
-    from sni.rpc.svcs import UserService
+    from sni.svcs import UserService
 
     rpc_app = RPCApplication([UserService], 'SNI.PMS.RPC')
     rpc_app.serve_forever('127.0.0.1', 8080)

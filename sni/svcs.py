@@ -5,7 +5,7 @@ from spyne.model import Boolean, Unicode
 from spyne.service import ServiceBase
 
 from sni.db import Administrator, Reader, Session, User
-from sni.rpc.mods import Status, StatusModel, UserModel
+from sni.mods import Status, StatusModel, UserModel
 from sni.utils import check_pw, hash_pw
 
 
