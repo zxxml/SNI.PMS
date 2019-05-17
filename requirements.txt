@@ -1,5 +1,6 @@
 Faker==1.0.5
 bcrypt==3.1.6
+bjoern==3.0.0
 dataclasses==0.6
 lxml==4.3.3
 pony==0.7.10
