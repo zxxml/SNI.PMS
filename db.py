@@ -8,10 +8,6 @@ from pony import orm
 db_sql = orm.Database()
 
 
-# config = ConfigParser()
-# config.read('sni.ini')
-
-
 class EntityMeta(orm.core.EntityMeta):
     """EntityMeta wraps common operations in the session with the suffix "db".
     You could manage the session by yourself since only the out-scope one works.
@@ -155,6 +151,7 @@ class Subscription(db_sql.Entity, metaclass=EntityMeta):
     """
     jid = orm.Required(int)
     year = orm.Required(int)
+    orm.PrimaryKey(jid, year)
 
 
 class Storage(db_sql.Entity, metaclass=EntityMeta):
@@ -165,14 +162,16 @@ class Storage(db_sql.Entity, metaclass=EntityMeta):
     year = orm.Required(int)
     vol = orm.Required(int)
     iss = orm.Required(int)
+    orm.PrimaryKey(jid, year, vol, iss)
 
 
 class Borrow(db_sql.Entity, metaclass=EntityMeta):
     uid = orm.Required(int)
-    aid = orm.Required(int)
+    jid = orm.Required(int)
     borrow_date = orm.Required(datetime)
     expect_date = orm.Required(datetime)
-    return_date = orm.Required(datetime)
+    return_date = orm.Optional(datetime)
+    orm.PrimaryKey(uid, jid, borrow_date)
 
 
 if __name__ == '__main__':
