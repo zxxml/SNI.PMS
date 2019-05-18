@@ -23,7 +23,6 @@ def serve_forever(host, port, wsgi_app):
 
 def expose_services():
     from configparser import ConfigParser
-
     config = ConfigParser()
     config.read('./sni.ini')
     host = config['server']['host']
