@@ -116,7 +116,7 @@ class Journal(db_sql.Entity, metaclass=EntityMeta):
     """
     jid = orm.PrimaryKey(int, auto=True)
     # name and some codes
-    name = orm.Required(str)
+    name = orm.Required(str, index=True)
     issn = orm.Required(str, unique=True)
     cnc = orm.Required(str, unique=True)
     pdc = orm.Required(str, unique=True)

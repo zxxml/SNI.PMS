@@ -1,5 +1,7 @@
 #!/usr/bin/env/python3
 # -*- coding: utf-8 -*-
+from typing import List
+
 from jsonrpc import Dispatcher
 from typeguard import typechecked
 
@@ -97,6 +99,68 @@ def isReader(sid: str):
         raise Status.session_400.error
     sess = Session.get_db(sid=sid)
     return Reader.exists_db(uid=sess.uid)
+
+
+@d.add_method
+@return_error
+@typechecked
+def getJournal(sid: str,
+               jid: int,
+               name: str,
+               issn: str,
+               cnc: str,
+               pdc: str,
+               freq: str,
+               addr: str,
+               lang: str,
+               hist: str,
+               used: str):
+    pass
+
+
+@d.add_method
+@return_error
+@typechecked
+def getArticle(sid: str,
+               aid: int,
+               jid: int,
+               title: str,
+               author: str,
+               content: str,
+               keywords: List[str]):
+    pass
+
+
+@d.add_method
+@return_error
+@typechecked
+def getSubs(sid: str,
+            jid: int,
+            year: int):
+    pass
+
+
+@d.add_method
+@return_error
+@typechecked
+def getStorage(sid: str,
+               jid: int,
+               year: int,
+               vol: int,
+               iss: int):
+    pass
+
+
+@d.add_method
+@return_error
+@typechecked
+def getBorrow(sid: str,
+              uid: int,
+              jid: int,
+              borrow_date,
+              expect_date,
+              return_date):
+    pass
 
 
 def call_service(url, method, params, **kwargs):
