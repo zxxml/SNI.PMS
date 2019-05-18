@@ -4,7 +4,7 @@ from spyne import rpc
 from spyne.model import Boolean, Unicode
 from spyne.service import ServiceBase
 
-from sni.db import Administrator, Reader, Session, User
+from sni.db import Admin, Reader, Session, User
 from sni.mods import Status, StatusModel, UserModel
 from sni.utils import check_pw, hash_pw
 
@@ -13,7 +13,7 @@ class UserService(ServiceBase):
     @rpc(UserModel, _returns=(Unicode, StatusModel))
     def signUpAdmin(self, user):
         user.password = hash_pw(user.password)
-        user = Administrator.new_db(**user.as_dict())
+        user = Admin.new_db(**user.as_dict())
         sess = Session.new_db(user.uid)
         return sess.sid.hex, Status.success.model
 
@@ -48,7 +48,7 @@ class UserService(ServiceBase):
         if not Session.exists_db(sid=sid):
             return False, Status.session_400.model
         sess = Session.get_db(sid=sid)
-        flag = Administrator.exists_db(uid=sess.uid)
+        flag = Admin.exists_db(uid=sess.uid)
         return flag, Status.success.model
 
     @rpc(Unicode, _returns=(Boolean, StatusModel))
@@ -60,7 +60,7 @@ class UserService(ServiceBase):
         return flag, Status.success.model
 
 
-class SubscriptionService(ServiceBase):
+class SubsService(ServiceBase):
     pass
 
 

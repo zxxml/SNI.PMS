@@ -60,9 +60,9 @@ class User(db_sql.Entity, metaclass=EntityMeta):
     telephone = orm.Optional(str)
 
 
-class Administrator(User):
-    """Administrator is a view of the User table.
-    A.k.a all administrators in the source table.
+class Admin(User):
+    """Admin is a view of the User table.
+    A.k.a all admins in the source table.
     """
     pass
 
@@ -147,9 +147,9 @@ class Article(db_sql.Entity, metaclass=EntityMeta):
     keyword_5 = orm.Optional(str)
 
 
-class Subscription(db_sql.Entity, metaclass=EntityMeta):
-    """Subscription maintains the core information of the subscription.
-    A.k.a the attrs of the subscription relationship in the ER Diagram.
+class Subs(db_sql.Entity, metaclass=EntityMeta):
+    """Subs maintains the core information of the subs.
+    A.k.a the attrs of the subs relationship in the ER Diagram.
     """
     jid = orm.Required(int)
     year = orm.Required(int)
@@ -177,6 +177,6 @@ class Borrow(db_sql.Entity, metaclass=EntityMeta):
 
 
 if __name__ == '__main__':
-    db_sql.bind('sqlite', ':memory:', create_db=True)
-    # db_sql.bind('sqlite', 'sni.db', create_db=True)
+    # db_sql.bind('sqlite', ':memory:', create_db=True)
+    db_sql.bind('sqlite', 'sni.db', create_db=True)
     db_sql.generate_mapping(create_tables=True)

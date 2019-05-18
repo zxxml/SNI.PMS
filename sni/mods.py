@@ -79,7 +79,7 @@ class ArticleModel(ComplexModel):
     keyword_5 = Unicode(min_occurs=0)
 
 
-class SubscriptionModel(ComplexModel):
+class SubsModel(ComplexModel):
     jid = Integer
     year = Integer
 
