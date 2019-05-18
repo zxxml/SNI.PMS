@@ -179,3 +179,6 @@ class Borrow(db_sql.Entity, metaclass=EntityMeta):
 def bind_sqlite(filename=':memory:'):
     db_sql.bind('sqlite', filename, create_db=True)
     db_sql.generate_mapping(create_tables=True)
+    with orm.db_session:
+        # db_sql.execute('PRAGMA synchronous = OFF')
+        db_sql.execute('PRAGMA journal_mode = WAL')
