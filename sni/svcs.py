@@ -23,12 +23,12 @@ def adminSignUp(username: str,
     if User.exists_db(username=username):
         raise Status.username_409.error
     password = hash_pw(password)
-    user = Admin.new_db(username,
-                        nickname,
-                        password,
-                        real_name,
-                        mail_addr,
-                        telephone)
+    user = Admin.new_db(username=username,
+                        nickname=nickname,
+                        password=password,
+                        real_name=real_name,
+                        mail_addr=mail_addr,
+                        telephone=telephone)
     sess = Session.new_db(user.uid)
     return sess.sid.hex
 
@@ -45,12 +45,12 @@ def readerSignUp(username: str,
     if User.exists_db(username=username):
         raise Status.username_409.error
     password = hash_pw(password)
-    user = Reader.new_db(username,
-                         nickname,
-                         password,
-                         real_name,
-                         mail_addr,
-                         telephone)
+    user = Reader.new_db(username=username,
+                         nickname=nickname,
+                         password=password,
+                         real_name=real_name,
+                         mail_addr=mail_addr,
+                         telephone=telephone)
     sess = Session.new_db(user.uid)
     return sess.sid.hex
 
@@ -115,4 +115,7 @@ def call_service(url, method, params, **kwargs):
 
 if __name__ == '__main__':
     uri = 'http://linkfire.cn:8080/jsonrpc'
-    print(call_service(uri, 'isAdmin', ['123456']))
+    print(call_service(uri, 'readerSignUp', ['username', 'nickname', 'password', '', '', '']))
+    print(call_service(uri, 'userSignIn', ['username', 'password']))
+    print(call_service(uri, 'isAdmin', ['ab181852797d11e9800100000db32364']))
+    print(call_service(uri, 'isReader', ['ab181852797d11e9800100000db32364']))
