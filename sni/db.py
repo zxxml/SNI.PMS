@@ -176,7 +176,6 @@ class Borrow(db_sql.Entity, metaclass=EntityMeta):
     orm.PrimaryKey(uid, jid, borrow_date)
 
 
-if __name__ == '__main__':
-    # db_sql.bind('sqlite', ':memory:', create_db=True)
-    db_sql.bind('sqlite', 'sni.db', create_db=True)
+def bind_sqlite(filename=':memory:'):
+    db_sql.bind('sqlite', filename, create_db=True)
     db_sql.generate_mapping(create_tables=True)
