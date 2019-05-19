@@ -1,6 +1,6 @@
 #!/usr/bin/env/python3
 # -*- coding: utf-8 -*-
-from typing import Union
+from typing import Optional
 
 from jsonrpc import Dispatcher
 from pony import orm
@@ -19,9 +19,9 @@ d = Dispatcher()
 def adminSignUp(username: str,
                 nickname: str,
                 password: str,
-                real_name: Union[str, None],
-                mail_addr: Union[str, None],
-                telephone: Union[str, None]):
+                real_name: Optional[str],
+                mail_addr: Optional[str],
+                telephone: Optional[str]):
     password = hash_pw(password)
     user = Admin.new_db(**locals())
     sess = Session.new_db(user.uid)
@@ -34,9 +34,9 @@ def adminSignUp(username: str,
 def readerSignUp(username: str,
                  nickname: str,
                  password: str,
-                 real_name: Union[str, None],
-                 mail_addr: Union[str, None],
-                 telephone: Union[str, None]):
+                 real_name: Optional[str],
+                 mail_addr: Optional[str],
+                 telephone: Optional[str]):
     password = hash_pw(password)
     user = Reader.new_db(**locals())
     sess = Session.new_db(user.uid)
@@ -87,15 +87,15 @@ def isReader(sid: str):
 @check_sess
 @check_type
 def addJournal(sid: str,
-               name: Union[str, None],
-               issn: Union[str, None],
-               cnc: Union[str, None],
-               pdc: Union[str, None],
-               freq: Union[str, None],
-               addr: Union[str, None],
-               lang: Union[str, None],
-               hist: Union[str, None],
-               used: Union[str, None]):
+               name: str,
+               issn: str,
+               cnc: str,
+               pdc: str,
+               freq: str,
+               addr: str,
+               lang: str,
+               hist: str,
+               used: str):
     kwargs = locals()
     del kwargs['sid']
     return Journal.new_db(**kwargs)
@@ -107,16 +107,16 @@ def addJournal(sid: str,
 @check_sess
 @check_type
 def getJournal(sid: str,
-               jid: Union[int, None],
-               name: Union[str, None],
-               issn: Union[str, None],
-               cnc: Union[str, None],
-               pdc: Union[str, None],
-               freq: Union[str, None],
-               addr: Union[str, None],
-               lang: Union[str, None],
-               hist: Union[str, None],
-               used: Union[str, None]):
+               jid: Optional[int],
+               name: Optional[str],
+               issn: Optional[str],
+               cnc: Optional[str],
+               pdc: Optional[str],
+               freq: Optional[str],
+               addr: Optional[str],
+               lang: Optional[str],
+               hist: Optional[str],
+               used: Optional[str]):
     kwargs = locals()
     del kwargs['sid']
     return Journal.select_db(**kwargs)
