@@ -1,5 +1,6 @@
 #!/usr/bin/env/python3
 # -*- coding: utf-8 -*-
+from datetime import datetime
 from hashlib import sha512
 from importlib import import_module
 
@@ -21,10 +22,11 @@ def check_pw(pw: str, pw_hashed: str) -> bool:
     return bcrypt.checkpw(pw_sha512, pw_bcrypt)
 
 
+def is_expired(datetime_):
+    current = datetime.now()
+    return datetime_ < current
+
+
 def import_class(module_name, class_name):
     module = import_module(module_name)
     return getattr(module, class_name)
-
-
-if __name__ == '__main__':
-    print(hash_pw('password'))

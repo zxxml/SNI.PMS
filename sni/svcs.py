@@ -8,7 +8,7 @@ from typeguard import typechecked
 
 from sni.db import Admin, Reader, Session, User
 from sni.mods import Status, return_error
-from sni.utils import check_pw, hash_pw
+from sni.utils import check_pw, hash_pw, is_expired
 
 __all__ = ['d']
 d = Dispatcher()
@@ -73,14 +73,21 @@ def userSignIn(username: str, password: str):
     return sess.sid.hex
 
 
+@orm.db_session
+def check_session(sid: str):
+    if not Session.exists_db(sid=sid):
+        raise Status.session_400.error
+    sess = Session.get_db(sid=sid)
+    if is_expired(sess.expires):
+        raise Status.session_403.error
+
+
 @d.add_method
 @return_error
 @typechecked
 @orm.db_session
 def userSignOut(sid: str):
-    if not Session.exists_db(sid=sid):
-        raise Status.session_400.error
-    sess = Session.get_db(sid=sid)
+    sess = check_session(sid)
     Session.touch_db(sess.uid, 0, 0)
 
 
@@ -89,9 +96,7 @@ def userSignOut(sid: str):
 @typechecked
 @orm.db_session
 def isAdmin(sid: str):
-    if not Session.exists_db(sid=sid):
-        raise Status.session_400.error
-    sess = Session.get_db(sid=sid)
+    sess = check_session(sid)
     return Admin.exists_db(uid=sess.uid)
 
 
@@ -100,9 +105,7 @@ def isAdmin(sid: str):
 @typechecked
 @orm.db_session
 def isReader(sid: str):
-    if not Session.exists_db(sid=sid):
-        raise Status.session_400.error
-    sess = Session.get_db(sid=sid)
+    sess = check_session(sid)
     return Reader.exists_db(uid=sess.uid)
 
 
