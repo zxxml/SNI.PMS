@@ -20,7 +20,7 @@ def check_session(sid: str):
     if not Session.exists_db(sid=sid):
         raise Status.session_400.error
     sess = Session.get_db(sid=sid)
-    if datetime.now() < sess.expires:
+    if datetime.now() > sess.expires:
         raise Status.session_401.error
     return sess
 
