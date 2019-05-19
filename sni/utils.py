@@ -1,10 +1,15 @@
 #!/usr/bin/env/python3
 # -*- coding: utf-8 -*-
 from datetime import datetime
+from functools import wraps
 from hashlib import sha512
-from importlib import import_module
 
 import bcrypt
+from jsonrpc.exceptions import JSONRPCDispatchException
+from jsonrpc.exceptions import JSONRPCInternalError
+
+
+
 
 
 def hash_pw(pw: str) -> str:
@@ -22,11 +27,3 @@ def check_pw(pw: str, pw_hashed: str) -> bool:
     return bcrypt.checkpw(pw_sha512, pw_bcrypt)
 
 
-def is_expired(datetime_):
-    current = datetime.now()
-    return datetime_ < current
-
-
-def import_class(module_name, class_name):
-    module = import_module(module_name)
-    return getattr(module, class_name)
