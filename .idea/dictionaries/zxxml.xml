@@ -3,8 +3,10 @@
     <words>
       <w>bcrypt</w>
       <w>bjoern</w>
+      <w>jsonrpc</w>
       <w>lxml</w>
       <w>typeguard</w>
+      <w>ujson</w>
       <w>werkzeug</w>
     </words>
   </dictionary>

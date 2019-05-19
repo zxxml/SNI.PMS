@@ -1,6 +1,6 @@
 #!/usr/bin/env/python3
 # -*- coding: utf-8 -*-
-from typing import List
+from typing import List, Union
 
 from jsonrpc import Dispatcher
 from typeguard import typechecked
@@ -19,9 +19,9 @@ d = Dispatcher()
 def adminSignUp(username: str,
                 nickname: str,
                 password: str,
-                real_name: str,
-                mail_addr: str,
-                telephone: str):
+                real_name: Union[str, None],
+                mail_addr: Union[str, None],
+                telephone: Union[str, None]):
     if User.exists_db(username=username):
         raise Status.username_409.error
     password = hash_pw(password)
@@ -41,9 +41,9 @@ def adminSignUp(username: str,
 def readerSignUp(username: str,
                  nickname: str,
                  password: str,
-                 real_name: str,
-                 mail_addr: str,
-                 telephone: str):
+                 real_name: Union[str, None],
+                 mail_addr: Union[str, None],
+                 telephone: Union[str, None]):
     if User.exists_db(username=username):
         raise Status.username_409.error
     password = hash_pw(password)
@@ -105,16 +105,16 @@ def isReader(sid: str):
 @return_error
 @typechecked
 def getJournal(sid: str,
-               jid: int,
-               name: str,
-               issn: str,
-               cnc: str,
-               pdc: str,
-               freq: str,
-               addr: str,
-               lang: str,
-               hist: str,
-               used: str):
+               jid: Union[int, None],
+               name: Union[str, None],
+               issn: Union[str, None],
+               cnc: Union[str, None],
+               pdc: Union[str, None],
+               freq: Union[str, None],
+               addr: Union[str, None],
+               lang: Union[str, None],
+               hist: Union[str, None],
+               used: Union[str, None]):
     pass
 
 
@@ -122,11 +122,11 @@ def getJournal(sid: str,
 @return_error
 @typechecked
 def getArticle(sid: str,
-               aid: int,
-               jid: int,
-               title: str,
-               author: str,
-               content: str,
+               aid: Union[int, None],
+               jid: Union[int, None],
+               title: Union[str, None],
+               author: Union[str, None],
+               content: Union[str, None],
                keywords: List[str]):
     pass
 
@@ -135,8 +135,8 @@ def getArticle(sid: str,
 @return_error
 @typechecked
 def getSubs(sid: str,
-            jid: int,
-            year: int):
+            jid: Union[int, None],
+            year: Union[int, None]):
     pass
 
 
@@ -144,10 +144,10 @@ def getSubs(sid: str,
 @return_error
 @typechecked
 def getStorage(sid: str,
-               jid: int,
-               year: int,
-               vol: int,
-               iss: int):
+               jid: Union[int, None],
+               year: Union[int, None],
+               vol: Union[int, None],
+               iss: Union[int, None]):
     pass
 
 
@@ -155,31 +155,9 @@ def getStorage(sid: str,
 @return_error
 @typechecked
 def getBorrow(sid: str,
-              uid: int,
-              jid: int,
-              borrow_date,
-              expect_date,
-              return_date):
+              uid: Union[int, None],
+              jid: Union[int, None],
+              borrow_date: Union[str, None],
+              expect_date: Union[str, None],
+              return_date: Union[str, None]):
     pass
-
-
-def call_service(url, method, params, **kwargs):
-    """Example codes to call web service."""
-    import requests
-    headers = {'content-type': 'application/json'}
-    payload = {
-        'method': method,
-        'params': params,
-        'jsonrpc': '2.0',
-        'id': 0
-    }
-    resp = requests.post(url, json=payload, headers=headers)
-    return resp.json(**kwargs)
-
-
-if __name__ == '__main__':
-    uri = 'http://linkfire.cn:8080/jsonrpc'
-    print(call_service(uri, 'readerSignUp', ['username', 'nickname', 'password', '', '', '']))
-    print(call_service(uri, 'userSignIn', ['username', 'password']))
-    print(call_service(uri, 'isAdmin', ['ab181852797d11e9800100000db32364']))
-    print(call_service(uri, 'isReader', ['ab181852797d11e9800100000db32364']))

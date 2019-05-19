@@ -1,11 +1,16 @@
 #!/usr/bin/env/python3
 # -*- coding: utf-8 -*-
 import bjoern
+import ujson
 from jsonrpc import JSONRPCResponseManager
+from jsonrpc.utils import JSONSerializable
 from werkzeug.wrappers import Request, Response
 
 from sni.db import bind_sqlite
 from sni.svcs import d
+
+JSONSerializable.serialize = ujson.dumps
+JSONSerializable.deserialize = ujson.loads
 
 
 @Request.application
