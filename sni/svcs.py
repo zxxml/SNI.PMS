@@ -3,6 +3,7 @@
 from typing import List, Union
 
 from jsonrpc import Dispatcher
+from pony import orm
 from typeguard import typechecked
 
 from sni.db import Admin, Reader, Session, User
@@ -60,6 +61,7 @@ def readerSignUp(username: str,
 @d.add_method
 @return_error
 @typechecked
+@orm.db_session
 def userSignIn(username: str, password: str):
     if not User.exists_db(username=username):
         raise Status.username_400.error
@@ -74,16 +76,18 @@ def userSignIn(username: str, password: str):
 @d.add_method
 @return_error
 @typechecked
+@orm.db_session
 def userSignOut(sid: str):
     if not Session.exists_db(sid=sid):
         raise Status.session_400.error
     sess = Session.get_db(sid=sid)
-    Session.touch_db(sess.sid, 0, 0)
+    Session.touch_db(sess.uid, 0, 0)
 
 
 @d.add_method
 @return_error
 @typechecked
+@orm.db_session
 def isAdmin(sid: str):
     if not Session.exists_db(sid=sid):
         raise Status.session_400.error
@@ -94,6 +98,7 @@ def isAdmin(sid: str):
 @d.add_method
 @return_error
 @typechecked
+@orm.db_session
 def isReader(sid: str):
     if not Session.exists_db(sid=sid):
         raise Status.session_400.error
@@ -104,6 +109,7 @@ def isReader(sid: str):
 @d.add_method
 @return_error
 @typechecked
+@orm.db_session
 def getJournal(sid: str,
                jid: Union[int, None],
                name: Union[str, None],
@@ -121,6 +127,7 @@ def getJournal(sid: str,
 @d.add_method
 @return_error
 @typechecked
+@orm.db_session
 def getArticle(sid: str,
                aid: Union[int, None],
                jid: Union[int, None],
@@ -134,6 +141,7 @@ def getArticle(sid: str,
 @d.add_method
 @return_error
 @typechecked
+@orm.db_session
 def getSubs(sid: str,
             jid: Union[int, None],
             year: Union[int, None]):
@@ -143,6 +151,7 @@ def getSubs(sid: str,
 @d.add_method
 @return_error
 @typechecked
+@orm.db_session
 def getStorage(sid: str,
                jid: Union[int, None],
                year: Union[int, None],
@@ -154,6 +163,7 @@ def getStorage(sid: str,
 @d.add_method
 @return_error
 @typechecked
+@orm.db_session
 def getBorrow(sid: str,
               uid: Union[int, None],
               jid: Union[int, None],

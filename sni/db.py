@@ -15,17 +15,24 @@ class EntityMeta(orm.core.EntityMeta):
     """EntityMeta wraps common operations in the session with the suffix "db".
     You could manage the session by yourself since only the out-scope one works.
     """
+    @staticmethod
+    def clean_kwargs(kwargs):
+        return {k: kwargs[k] for k in kwargs
+                if kwargs[k] is not None}
 
     @orm.db_session
     def new_db(cls, *args, **kwargs):
+        kwargs = cls.clean_kwargs(kwargs)
         return cls(*args, **kwargs)
 
     @orm.db_session
     def exists_db(cls, *args, **kwargs):
+        kwargs = cls.clean_kwargs(kwargs)
         return cls.exists(*args, **kwargs)
 
     @orm.db_session
     def get_db(cls, *args, **kwargs):
+        kwargs = cls.clean_kwargs(kwargs)
         return cls.get(*args, **kwargs)
 
     @orm.db_session
