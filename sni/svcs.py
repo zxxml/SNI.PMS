@@ -7,7 +7,7 @@ from jsonrpc import Dispatcher
 from pony import orm
 from typeguard import typechecked
 
-from sni.db import Admin, Reader, Session, User
+from sni.db import Admin, Article, Borrow, Journal, Reader, Session, Storage, Subs, User
 from sni.mods import Status, return_error
 from sni.utils import check_pw, hash_pw
 
@@ -115,6 +115,26 @@ def isReader(sid: str):
 @return_error
 @typechecked
 @orm.db_session
+def addJournal(sid: str,
+               name: Union[str, None],
+               issn: Union[str, None],
+               cnc: Union[str, None],
+               pdc: Union[str, None],
+               freq: Union[str, None],
+               addr: Union[str, None],
+               lang: Union[str, None],
+               hist: Union[str, None],
+               used: Union[str, None]):
+    kwargs = locals()
+    del kwargs['sid']
+    check_session(sid)
+    return Journal.new_db(**kwargs)
+
+
+@d.add_method
+@return_error
+@typechecked
+@orm.db_session
 def getJournal(sid: str,
                jid: Union[int, None],
                name: Union[str, None],
@@ -126,7 +146,26 @@ def getJournal(sid: str,
                lang: Union[str, None],
                hist: Union[str, None],
                used: Union[str, None]):
-    pass
+    kwargs = locals()
+    del kwargs['sid']
+    check_session(sid)
+    return Journal.select_db(**kwargs)
+
+
+@d.add_method
+@return_error
+@typechecked
+@orm.db_session
+def addArticle(sid: str,
+               jid: Union[int, None],
+               title: Union[str, None],
+               author: Union[str, None],
+               content: Union[str, None],
+               keywords: List[str]):
+    kwargs = locals()
+    del kwargs['sid']
+    check_session(sid)
+    return Article.new_db(**kwargs)
 
 
 @d.add_method
@@ -140,7 +179,23 @@ def getArticle(sid: str,
                author: Union[str, None],
                content: Union[str, None],
                keywords: List[str]):
-    pass
+    kwargs = locals()
+    del kwargs['sid']
+    check_session(sid)
+    return Article.select_db(**kwargs)
+
+
+@d.add_method
+@return_error
+@typechecked
+@orm.db_session
+def addSubs(sid: str,
+            jid: Union[int, None],
+            year: Union[int, None]):
+    kwargs = locals()
+    del kwargs['sid']
+    check_session(sid)
+    return Subs.new_db(**kwargs)
 
 
 @d.add_method
@@ -150,7 +205,25 @@ def getArticle(sid: str,
 def getSubs(sid: str,
             jid: Union[int, None],
             year: Union[int, None]):
-    pass
+    kwargs = locals()
+    del kwargs['sid']
+    check_session(sid)
+    return Subs.select_db(**kwargs)
+
+
+@d.add_method
+@return_error
+@typechecked
+@orm.db_session
+def addStorage(sid: str,
+               jid: Union[int, None],
+               year: Union[int, None],
+               vol: Union[int, None],
+               iss: Union[int, None]):
+    kwargs = locals()
+    del kwargs['sid']
+    check_session(sid)
+    return Storage.new_db(**kwargs)
 
 
 @d.add_method
@@ -162,7 +235,26 @@ def getStorage(sid: str,
                year: Union[int, None],
                vol: Union[int, None],
                iss: Union[int, None]):
-    pass
+    kwargs = locals()
+    del kwargs['sid']
+    check_session(sid)
+    return Storage.select_db(**kwargs)
+
+
+@d.add_method
+@return_error
+@typechecked
+@orm.db_session
+def addBorrow(sid: str,
+              uid: Union[int, None],
+              jid: Union[int, None],
+              borrow_date: Union[str, None],
+              expect_date: Union[str, None],
+              return_date: Union[str, None]):
+    kwargs = locals()
+    del kwargs['sid']
+    check_session(sid)
+    return Borrow.new_db(**kwargs)
 
 
 @d.add_method
@@ -175,4 +267,7 @@ def getBorrow(sid: str,
               borrow_date: Union[str, None],
               expect_date: Union[str, None],
               return_date: Union[str, None]):
-    pass
+    kwargs = locals()
+    del kwargs['sid']
+    check_session(sid)
+    return Borrow.select_db(**kwargs)

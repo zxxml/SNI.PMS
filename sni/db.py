@@ -36,8 +36,11 @@ class EntityMeta(orm.core.EntityMeta):
         return cls.get(*args, **kwargs)
 
     @orm.db_session
-    def select_db(cls, *args):
-        return cls.select(*args)
+    def select_db(cls, *args, **kwargs):
+        if kwargs:
+            kwargs = cls.clean_kwargs(kwargs)
+            return cls.select().filter(**kwargs)[:]
+        return cls.select(*args)[:]
 
 
 @orm.db_session
