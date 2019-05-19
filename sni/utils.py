@@ -1,6 +1,7 @@
 #!/usr/bin/env/python3
 # -*- coding: utf-8 -*-
-from hashlib import sha512
+from base64 import b64encode
+from hashlib import sha256
 
 import bcrypt
 
@@ -9,12 +10,12 @@ def hash_pw(pw: str) -> str:
     """hash_pw helps to hash the password for storage.
     This function used salted slow hashing for safety.
     """
-    pw_sha512 = sha512(pw.encode('utf-8')).digest()
-    pw_bcrypt = bcrypt.hashpw(pw_sha512, bcrypt.gensalt())
+    pw_sha256 = b64encode(sha256(pw.encode('utf-8')).digest())
+    pw_bcrypt = bcrypt.hashpw(pw_sha256, bcrypt.gensalt())
     return pw_bcrypt.decode('utf-8')
 
 
 def check_pw(pw: str, pw_hashed: str) -> bool:
-    pw_sha512 = sha512(pw.encode('utf-8')).digest()
+    pw_sha256 = b64encode(sha256(pw.encode('utf-8')).digest())
     pw_bcrypt = pw_hashed.encode('utf-8')
-    return bcrypt.checkpw(pw_sha512, pw_bcrypt)
+    return bcrypt.checkpw(pw_sha256, pw_bcrypt)

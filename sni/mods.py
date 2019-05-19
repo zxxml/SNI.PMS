@@ -1,40 +1,102 @@
 #!/usr/bin/env/python3
 # -*- coding: utf-8 -*-
-from enum import Enum
-from functools import wraps
+from datetime import datetime
+from functools import partial, wraps
 
-from jsonrpc.exceptions import JSONRPCDispatchException
-from jsonrpc.exceptions import JSONRPCInternalError
+import jsonrpc.exceptions as exc
+from typeguard import typechecked
 
-
-class Status(Enum):
-    success = 0x0000
-    # user related error
-    username_409 = 0x1000  # username is conflict
-    username_400 = 0x1001  # username doesn't exists
-    password_400 = 0x1002  # password doesn't match
-    # sess related error
-    session_400 = 0x2000  # session doesn't exists
-    session_401 = 0x2001  # session is expired
-    session_403 = 0x2002  # session's user is forbidden
-
-    @property
-    def error(self):
-        """Convert status to related exception."""
-        return JSONRPCDispatchException(self.value, self.name)
+from sni import db
+from sni.db import Session
 
 
-def return_error(function):
-    """This wrapper converts normal exceptions to DispatchException.
-    The code will be -32603, and stringify the exceptions as message.
-    """
+class SniException(exc.JSONRPCDispatchException):
+    def __init__(self, code, message=None, *args, **kwargs):
+        super().__init__(code, message, *args, **kwargs)
+        self.args = (code, message, *args)
+
+    @classmethod
+    def bad_request(cls, *args, **kwargs):
+        return cls(400, *args, **kwargs)
+
+    @classmethod
+    def unauthorized(cls, *args, **kwargs):
+        return cls(401, *args, **kwargs)
+
+    @classmethod
+    def forbidden(cls, *args, **kwargs):
+        return cls(403, *args, **kwargs)
+
+    @classmethod
+    def conflict(cls, *args, **kwargs):
+        return cls(409, *args, **kwargs)
+
+    @classmethod
+    def payload_too_large(cls, *args, **kwargs):
+        return cls(413, *args, **kwargs)
+
+    @classmethod
+    def teapot(cls, *args, **kwargs):
+        """Every status is created equal.
+        A teapot can also be well-used.
+        """
+        return cls(418, *args, **kwargs)
+
+    @classmethod
+    def internal(cls, *args, **kwargs):
+        return cls(500, *args, **kwargs)
+
+    @classmethod
+    def loop_detected(cls, *args, **kwargs):
+        return cls(508, *args, **kwargs)
+
+
+def check_type(function):
     @wraps(function)
-    def _return_error(*args, **kwargs):
+    def _check_type(*args, **kwargs):
+        try:
+            return typechecked(function)(*args, **kwargs)
+        except TypeError as e:
+            raise SniException.teapot(str(e))
+    return _check_type
+
+
+def check_sess(function):
+    @wraps(function)
+    def _check_sess(sid, *args, **kwargs):
+        if not Session.exists_db(sid=sid):
+            raise SniException.unauthorized()
+        sess = Session.get_db(sid=sid)
+        if datetime.now() > sess.expires:
+            raise SniException.unauthorized()
+        return function(sid, *args, **kwargs)
+    return _check_sess
+
+
+def check_user(function=None, view_name='Admin'):
+    if function is None:
+        return partial(check_user, view_name=view_name)
+    @wraps(function)
+    def _check_user(sid, *args, **kwargs):
+        sess = Session.get_db(sid=sid)
+        view = getattr(db, view_name)
+        if not view.exists_db(uid=sess.uid):
+            raise SniException.forbidden()
+        return function(sid, *args, **kwargs)
+    return _check_user
+
+
+def wrap_error(function):
+    @wraps(function)
+    def _wrap_error(*args, **kwargs):
         try:
             return function(*args, **kwargs)
-        except JSONRPCDispatchException as e:
+        except SniException as e:
             raise e from None
+        except AssertionError as e:
+            raise SniException.bad_request(str(e)) from None
+        except RecursionError as e:
+            raise SniException.loop_detected(str(e)) from None
         except Exception as e:
-            code = JSONRPCInternalError.CODE
-            raise JSONRPCDispatchException(code, str(e))
-    return _return_error
+            raise SniException.internal(str(e)) from None
+    return _wrap_error

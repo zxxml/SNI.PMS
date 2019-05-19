@@ -1,120 +1,91 @@
 #!/usr/bin/env/python3
 # -*- coding: utf-8 -*-
-from datetime import datetime
-from typing import List, Union
+from typing import Union
 
 from jsonrpc import Dispatcher
 from pony import orm
-from typeguard import typechecked
 
-from sni.db import Admin, Article, Borrow, Journal, Reader, Session, Storage, Subs, User
-from sni.mods import Status, return_error
+from sni.db import Admin, Journal, Reader, Session, User
+from sni.mods import check_sess, check_type, check_user, wrap_error
 from sni.utils import check_pw, hash_pw
 
 __all__ = ['d']
 d = Dispatcher()
 
 
-@orm.db_session
-def check_session(sid: str):
-    if not Session.exists_db(sid=sid):
-        raise Status.session_400.error
-    sess = Session.get_db(sid=sid)
-    if datetime.now() > sess.expires:
-        raise Status.session_401.error
-    return sess
-
-
 @d.add_method
-@return_error
-@typechecked
+@wrap_error
+@check_type
 def adminSignUp(username: str,
                 nickname: str,
                 password: str,
                 real_name: Union[str, None],
                 mail_addr: Union[str, None],
                 telephone: Union[str, None]):
-    if User.exists_db(username=username):
-        raise Status.username_409.error
     password = hash_pw(password)
-    user = Admin.new_db(username=username,
-                        nickname=nickname,
-                        password=password,
-                        real_name=real_name,
-                        mail_addr=mail_addr,
-                        telephone=telephone)
+    user = Admin.new_db(**locals())
     sess = Session.new_db(user.uid)
     return sess.sid.hex
 
 
 @d.add_method
-@return_error
-@typechecked
+@wrap_error
+@check_type
 def readerSignUp(username: str,
                  nickname: str,
                  password: str,
                  real_name: Union[str, None],
                  mail_addr: Union[str, None],
                  telephone: Union[str, None]):
-    if User.exists_db(username=username):
-        raise Status.username_409.error
     password = hash_pw(password)
-    user = Reader.new_db(username=username,
-                         nickname=nickname,
-                         password=password,
-                         real_name=real_name,
-                         mail_addr=mail_addr,
-                         telephone=telephone)
+    user = Reader.new_db(**locals())
     sess = Session.new_db(user.uid)
     return sess.sid.hex
 
 
 @d.add_method
-@return_error
-@typechecked
+@wrap_error
+@check_type
 @orm.db_session
 def userSignIn(username: str, password: str):
-    if not User.exists_db(username=username):
-        raise Status.username_400.error
     user = User.get_db(username=username)
-    if not check_pw(password, user.password):
-        raise Status.password_400.error
+    assert check_pw(password, user.password)
     Session.update_db(user.uid)
-    sess = Session.get_db(uid=user.uid)
+    sess = Session[user.uid]
     return sess.sid.hex
 
 
 @d.add_method
-@return_error
-@typechecked
-@orm.db_session
+@wrap_error
+@check_type
 def userSignOut(sid: str):
-    sess = check_session(sid)
+    sess = Session.get_db(sid=sid)
     Session.touch_db(sess.uid, 0, 0)
 
 
 @d.add_method
-@return_error
-@typechecked
-@orm.db_session
+@wrap_error
+@check_sess
+@check_type
 def isAdmin(sid: str):
-    sess = check_session(sid)
+    sess = Session.get_db(sid=sid)
     return Admin.exists_db(uid=sess.uid)
 
 
 @d.add_method
-@return_error
-@typechecked
-@orm.db_session
+@wrap_error
+@check_sess
+@check_type
 def isReader(sid: str):
-    sess = check_session(sid)
+    sess = Session.get_db(sid=sid)
     return Reader.exists_db(uid=sess.uid)
 
 
 @d.add_method
-@return_error
-@typechecked
-@orm.db_session
+@wrap_error
+@check_user
+@check_sess
+@check_type
 def addJournal(sid: str,
                name: Union[str, None],
                issn: Union[str, None],
@@ -127,14 +98,14 @@ def addJournal(sid: str,
                used: Union[str, None]):
     kwargs = locals()
     del kwargs['sid']
-    check_session(sid)
     return Journal.new_db(**kwargs)
 
 
 @d.add_method
-@return_error
-@typechecked
-@orm.db_session
+@wrap_error
+@check_user
+@check_sess
+@check_type
 def getJournal(sid: str,
                jid: Union[int, None],
                name: Union[str, None],
@@ -148,126 +119,4 @@ def getJournal(sid: str,
                used: Union[str, None]):
     kwargs = locals()
     del kwargs['sid']
-    check_session(sid)
     return Journal.select_db(**kwargs)
-
-
-@d.add_method
-@return_error
-@typechecked
-@orm.db_session
-def addArticle(sid: str,
-               jid: Union[int, None],
-               title: Union[str, None],
-               author: Union[str, None],
-               content: Union[str, None],
-               keywords: List[str]):
-    kwargs = locals()
-    del kwargs['sid']
-    check_session(sid)
-    return Article.new_db(**kwargs)
-
-
-@d.add_method
-@return_error
-@typechecked
-@orm.db_session
-def getArticle(sid: str,
-               aid: Union[int, None],
-               jid: Union[int, None],
-               title: Union[str, None],
-               author: Union[str, None],
-               content: Union[str, None],
-               keywords: List[str]):
-    kwargs = locals()
-    del kwargs['sid']
-    check_session(sid)
-    return Article.select_db(**kwargs)
-
-
-@d.add_method
-@return_error
-@typechecked
-@orm.db_session
-def addSubs(sid: str,
-            jid: Union[int, None],
-            year: Union[int, None]):
-    kwargs = locals()
-    del kwargs['sid']
-    check_session(sid)
-    return Subs.new_db(**kwargs)
-
-
-@d.add_method
-@return_error
-@typechecked
-@orm.db_session
-def getSubs(sid: str,
-            jid: Union[int, None],
-            year: Union[int, None]):
-    kwargs = locals()
-    del kwargs['sid']
-    check_session(sid)
-    return Subs.select_db(**kwargs)
-
-
-@d.add_method
-@return_error
-@typechecked
-@orm.db_session
-def addStorage(sid: str,
-               jid: Union[int, None],
-               year: Union[int, None],
-               vol: Union[int, None],
-               iss: Union[int, None]):
-    kwargs = locals()
-    del kwargs['sid']
-    check_session(sid)
-    return Storage.new_db(**kwargs)
-
-
-@d.add_method
-@return_error
-@typechecked
-@orm.db_session
-def getStorage(sid: str,
-               jid: Union[int, None],
-               year: Union[int, None],
-               vol: Union[int, None],
-               iss: Union[int, None]):
-    kwargs = locals()
-    del kwargs['sid']
-    check_session(sid)
-    return Storage.select_db(**kwargs)
-
-
-@d.add_method
-@return_error
-@typechecked
-@orm.db_session
-def addBorrow(sid: str,
-              uid: Union[int, None],
-              jid: Union[int, None],
-              borrow_date: Union[str, None],
-              expect_date: Union[str, None],
-              return_date: Union[str, None]):
-    kwargs = locals()
-    del kwargs['sid']
-    check_session(sid)
-    return Borrow.new_db(**kwargs)
-
-
-@d.add_method
-@return_error
-@typechecked
-@orm.db_session
-def getBorrow(sid: str,
-              uid: Union[int, None],
-              jid: Union[int, None],
-              borrow_date: Union[str, None],
-              expect_date: Union[str, None],
-              return_date: Union[str, None]):
-    kwargs = locals()
-    del kwargs['sid']
-    check_session(sid)
-    return Borrow.select_db(**kwargs)
