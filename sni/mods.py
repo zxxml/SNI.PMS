@@ -4,6 +4,7 @@ from datetime import datetime
 from functools import partial, wraps
 
 import jsonrpc.exceptions as exc
+from pony.orm import TransactionIntegrityError
 from typeguard import typechecked
 
 from sni import db
@@ -93,10 +94,12 @@ def wrap_error(function):
             return function(*args, **kwargs)
         except SniException as e:
             raise e from None
+        except TransactionIntegrityError as e:
+            raise SniException.conflict(str(e))
         except AssertionError as e:
-            raise SniException.bad_request(str(e)) from None
+            raise SniException.bad_request(str(e))
         except RecursionError as e:
-            raise SniException.loop_detected(str(e)) from None
+            raise SniException.loop_detected(str(e))
         except Exception as e:
-            raise SniException.internal(str(e)) from None
+            raise SniException.internal(str(e))
     return _wrap_error
