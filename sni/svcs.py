@@ -27,8 +27,9 @@ def adminSignUp(username: str,
         user = Admin.new_db(**locals())
         sess = Session.new_db(user.uid)
         return sess.sid.hex
-    except orm.TransactionIntegrityError as e:
-        raise Fault.USER_409(str(e))
+    except orm.TransactionIntegrityError:
+        message = 'Username conflict.'
+        raise Fault.USER_409(message)
 
 
 @d.add_method
@@ -45,8 +46,9 @@ def readerSignUp(username: str,
         user = Reader.new_db(**locals())
         sess = Session.new_db(user.uid)
         return sess.sid.hex
-    except orm.TransactionIntegrityError as e:
-        raise Fault.USER_409(str(e))
+    except orm.TransactionIntegrityError:
+        message = 'Username conflict.'
+        raise Fault.USER_409(message)
 
 
 @d.add_method
@@ -55,14 +57,17 @@ def readerSignUp(username: str,
 @orm.db_session
 def userSignIn(username: str, password: str):
     try:
-        assert User.exists_db(username=username)
+        # "Incorrect username or password." is bullshit
+        # We're glad to provide more details for users
+        assert User.exists_db(username=username), 'username'
         user = User.get_db(username=username)
-        assert check_pw(password, user.password)
+        assert check_pw(password, user.password), 'password'
         Session.update_db(user.uid)
         sess = Session[user.uid]
         return sess.sid.hex
     except AssertionError as e:
-        raise Fault.USER_400(str(e))
+        message = 'Incorrect %s.' % e.args
+        raise Fault.USER_400(message)
 
 
 @d.add_method
@@ -157,7 +162,8 @@ def addArticle(sid: str,
         del kwargs['sid']
         Article.new_db(**kwargs)
     except AssertionError as e:
-        pass
+        message = 'Journal does not exist.'
+        raise Fault.ARTICLE_412(message)
 
 
 @d.add_method
@@ -176,4 +182,6 @@ def getArticle(sid: str,
                keyword_3: str,
                keyword_4: str,
                keyword_5: str):
-    pass
+    kwargs = locals()
+    del kwargs['sid']
+    return Article.select_db(**kwargs)
