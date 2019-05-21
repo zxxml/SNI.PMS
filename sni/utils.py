@@ -114,11 +114,14 @@ def check_session(function):
     """
     @wraps(function)
     def _check_session(sid, *args, **kwargs):
-        if not Session.exists_db(sid=sid):
-            raise Fault.GENERAL_401.error
-        session = Session.get_db(sid=sid)
-        if datetime.now() > session.expires:
-            raise Fault.GENERAL_401.error
+        try:
+            if not Session.exists_db(sid=sid):
+                raise Fault.GENERAL_401.error
+            session = Session.get_db(sid=sid)
+            if datetime.now() > session.expires:
+                raise Fault.GENERAL_401.error
+        except ValueError as e:
+            raise Fault.GENERAL_400(str(e))
         return function(sid, *args, **kwargs)
     return _check_session
 
