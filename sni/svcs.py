@@ -6,7 +6,7 @@ from jsonrpc import Dispatcher
 from pony import orm
 from typeguard import typechecked
 
-from sni.db import Admin, Reader, Session, User
+from sni.db import Admin, Article, Journal, Reader, Session, User
 from sni.utils import Fault, catch_errors, check_permit, check_pw, check_session, hash_pw
 
 __all__ = ['d']
@@ -28,7 +28,7 @@ def adminSignUp(username: str,
         sess = Session.new_db(user.uid)
         return sess.sid.hex
     except orm.TransactionIntegrityError as e:
-        raise Fault.user_409(str(e))
+        raise Fault.USER_409(str(e))
 
 
 @d.add_method
@@ -46,7 +46,7 @@ def readerSignUp(username: str,
         sess = Session.new_db(user.uid)
         return sess.sid.hex
     except orm.TransactionIntegrityError as e:
-        raise Fault.user_409(str(e))
+        raise Fault.USER_409(str(e))
 
 
 @d.add_method
@@ -62,7 +62,7 @@ def userSignIn(username: str, password: str):
         sess = Session[user.uid]
         return sess.sid.hex
     except AssertionError as e:
-        raise Fault.user_400(str(e))
+        raise Fault.USER_400(str(e))
 
 
 @d.add_method
@@ -98,7 +98,6 @@ def isReader(sid: str):
 @d.add_method
 @catch_errors
 @check_permit
-@check_session
 @typechecked
 @orm.db_session
 def addJournal(sid: str,
@@ -111,13 +110,14 @@ def addJournal(sid: str,
                lang: str,
                hist: str,
                used: str):
-    pass
+    kwargs = locals()
+    del kwargs['sid']
+    Journal.new_db(**kwargs)
 
 
 @d.add_method
 @catch_errors
 @check_permit
-@check_session
 @typechecked
 @orm.db_session
 def getJournal(sid: str,
@@ -131,4 +131,49 @@ def getJournal(sid: str,
                lang: Optional[str],
                hist: Optional[str],
                used: Optional[str]):
+    kwargs = locals()
+    del kwargs['sid']
+    return Journal.select_db(**kwargs)
+
+
+@d.add_method
+@catch_errors
+@check_permit
+@typechecked
+@orm.db_session
+def addArticle(sid: str,
+               jid: int,
+               title: str,
+               author: str,
+               content: str,
+               keyword_1: str,
+               keyword_2: str,
+               keyword_3: str,
+               keyword_4: str,
+               keyword_5: str):
+    try:
+        assert Journal.exists_db(jid=jid)
+        kwargs = locals()
+        del kwargs['sid']
+        Article.new_db(**kwargs)
+    except AssertionError as e:
+        pass
+
+
+@d.add_method
+@catch_errors
+@check_permit
+@typechecked
+@orm.db_session
+def getArticle(sid: str,
+               aid: int,
+               jid: int,
+               title: str,
+               author: str,
+               content: str,
+               keyword_1: str,
+               keyword_2: str,
+               keyword_3: str,
+               keyword_4: str,
+               keyword_5: str):
     pass

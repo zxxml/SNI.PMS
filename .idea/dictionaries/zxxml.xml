@@ -8,6 +8,7 @@
       <w>jour</w>
       <w>jsonrpc</w>
       <w>lxml</w>
+      <w>spyne</w>
       <w>typeguard</w>
       <w>ujson</w>
       <w>werkzeug</w>

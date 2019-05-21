@@ -29,56 +29,56 @@ def check_pw(pw: str, pw_hashed: str) -> bool:
 
 
 class Fault(IntEnum):
-    general_400 = 400
-    general_401 = 401
-    general_403 = 403
-    general_409 = 409
-    general_413 = 413
-    general_418 = 418
-    general_500 = 500
-    general_508 = 508
+    GENERAL_400 = 400
+    GENERAL_401 = 401
+    GENERAL_403 = 403
+    GENERAL_409 = 409
+    GENERAL_413 = 413
+    GENERAL_418 = 418
+    GENERAL_500 = 500
+    GENERAL_508 = 508
     # ---------------
-    user_400 = 1400
-    user_409 = 1409
-    user_413 = 1413
-    user_418 = 1418
-    user_500 = 1500
-    user_508 = 1508
+    USER_400 = 1400
+    USER_409 = 1409
+    USER_413 = 1413
+    USER_418 = 1418
+    USER_500 = 1500
+    USER_508 = 1508
     # ---------------
-    journal_400 = 2400
-    journal_409 = 2409
-    journal_413 = 2413
-    journal_418 = 2418
-    journal_500 = 2500
-    journal_508 = 2508
+    JOURNAL_400 = 2400
+    JOURNAL_409 = 2409
+    JOURNAL_413 = 2413
+    JOURNAL_418 = 2418
+    JOURNAL_500 = 2500
+    JOURNAL_508 = 2508
     # ---------------
-    article_400 = 3400
-    article_409 = 3409
-    article_413 = 3413
-    article_418 = 3418
-    article_500 = 3500
-    article_508 = 3508
+    ARTICLE_400 = 3400
+    ARTICLE_409 = 3409
+    ARTICLE_413 = 3413
+    ARTICLE_418 = 3418
+    ARTICLE_500 = 3500
+    ARTICLE_508 = 3508
     # ---------------
-    subs_400 = 4400
-    subs_409 = 4409
-    subs_413 = 4413
-    subs_418 = 4418
-    subs_500 = 4500
-    subs_508 = 4508
+    SUBS_400 = 4400
+    SUBS_409 = 4409
+    SUBS_413 = 4413
+    SUBS_418 = 4418
+    SUBS_500 = 4500
+    SUBS_508 = 4508
     # ---------------
-    storage_400 = 5400
-    storage_409 = 5409
-    storage_413 = 5413
-    storage_418 = 5418
-    storage_500 = 5500
-    storage_508 = 5508
+    STORAGE_400 = 5400
+    STORAGE_409 = 5409
+    STORAGE_413 = 5413
+    STORAGE_418 = 5418
+    STORAGE_500 = 5500
+    STORAGE_508 = 5508
     # ---------------
-    borrow_400 = 6400
-    borrow_409 = 6409
-    borrow_413 = 6413
-    borrow_418 = 6418
-    borrow_500 = 6500
-    borrow_508 = 6508
+    BORROW_400 = 6400
+    BORROW_409 = 6409
+    BORROW_413 = 6413
+    BORROW_418 = 6418
+    BORROW_500 = 6500
+    BORROW_508 = 6508
 
     def __call__(self, data=None):
         code, message = self.value, self.name
@@ -91,6 +91,7 @@ class Fault(IntEnum):
 
 
 def catch_errors(function):
+    """Catch GENERAL errors to JSON-RPC errors."""
     @wraps(function)
     def _catch_errors(*args, **kwargs):
         try:
@@ -99,35 +100,41 @@ def catch_errors(function):
             # cut the traceback
             raise e from None
         except TypeError as e:
-            raise Fault.general_400(str(e))
+            raise Fault.GENERAL_400(str(e))
+        except RecursionError as e:
+            raise Fault.GENERAL_508(str(e))
         except Exception as e:
-            raise Fault.general_500(str(e))
+            raise Fault.GENERAL_500(str(e))
     return _catch_errors
 
 
 def check_session(function):
+    """Check whether the session is legal,
+    which means it exists and not expired.
+    """
     @wraps(function)
     def _check_session(sid, *args, **kwargs):
-        try:
-            if not Session.exists_db(sid=sid):
-                raise Fault.general_401.error
-            session = Session.get_db(sid=sid)
-            if datetime.now() > session.expires:
-                raise Fault.general_401.error
-        except ValueError as e:
-            raise Fault.general_400(str(e))
+        if not Session.exists_db(sid=sid):
+            raise Fault.GENERAL_401.error
+        session = Session.get_db(sid=sid)
+        if datetime.now() > session.expires:
+            raise Fault.GENERAL_401.error
         return function(sid, *args, **kwargs)
     return _check_session
 
 
 def check_permit(function=None, view_name='Admin'):
+    """Check whether the session is legal,
+    and the user has the specific permission.
+    """
     if function is None:
         return partial(check_permit, view_name=view_name)
     @wraps(function)
+    @check_session
     def _check_permit(sid, *args, **kwargs):
         sess = Session.get_db(sid=sid)
         view = getattr(db, view_name)
         if not view.exists_db(uid=sess.uid):
-            raise Fault.general_403.error
+            raise Fault.GENERAL_403.error
         return function(sid, *args, **kwargs)
     return _check_permit
