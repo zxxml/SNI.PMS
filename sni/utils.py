@@ -10,7 +10,7 @@ import bcrypt
 import jsonrpc.exceptions
 
 from sni import db
-from sni.db import Session
+from sni.db import User
 
 
 def hash_pw(pw: str) -> str:
@@ -45,7 +45,10 @@ class Fault(IntEnum):
     GENERAL_508 = 508
     USER_400 = 1400
     USER_409 = 1409
+    JOURNAL_400 = 2400
+    JOURNAL_409 = 2409
     ARTICLE_400 = 3400
+    ARTICLE_409 = 3409
     ARTICLE_412 = 3412
 
     def __call__(self, message, data=None):
@@ -67,13 +70,13 @@ def catch_errors(function):
             # cut the traceback
             raise e from None
         except TypeError as e:
-            raise Fault.GENERAL_400(str(e))
+            raise Fault.GENERAL_400(str(e)) from None
         except NotImplementedError as e:
-            raise Fault.GENERAL_501(str(e))
+            raise Fault.GENERAL_501(str(e)) from None
         except RecursionError as e:
-            raise Fault.GENERAL_508(str(e))
+            raise Fault.GENERAL_508(str(e)) from None
         except Exception as e:
-            raise Fault.GENERAL_500(str(e))
+            raise Fault.GENERAL_500(str(e)) from None
     return _catch_errors
 
 
@@ -84,11 +87,15 @@ def check_session(function):
     @wraps(function)
     def _check_session(sid, *args, **kwargs):
         try:
-            if not Session.exists_db(sid=sid):
-                raise Fault.GENERAL_401.error
-            session = Session.get_db(sid=sid)
+            # check whether the session exists
+            if not User.exists_db(session=sid):
+                message = 'Invalid session token.'
+                raise Fault.GENERAL_401(message)
+            session = User.get_db(session=sid)
+            # check whether the session expired
             if datetime.now() > session.expires:
-                raise Fault.GENERAL_401.error
+                message = 'Expired session token.'
+                raise Fault.GENERAL_401(message)
         except ValueError:
             message = 'Session ID must be UUID.'
             raise Fault.GENERAL_400(message)
@@ -101,13 +108,14 @@ def check_permit(function=None, view_name='Admin'):
     and the user has the specific permission.
     """
     if function is None:
+        # this decorator could be used without brackets
         return partial(check_permit, view_name=view_name)
+    # load the class dynamically
+    view = getattr(db, view_name)
     @wraps(function)
     @check_session
     def _check_permit(sid, *args, **kwargs):
-        sess = Session.get_db(sid=sid)
-        view = getattr(db, view_name)
-        if not view.exists_db(uid=sess.uid):
+        if not view.exists_db(session=sid):
             message = 'You must be %s for operation.'
             raise Fault.GENERAL_403(message % view_name)
         return function(sid, *args, **kwargs)

@@ -6,7 +6,7 @@ from jsonrpc import Dispatcher
 from pony import orm
 from typeguard import typechecked
 
-from sni.db import Admin, Article, Journal, Reader, Session, User
+from sni.db import Admin, Article, Journal, Reader, User
 from sni.utils import Fault, catch_errors, check_permit, check_pw, check_session, hash_pw
 
 __all__ = ['d']
@@ -25,8 +25,7 @@ def adminSignUp(username: str,
     try:
         password = hash_pw(password)
         user = Admin.new_db(**locals())
-        sess = Session.new_db(user.uid)
-        return sess.sid.hex
+        return user.session.hex
     except orm.TransactionIntegrityError:
         message = 'Username conflict.'
         raise Fault.USER_409(message)
@@ -44,8 +43,7 @@ def readerSignUp(username: str,
     try:
         password = hash_pw(password)
         user = Reader.new_db(**locals())
-        sess = Session.new_db(user.uid)
-        return sess.sid.hex
+        return user.session.hex
     except orm.TransactionIntegrityError:
         message = 'Username conflict.'
         raise Fault.USER_409(message)
@@ -54,7 +52,6 @@ def readerSignUp(username: str,
 @d.add_method
 @catch_errors
 @typechecked
-@orm.db_session
 def userSignIn(username: str, password: str):
     try:
         # "Incorrect username or password." is bullshit
@@ -62,9 +59,8 @@ def userSignIn(username: str, password: str):
         assert User.exists_db(username=username), 'username'
         user = User.get_db(username=username)
         assert check_pw(password, user.password), 'password'
-        Session.update_db(user.uid)
-        sess = Session[user.uid]
-        return sess.sid.hex
+        User.update_session(user.uid)
+        return user.session.hex
     except AssertionError as e:
         message = 'Incorrect %s.' % e.args
         raise Fault.USER_400(message)
@@ -74,37 +70,33 @@ def userSignIn(username: str, password: str):
 @catch_errors
 @check_session
 @typechecked
-@orm.db_session
 def userSignOut(sid: str):
-    sess = Session.get_db(sid=sid)
-    Session.touch_db(sess.uid, 0, 0)
+    user = User.get_db(session=sid)
+    User.touch_session(user.uid, 0, 0)
 
 
 @d.add_method
 @catch_errors
 @check_session
 @typechecked
-@orm.db_session
 def isAdmin(sid: str):
-    sess = Session.get_db(sid=sid)
-    return Admin.exists_db(uid=sess.uid)
+    # just check the Admin view
+    return Admin.exists_sid(sid)
 
 
 @d.add_method
 @catch_errors
 @check_session
 @typechecked
-@orm.db_session
 def isReader(sid: str):
-    sess = Session.get_db(sid=sid)
-    return Reader.exists_db(uid=sess.uid)
+    # just check the Reader view
+    return Reader.exists_sid(sid)
 
 
 @d.add_method
 @catch_errors
 @check_permit
 @typechecked
-@orm.db_session
 def addJournal(sid: str,
                name: str,
                issn: str,
@@ -115,16 +107,19 @@ def addJournal(sid: str,
                lang: str,
                hist: str,
                used: str):
-    kwargs = locals()
-    del kwargs['sid']
-    Journal.new_db(**kwargs)
+    try:
+        kwargs = locals()
+        del kwargs['sid']
+        return Journal.new_db(**kwargs)
+    except orm.core.TransactionIntegrityError:
+        message = 'Journal info conflict.'
+        raise Fault.JOURNAL_409(message)
 
 
 @d.add_method
 @catch_errors
 @check_permit
 @typechecked
-@orm.db_session
 def getJournal(sid: str,
                jid: Optional[int],
                name: Optional[str],
@@ -145,9 +140,8 @@ def getJournal(sid: str,
 @catch_errors
 @check_permit
 @typechecked
-@orm.db_session
 def addArticle(sid: str,
-               jid: int,
+               rid: int,
                title: str,
                author: str,
                content: str,
@@ -157,12 +151,11 @@ def addArticle(sid: str,
                keyword_4: str,
                keyword_5: str):
     try:
-        assert Journal.exists_db(jid=jid)
         kwargs = locals()
         del kwargs['sid']
         Article.new_db(**kwargs)
-    except AssertionError as e:
-        message = 'Journal does not exist.'
+    except orm.TransactionIntegrityError:
+        message = 'Journal not in stock.'
         raise Fault.ARTICLE_412(message)
 
 
@@ -170,10 +163,9 @@ def addArticle(sid: str,
 @catch_errors
 @check_permit
 @typechecked
-@orm.db_session
 def getArticle(sid: str,
                aid: int,
-               jid: int,
+               rid: int,
                title: str,
                author: str,
                content: str,
@@ -185,3 +177,36 @@ def getArticle(sid: str,
     kwargs = locals()
     del kwargs['sid']
     return Article.select_db(**kwargs)
+
+
+@d.add_method
+@catch_errors
+@check_permit
+@typechecked
+def addSubs(sid: str,
+            year: int,
+            vol: int,
+            iss: int,
+            jid: Optional[int],
+            name: Optional[str],
+            issn: Optional[str],
+            cnc: Optional[str],
+            pdc: Optional[str],
+            freq: Optional[str],
+            addr: Optional[str],
+            lang: Optional[str],
+            hist: Optional[str],
+            used: Optional[str]):
+    pass
+
+
+@d.add_method
+@catch_errors
+@check_permit
+@typechecked
+def getSubs(sid: str,
+            jid: Optional[int],
+            year: Optional[int],
+            vol: Optional[int],
+            iss: Optional[int]):
+    pass

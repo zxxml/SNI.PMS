@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from configparser import ConfigParser
 from datetime import datetime, timedelta
+from secrets import randbelow
 from uuid import UUID, uuid1
 
 from pony import orm
@@ -68,6 +69,53 @@ class User(db_sql.Entity, metaclass=EntityMeta):
     real_name = orm.Optional(str)
     mail_addr = orm.Optional(str)
     telephone = orm.Optional(str)
+    session = orm.Required(UUID, unique=True, index=True)
+    expires = orm.Required(datetime)
+
+    @classmethod
+    @orm.db_session
+    def new_db(cls, days=0, hours=12, **kwargs):
+        kwargs = cls.clean_kwargs(kwargs)
+        session = cls.new_session()
+        expires = cls.new_expires(days, hours)
+        return cls(session=session, expires=expires, **kwargs)
+
+    @classmethod
+    @orm.db_session
+    def exists_sid(cls, sid):
+        """Whether the session exists."""
+        return cls.exists(session=sid)
+
+    @classmethod
+    @orm.db_session
+    def get_sid(cls, sid):
+        """Get a user by session."""
+        return cls.get(session=sid)
+
+    @classmethod
+    @orm.db_session
+    def update_session(cls, uid, days=0, hours=12):
+        session = cls.new_session()
+        expires = cls.new_expires(days, hours)
+        kwargs = {'session': session, 'expires': expires}
+        cls[uid].set(session=session, expires=expires)
+
+    @classmethod
+    @orm.db_session
+    def touch_session(cls, uid, days=0, hours=12):
+        expires = cls.new_expires(days, hours)
+        cls[uid].set(expires=expires)
+
+    @staticmethod
+    def new_session():
+        node = int(config['uuid']['node'], 16)
+        # uuid1 accepts integer below 16384
+        return uuid1(node, randbelow(16384))
+
+    @staticmethod
+    def new_expires(days=0, hours=12):
+        length = timedelta(days=days, hours=hours)
+        return datetime.now() + length
 
 
 class Admin(User):
@@ -82,42 +130,6 @@ class Reader(User):
     A.k.a all readers in the source table.
     """
     pass
-
-
-class Session(db_sql.Entity, metaclass=EntityMeta):
-    """Session maintains the core information of the session.
-    A.k.a the attrs of the session entity in the ER Diagram.
-    """
-    uid = orm.PrimaryKey(int, auto=False)
-    sid = orm.Required(UUID, unique=True, index=True)
-    expires = orm.Required(datetime)
-
-    @staticmethod
-    @orm.db_session
-    def new_db(uid, sid=None, days=0, hours=12):
-        sid = sid or Session.new_sid(uid)
-        length = timedelta(days=days, hours=hours)
-        expires = datetime.now() + length
-        return Session(uid=uid, sid=sid, expires=expires)
-
-    @staticmethod
-    @orm.db_session
-    def update_db(uid, sid=None, days=0, hours=12):
-        sid = sid or Session.new_sid(uid)
-        Session.touch_db(uid, days, hours)
-        Session[uid] and Session[uid].set(sid=sid)
-
-    @staticmethod
-    @orm.db_session
-    def touch_db(uid, days, hours):
-        length = timedelta(days=days, hours=hours)
-        kwargs = {'expires': datetime.now() + length}
-        Session[uid] and Session[uid].set(**kwargs)
-
-    @staticmethod
-    def new_sid(uid):
-        node = int(config['uuid']['node'], 16)
-        return uuid1(node, uid)
 
 
 class Journal(db_sql.Entity, metaclass=EntityMeta):
@@ -136,6 +148,23 @@ class Journal(db_sql.Entity, metaclass=EntityMeta):
     lang = orm.Required(str)
     hist = orm.Required(str)
     used = orm.Optional(str)
+    # foreign key constraints
+    repo = orm.Set('Repository')
+    subs = orm.Set('Subscription')
+
+
+class Repository(db_sql.Entity, metaclass=EntityMeta):
+    """Repository maintains the core information of the repository.
+    A.k.a the attrs of the repository entity in the ER Diagram.
+    """
+    rid = orm.PrimaryKey(int)
+    jid = orm.Required(Journal)
+    year = orm.Required(int)
+    vol = orm.Required(int)
+    iss = orm.Required(int)
+    # foreign key constraints
+    art = orm.Set('Article')
+    bor = orm.Set('Borrowing')
 
 
 class Article(db_sql.Entity, metaclass=EntityMeta):
@@ -144,7 +173,7 @@ class Article(db_sql.Entity, metaclass=EntityMeta):
     """
     # primary and foreign key
     aid = orm.PrimaryKey(int, auto=True)
-    jid = orm.Required(int)
+    rid = orm.Required(Repository)
     # the most important info
     title = orm.Required(str)
     author = orm.Required(str)
@@ -157,33 +186,25 @@ class Article(db_sql.Entity, metaclass=EntityMeta):
     keyword_5 = orm.Optional(str)
 
 
-class Subs(db_sql.Entity, metaclass=EntityMeta):
-    """Subs maintains the core information of the subs.
-    A.k.a the attrs of the subs relationship in the ER Diagram.
+class Subscription(db_sql.Entity, metaclass=EntityMeta):
+    """Subscription maintains the core information of the subscription.
+    A.k.a the attrs of the subscription relationship in the ER Diagram.
     """
-    jid = orm.Required(int)
+    sid = orm.PrimaryKey(int, auto=True)
+    jid = orm.Required(Journal)
     year = orm.Required(int)
-    orm.PrimaryKey(jid, year)
 
 
-class Storage(db_sql.Entity, metaclass=EntityMeta):
-    """Storage maintains the core information of the storage.
-    A.k.a the attrs of the storage relationship in the ER Diagram.
+class Borrowing(db_sql.Entity, metaclass=EntityMeta):
+    """Borrowing maintains the core information of the borrowing.
+    A.k.a the attrs of the borrowing relationship in the ER Diagram.
     """
-    jid = orm.Required(int)
-    year = orm.Required(int)
-    vol = orm.Required(int)
-    iss = orm.Required(int)
-    orm.PrimaryKey(jid, year, vol, iss)
-
-
-class Borrow(db_sql.Entity, metaclass=EntityMeta):
+    bid = orm.PrimaryKey(int, auto=True)
     uid = orm.Required(int)
-    jid = orm.Required(int)
+    rid = orm.Required(Repository)
     borrow_date = orm.Required(datetime)
     expect_date = orm.Required(datetime)
     return_date = orm.Optional(datetime)
-    orm.PrimaryKey(uid, jid, borrow_date)
 
 
 def bind_sqlite(filename=':memory:'):
