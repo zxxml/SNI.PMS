@@ -1,16 +1,13 @@
-﻿namespace SNI
-{
+﻿namespace SniLib {
     using System;
     using ServiceStack.DataAnnotations;
 
-    public enum Role
-    {
+    public enum Role {
         Admin, // 管理员
         Reader // 读者
     }
 
-    public enum Frequency
-    {
+    public enum Frequency {
         Annually,     // 年刊
         Semiannually, // 半年刊
         Quarterly,    // 季刊
@@ -20,22 +17,20 @@
         Weekly        // 周刊
     }
 
-    public class User
-    {
+    public class User {
         [PrimaryKey] [AutoIncrement] public int UserId { get; set; }
-        [Required] [Unique] public Guid SessionId { get; set; }
+        [Required] [Unique] public Guid SessionId { get; set; }  // Session
+        [Required] public Role Role { get; set; }                // 角色
         [Required] [Unique] public string Username { get; set; } // 用户名
         [Required] public string Nickname { get; set; }          // 昵称
         [Required] public string Password { get; set; }          // 密码
-        [Required] public Role Role { get; set; }                // 角色
         [Required] public string FirstName { get; set; }         // 名字
         [Required] public string LastName { get; set; }          // 姓氏
         [Required] public string EmailAddress { get; set; }      // 邮箱
         [Required] public string PhoneNumber { get; set; }       // 手机号
     }
 
-    public class Journal
-    {
+    public class Journal {
         [PrimaryKey] [AutoIncrement] public int JournalId { get; set; }
         [Required] public string Name { get; set; }          // 期刊名称
         [Required] public string UsedName { get; set; }      // 曾用名
@@ -50,15 +45,13 @@
         [Required] public string Address { get; set; }       // 汇款地址
     }
 
-    public class Subscription
-    {
+    public class Subscription {
         [PrimaryKey] [AutoIncrement] public int SubscriptionId { get; set; }
         [Required] public int JournalId { get; set; } // 期刊 ID
         [Required] public int Year { get; set; }      // 征订年份
     }
 
-    public class Storage
-    {
+    public class Storage {
         [PrimaryKey] [AutoIncrement] public int StorageId { get; set; }
         [Required] public int JournalId { get; set; } // 期刊 ID
         [Required] public int Year { get; set; }      // 年
@@ -66,8 +59,7 @@
         [Required] public int Issue { get; set; }     // 期
     }
 
-    public class Article
-    {
+    public class Article {
         [PrimaryKey] [AutoIncrement] public int ArticleId { get; set; }
         [Required] public int StorageId { get; set; }   // 库存 ID
         [Required] public int PageNumber { get; set; }  // 页码
@@ -81,8 +73,7 @@
         [Required] public string Keyword5 { get; set; }
     }
 
-    public class Borrowing
-    {
+    public class Borrowing {
         [PrimaryKey] [AutoIncrement] public int BorrowingId { get; set; }
         [Required] public int UserId { get; set; }          // 用户 ID
         [Required] public int StorageId { get; set; }       // 库存 ID
