@@ -1,19 +1,11 @@
-﻿namespace SniLib {
-    using System;
-    using System.Data;
-    using ServiceStack.OrmLite;
+using System;
+using ServiceStack.OrmLite;
 
-    public class UserService {
-        private readonly IDbConnection connection;
-
-        public UserService(Database database) {
+namespace SniLib {
+    public class UserService : Service {
+        public UserService(Database database) : base(database) {
+            // 继承 Service 类的构造函数
             // 使用 Database 对象初始化服务
-            this.connection = database.Connection;
-        }
-
-        public UserService(IDbConnection connection) {
-            // 使用数据库连接对象初始化服务
-            this.connection = connection;
         }
 
         public User SignUp(User user) {
@@ -30,6 +22,11 @@
             // 当登入一个用户时，只需传入用户名和密码
             // 这个函数将返回对应的用户的 SessionId
             var user = this.GetByUsername(username);
+            if (!user.Password.CheckPwd(password)) {
+                // 当用户名和密码不匹配时
+                // 返回空的 SessionId
+                return Guid.Empty;
+            }
             user.SessionId = Guid.NewGuid();
             this.connection.Update(user);
             return user.SessionId;
@@ -45,14 +42,15 @@
         }
 
         public User GetUser(Guid sessionId) {
-            // 根据 SessionId 获取对应的用户
+            // 根据 SessionId 获取对应的 User 对象
+            // 这个函数是 GetBySessionId 函数的别名
             return this.GetBySessionId(sessionId);
         }
 
         public void SetUser(Guid sessionId, User user) {
             // 首先根据 SessionId 获取对应的用户
             // 然后根据传入的 User 对象更新这个用户
-            var userOld = this.GetUser(sessionId);
+            var userOld = this.GetBySessionId(sessionId);
             userOld.Nickname = user.Nickname;         // 昵称
             userOld.FirstName = user.FirstName;       // 名字
             userOld.LastName = user.LastName;         // 姓氏
@@ -61,18 +59,18 @@
             this.connection.Update(userOld);
         }
 
-        internal User GetByUserId(int userId) {
-            // 对于主键，使用 SingleById 方法唯一确定一个对象
+        public void DeleteUser(Guid sessionId) {
+        }
+
+        public User GetByUserId(int userId) {
             return this.connection.SingleById<User>(userId);
         }
 
-        internal User GetBySessionId(Guid sessionId) {
-            // 对于 Unique 字段，使用 Single 方法唯一确定一个对象
+        public User GetBySessionId(Guid sessionId) {
             return this.connection.Single<User>(x => x.SessionId == sessionId);
         }
 
-        internal User GetByUsername(string username) {
-            // 对于 Unique 字段，使用 Single 方法唯一确定一个对象
+        public User GetByUsername(string username) {
             return this.connection.Single<User>(x => x.Username == username);
         }
     }

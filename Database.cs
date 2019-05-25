@@ -1,10 +1,11 @@
-﻿namespace SniLib {
-    using System.Data;
-    using ServiceStack.OrmLite;
+using System.Data;
+using ServiceStack.OrmLite;
 
+namespace SniLib {
     public class Database {
         public IDbConnection Connection { get; set; }
         public UserService UserService { get; set; }
+        public JournalService JournalService { get; set; }
 
         public Database(string filename = ":memory:") {
             this.BindSqlite(filename);

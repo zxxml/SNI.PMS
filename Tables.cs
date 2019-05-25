@@ -1,7 +1,7 @@
-﻿namespace SniLib {
-    using System;
-    using ServiceStack.DataAnnotations;
+using System;
+using ServiceStack.DataAnnotations;
 
+namespace SniLib {
     public enum Role {
         Admin, // 管理员
         Reader // 读者
