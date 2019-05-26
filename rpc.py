@@ -1,11 +1,12 @@
 #!/usr/bin/env/python3
 # -*- coding: utf-8 -*-
+from datetime import datetime
 from uuid import uuid1
 
 from jsonrpc import Dispatcher
 from pony import orm
 
-from db import Admin, Journal, Reader, Storage, Subs, User
+from db import Admin, Article, Borrow, Journal, Reader, Storage, Subs, User
 from utils import check_admin, check_pw, check_user, clean_locals, hash_pw, new_expire
 
 __all__ = ['d']
@@ -248,77 +249,171 @@ def getStorage(sessId: str,
 
 @d.add_method
 @orm.db_session
-def getStorages():
-    pass
+def getStorages(sessId: str,
+                stoId: int = None,
+                subsId: int = None,
+                vol: int = None,
+                iss: int = None):
+    assert check_user(sessId)
+    kwargs = clean_locals(locals())
+    return Storage.select(**kwargs)
 
 
 @d.add_method
 @orm.db_session
-def setStorage():
-    pass
+def setStorage(sessId: str,
+               stoId: int,
+               subsId: int = None,
+               vol: int = None,
+               iss: int = None):
+    assert check_admin(sessId)
+    kwargs = clean_locals(locals())
+    Storage[stoId].set(**kwargs)
 
 
 @d.add_method
 @orm.db_session
-def delStorage():
-    pass
+def delStorage(sessId: str,
+               stoId: int):
+    assert check_admin(sessId)
+    kwargs = clean_locals(locals())
+    Storage[stoId].delete()
 
 
 @d.add_method
 @orm.db_session
-def addArticle():
-    pass
+def addArticle(sessId: str,
+               stoId: int,
+               title: str,
+               author: str,
+               content: str,
+               pageNum: str,
+               keyword1: str = None,
+               keyword2: str = None,
+               keyword3: str = None,
+               keyword4: str = None,
+               keyword5: str = None):
+    assert check_admin(sessId)
+    kwargs = clean_locals(locals())
+    article = Article.new(**kwargs)
+    return article.artId
 
 
 @d.add_method
 @orm.db_session
-def getArticle():
-    pass
+def getArticle(sessId: str,
+               artId: int):
+    assert check_user(sessId)
+    kwargs = clean_locals(locals())
+    result = Article.select(**kwargs)
+    return result[0] if result else None
 
 
 @d.add_method
 @orm.db_session
-def getArticles():
-    pass
+def getArticles(sessId: str,
+                artId: int = None,
+                stoId: int = None,
+                title: str = None,
+                author: str = None,
+                content: str = None,
+                pageNum: str = None,
+                keyword1: str = None,
+                keyword2: str = None,
+                keyword3: str = None,
+                keyword4: str = None,
+                keyword5: str = None):
+    assert check_user(sessId)
+    kwargs = clean_locals(locals())
+    return Article.select(**kwargs)
 
 
 @d.add_method
 @orm.db_session
-def setArticle():
-    pass
+def setArticle(sessId: str,
+               artId: int,
+               stoId: int = None,
+               title: str = None,
+               author: str = None,
+               content: str = None,
+               pageNum: str = None,
+               keyword1: str = None,
+               keyword2: str = None,
+               keyword3: str = None,
+               keyword4: str = None,
+               keyword5: str = None):
+    assert check_admin(sessId)
+    kwargs = clean_locals(locals())
+    Article[stoId].set(**kwargs)
 
 
 @d.add_method
 @orm.db_session
-def delArticle():
-    pass
+def delArticle(sessId: str,
+               artId: int):
+    assert check_admin(sessId)
+    kwargs = clean_locals(locals())
+    Article[artId].delete()
 
 
 @d.add_method
 @orm.db_session
-def addBorrow():
-    pass
+def addBorrow(sessId: str,
+              stoId: int,
+              userId: int,
+              borrowTime: datetime = None,
+              agreedTime: datetime = None,
+              returnTime: datetime = None):
+    assert check_admin(sessId)
+    kwargs = clean_locals(locals())
+    borrow = Borrow.new(**kwargs)
+    return borrow.borId
 
 
 @d.add_method
 @orm.db_session
-def getBorrow():
-    pass
+def getBorrow(sessId: str,
+              borId: int = None,
+              stoId: int = None,
+              userId: int = None):
+    assert check_user(sessId)
+    kwargs = clean_locals(locals())
+    result = Borrow.select(**kwargs)
+    return result[0] if result else None
 
 
 @d.add_method
 @orm.db_session
-def getBorrows():
-    pass
+def getBorrows(sessId: str,
+               borId: int = None,
+               stoId: int = None,
+               userId: int = None,
+               borrowTime: datetime = None,
+               agreedTime: datetime = None,
+               returnTime: datetime = None):
+    assert check_user(sessId)
+    kwargs = clean_locals(locals())
+    return Borrow.select(**kwargs)
 
 
 @d.add_method
 @orm.db_session
-def setBorrow():
-    pass
+def setBorrow(sessId: str,
+              borId: int = None,
+              stoId: int = None,
+              userId: int = None,
+              borrowTime: datetime = None,
+              agreedTime: datetime = None,
+              returnTime: datetime = None):
+    assert check_admin(sessId)
+    kwargs = clean_locals(locals())
+    Borrow[stoId].set(**kwargs)
 
 
 @d.add_method
 @orm.db_session
-def delBorrow():
-    pass
+def delBorrow(sessId: str,
+              borId: int = None):
+    assert check_admin(sessId)
+    kwargs = clean_locals(locals())
+    Borrow[borId].delete()

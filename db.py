@@ -155,12 +155,12 @@ class Article(db.Entity, metaclass=EntityMeta):
 # /// region: Borrow ///
 # //////////////////////
 class Borrow(db.Entity, metaclass=EntityMeta):
-    bor_id      = orm.PrimaryKey(int, auto=True) # 借阅 ID
-    sto_id      = orm.Required(int)              # 库存 ID
-    user_id     = orm.Required(int)              # 用户 ID
-    borrow_time = orm.Required(datetime)         # 借出时间
-    agreed_time = orm.Required(datetime)         # 应还时间
-    return_time = orm.Required(datetime)         # 归还时间
+    borId      = orm.PrimaryKey(int, auto=True) # 借阅 ID
+    stoId      = orm.Required(int)              # 库存 ID
+    userId     = orm.Required(int)              # 用户 ID
+    borrowTime = orm.Required(datetime)         # 借出时间
+    agreedTime = orm.Required(datetime)         # 应还时间
+    returnTime = orm.Required(datetime)         # 归还时间
 # /////////////////////////
 # /// endregion: Borrow ///
 # /////////////////////////
