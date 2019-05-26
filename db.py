@@ -67,16 +67,16 @@ db.Entity.set = set_db
 # /// region: User ///
 # ////////////////////
 class User(db.Entity, metaclass=EntityMeta):
-    user_id   = orm.PrimaryKey(int, auto=True)  # 用户 ID
-    sess_id   = orm.Required(str, unique=True)  # 会话 ID
-    expires   = orm.Required(datetime)          # 过期时间
-    username  = orm.Required(str, unique=True)  # 用户名
-    nickname  = orm.Required(str)               # 昵称
-    password  = orm.Required(str)               # 密码
-    fore_name = orm.Optional(str)               # 名字
-    last_name = orm.Optional(str)               # 姓氏
-    mail_addr = orm.Optional(str)               # 邮箱
-    phone_num = orm.Optional(str)               # 手机号
+    userId   = orm.PrimaryKey(int, auto=True) # 用户 ID
+    sessId   = orm.Required(str, unique=True) # 会话 ID
+    expire   = orm.Required(datetime)         # 过期时间
+    username = orm.Required(str, unique=True) # 用户名
+    nickname = orm.Required(str)              # 昵称
+    password = orm.Required(str)              # 密码
+    foreName = orm.Optional(str)              # 名字
+    lastName = orm.Optional(str)              # 姓氏
+    mailAddr = orm.Optional(str)              # 邮箱
+    phoneNum = orm.Optional(str)              # 手机号
 class Admin(User): pass  # 扩展的管理员表
 class Reader(User): pass # 扩展的读者表
 # ///////////////////////
@@ -88,7 +88,7 @@ class Reader(User): pass # 扩展的读者表
 # /// region: Journal ///
 # ///////////////////////
 class Journal(db.Entity, metaclass=EntityMeta):
-    jour_id = orm.PrimaryKey(int, auto=True) # 期刊 ID
+    jourId  = orm.PrimaryKey(int, auto=True) # 期刊 ID
     name    = orm.Required(str)              # 期刊名称
     lang    = orm.Required(str)              # 语种
     hist    = orm.Required(str)              # 创刊时间
@@ -109,40 +109,58 @@ class Journal(db.Entity, metaclass=EntityMeta):
 # /// region: Subs ///
 # ////////////////////
 class Subs(db.Entity, metaclass=EntityMeta):
-    subs_id = orm.PrimaryKey(int, auto=True) # 征订 ID
-    jour_id = orm.Required(int)              # 期刊 ID
-    year    = orm.Required(int)              # 征订年份
-    orm.composite_key(jour_id, year)
+    subsId = orm.PrimaryKey(int, auto=True) # 征订 ID
+    jourId = orm.Required(int)              # 期刊 ID
+    year   = orm.Required(int)              # 征订年份
+    orm.composite_key(jourId, year)
 # ///////////////////////
 # /// endregion: Subs ///
 # ///////////////////////
 
 
+# ///////////////////////
+# /// region: Storage ///
+# ///////////////////////
 class Storage(db.Entity, metaclass=EntityMeta):
-    sto_id = orm.PrimaryKey(int, auto=True)
-    subs_id = orm.Required(int)
-    vol = orm.Required(int)
-    iss = orm.Required(int)
+    stoId  = orm.PrimaryKey(int, auto=True) # 库存 ID
+    subsId = orm.Required(int)              # 征订 ID
+    volume = orm.Required(int)              # 卷
+    issue  = orm.Required(int)              # 期
+# //////////////////////////
+# /// endregion: Storage ///
+# //////////////////////////
 
 
+# ///////////////////////
+# /// region: Article ///
+# ///////////////////////
 class Article(db.Entity, metaclass=EntityMeta):
-    art_id = orm.PrimaryKey(int, auto=True)
-    sto_id = orm.Required(int)
-    page_num = orm.Required(int)
-    title = orm.Required(str)
-    author = orm.Required(str)
-    content = orm.Required(str)
-    keyword1 = orm.Required(str)
+    artId    = orm.PrimaryKey(int, auto=True) # 文章 ID
+    stoId    = orm.Required(int)              # 库存 ID
+    title    = orm.Required(str)              # 标题
+    author   = orm.Required(str)              # 作者
+    content  = orm.Required(str)              # 内容
+    pageNum  = orm.Required(int)              # 页码
+    keyword1 = orm.Required(str)              # 关键字
     keyword2 = orm.Required(str)
     keyword3 = orm.Required(str)
     keyword4 = orm.Required(str)
     keyword5 = orm.Required(str)
+# //////////////////////////
+# /// endregion: Article ///
+# //////////////////////////
 
 
+# //////////////////////
+# /// region: Borrow ///
+# //////////////////////
 class Borrow(db.Entity, metaclass=EntityMeta):
-    bor_id = orm.PrimaryKey(int, auto=True)
-    sto_id = orm.Required(int)
-    user_id = orm.Required(int)
-    borrow_time = orm.Required(datetime)
-    agreed_time = orm.Required(datetime)
-    return_time = orm.Required(datetime)
+    bor_id      = orm.PrimaryKey(int, auto=True) # 借阅 ID
+    sto_id      = orm.Required(int)              # 库存 ID
+    user_id     = orm.Required(int)              # 用户 ID
+    borrow_time = orm.Required(datetime)         # 借出时间
+    agreed_time = orm.Required(datetime)         # 应还时间
+    return_time = orm.Required(datetime)         # 归还时间
+# /////////////////////////
+# /// endregion: Borrow ///
+# /////////////////////////

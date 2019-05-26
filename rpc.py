@@ -5,8 +5,8 @@ from uuid import uuid1
 from jsonrpc import Dispatcher
 from pony import orm
 
-from db import Admin, Journal, Reader, Subs, User
-from utils import check_admin, check_pw, check_user, clean_locals, hash_pw, new_expires
+from db import Admin, Journal, Reader, Storage, Subs, User
+from utils import check_admin, check_pw, check_user, clean_locals, hash_pw, new_expire
 
 __all__ = ['d']
 d = Dispatcher()
@@ -17,15 +17,15 @@ d = Dispatcher()
 def adminSignUp(username: str,
                 nickname: str,
                 password: str,
-                fore_name: str = None,
-                last_name: str = None,
-                mail_addr: str = None,
-                phone_num: str = None):
-    sess_id = uuid1().hex
-    expires = new_expires()
+                foreName: str = None,
+                lastName: str = None,
+                mailAddr: str = None,
+                phoneNum: str = None):
+    sessId = uuid1().hex
+    expire = new_expire()
     password = hash_pw(password)
     user = Admin.new(**locals())
-    return user.sess_id
+    return user.sessId
 
 
 @d.add_method
@@ -33,15 +33,15 @@ def adminSignUp(username: str,
 def readerSignUp(username: str,
                  nickname: str,
                  password: str,
-                 fore_name: str = None,
-                 last_name: str = None,
-                 mail_addr: str = None,
-                 phone_num: str = None):
-    sess_id = uuid1().hex
-    expires = new_expires()
+                 foreName: str = None,
+                 lastName: str = None,
+                 mailAddr: str = None,
+                 phoneNum: str = None):
+    sessId = uuid1().hex
+    expire = new_expire()
     password = hash_pw(password)
     user = Reader.new(**locals())
-    return user.sess_id
+    return user.sessId
 
 
 @d.add_method
@@ -50,45 +50,47 @@ def userSignIn(username: str,
                password: str):
     user = User.get(username=username)
     assert check_pw(password, user.password)
-    user.sess_id = uuid1().hex
-    user.expires = new_expires()
-    return user.sess_id
+    user.sessId = uuid1().hex
+    user.expire = new_expire()
+    return user.sessId
 
 
 @d.add_method
 @orm.db_session
-def userSignOut(sess_id: str):
-    user = User.get(sess_id=sess_id)
-    user.expires = new_expires(0, 0)
+def userSignOut(sessId: str):
+    user = User.get(sessId=sessId)
+    user.expire = new_expire(0, 0)
 
 
 @d.add_method
 @orm.db_session
-def getUser(sess_id: str):
-    user = User.get(sess_id=sess_id)
+def getUser(sessId: str):
+    user = User.get(sessId=sessId)
     return user.to_dict() if user else None
 
 
 @d.add_method
 @orm.db_session
-def setUser(sess_id: str,
+def setUser(sessId: str,
             nickname: str = None,
-            fore_name: str = None,
-            last_name: str = None,
-            mail_addr: str = None,
-            phone_num: str = None):
-    User.get(sess_id=sess_id).set(**locals())
+            password: str = None,
+            foreName: str = None,
+            lastName: str = None,
+            mailAddr: str = None,
+            phoneNum: str = None):
+    password = password and hash_pw(password)
+    User.get(sessId=sessId).set(**locals())
 
 
 @d.add_method
 @orm.db_session
-def delUser(sess_id: str):
-    User.get(sess_id=sess_id).delete()
+def delUser(sessId: str):
+    User.get(sessId=sessId).delete()
 
 
 @d.add_method
 @orm.db_session
-def addJournal(sess_id: str,
+def addJournal(sessId: str,
                name: str,
                lang: str,
                hist: str,
@@ -100,20 +102,20 @@ def addJournal(sess_id: str,
                addr: str = None,
                org: str = None,
                pub: str = None):
-    assert check_admin(sess_id)
+    assert check_admin(sessId)
     kwargs = clean_locals(locals())
     journal = Journal.new(**kwargs)
-    return journal.jour_id
+    return journal.jourId
 
 
 @d.add_method
 @orm.db_session
-def getJournal(sess_id: str,
-               jour_id: int = None,
+def getJournal(sessId: str,
+               jourId: int = None,
                issn: str = None,
                cnc: str = None,
                pdc: str = None):
-    assert check_user(sess_id)
+    assert check_user(sessId)
     kwargs = clean_locals(locals())
     result = Journal.select(**kwargs)
     return result[0] if result else None
@@ -121,8 +123,8 @@ def getJournal(sess_id: str,
 
 @d.add_method
 @orm.db_session
-def getJournals(sess_id: str,
-                jour_id: int = None,
+def getJournals(sessId: str,
+                jourId: int = None,
                 name: str = None,
                 lang: str = None,
                 hist: str = None,
@@ -134,15 +136,15 @@ def getJournals(sess_id: str,
                 addr: str = None,
                 org: str = None,
                 pub: str = None):
-    assert check_user(sess_id)
+    assert check_user(sessId)
     kwargs = clean_locals(locals())
     return Journal.select(**kwargs)
 
 
 @d.add_method
 @orm.db_session
-def setJournal(sess_id: str,
-               jour_id: int,
+def setJournal(sessId: str,
+               jourId: int,
                name: str = None,
                lang: str = None,
                hist: str = None,
@@ -154,37 +156,37 @@ def setJournal(sess_id: str,
                addr: str = None,
                org: str = None,
                pub: str = None):
-    assert check_admin(sess_id)
+    assert check_admin(sessId)
     kwargs = clean_locals(locals())
-    Journal[jour_id].set(**kwargs)
+    Journal[jourId].set(**kwargs)
 
 
 @d.add_method
 @orm.db_session
-def delJournal(sess_id: str,
-               jour_id: int):
-    assert check_admin(sess_id)
-    Journal[jour_id].delete()
+def delJournal(sessId: str,
+               jourId: int):
+    assert check_admin(sessId)
+    Journal[jourId].delete()
 
 
 @d.add_method
 @orm.db_session
-def addSubs(sess_id: str,
-            jour_id: int,
+def addSubs(sessId: str,
+            jourId: int,
             year: int):
-    assert check_admin(sess_id)
+    assert check_admin(sessId)
     kwargs = clean_locals(locals())
     subs = Subs.new(**kwargs)
-    return subs.subs_id
+    return subs.subsId
 
 
 @d.add_method
 @orm.db_session
-def getSubs(sess_id: str,
-            subs_id: int,
-            jour_id: int,
-            year: int):
-    assert check_admin(sess_id)
+def getSubs(sessId: str,
+            subsId: int = None,
+            jourId: int = None,
+            year: int = None):
+    assert check_admin(sessId)
     kwargs = clean_locals(locals())
     result = Subs.select(**kwargs)
     return result[0] if result else None
@@ -192,32 +194,131 @@ def getSubs(sess_id: str,
 
 @d.add_method
 @orm.db_session
-def getSubses(sess_id: str,
-              jour_id: int = None,
+def getSubses(sessId: str,
+              jourId: int = None,
               year: int = None):
-    assert check_admin(sess_id)
+    assert check_admin(sessId)
     kwargs = clean_locals(locals())
     return Subs.select(**kwargs)
 
 
 @d.add_method
 @orm.db_session
-def setSubs(sess_id: str,
-            subs_id: int,
-            jour_id: int = None,
+def setSubs(sessId: str,
+            subsId: int,
+            jourId: int = None,
             year: int = None):
-    assert check_admin(sess_id)
+    assert check_admin(sessId)
     kwargs = clean_locals(locals())
-    Subs[subs_id].set(**kwargs)
+    Subs[subsId].set(**kwargs)
 
 
 @d.add_method
 @orm.db_session
-def delSubs(sess_id: str,
-            subs_id: int):
-    assert check_admin(sess_id)
-    Subs[subs_id].delete()
+def delSubs(sessId: str,
+            subsId: int):
+    assert check_admin(sessId)
+    Subs[subsId].delete()
 
 
-def addArticle(sess_id: str):
+@d.add_method
+@orm.db_session
+def addStorage(sessId: str,
+               subsId: int,
+               vol: int,
+               iss: int):
+    assert check_admin(sessId)
+    kwargs = clean_locals(locals())
+    storage = Storage.new(**kwargs)
+    return storage.stoId
+
+
+@d.add_method
+@orm.db_session
+def getStorage(sessId: str,
+               stoId: int = None,
+               subsId: int = None,
+               vol: int = None,
+               iss: int = None):
+    assert check_user(sessId)
+    kwargs = clean_locals(locals())
+    result = Storage.select(**kwargs)
+    return result[0] if result else None
+
+
+@d.add_method
+@orm.db_session
+def getStorages():
+    pass
+
+
+@d.add_method
+@orm.db_session
+def setStorage():
+    pass
+
+
+@d.add_method
+@orm.db_session
+def delStorage():
+    pass
+
+
+@d.add_method
+@orm.db_session
+def addArticle():
+    pass
+
+
+@d.add_method
+@orm.db_session
+def getArticle():
+    pass
+
+
+@d.add_method
+@orm.db_session
+def getArticles():
+    pass
+
+
+@d.add_method
+@orm.db_session
+def setArticle():
+    pass
+
+
+@d.add_method
+@orm.db_session
+def delArticle():
+    pass
+
+
+@d.add_method
+@orm.db_session
+def addBorrow():
+    pass
+
+
+@d.add_method
+@orm.db_session
+def getBorrow():
+    pass
+
+
+@d.add_method
+@orm.db_session
+def getBorrows():
+    pass
+
+
+@d.add_method
+@orm.db_session
+def setBorrow():
+    pass
+
+
+@d.add_method
+@orm.db_session
+def delBorrow():
     pass

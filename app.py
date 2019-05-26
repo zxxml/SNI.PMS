@@ -14,7 +14,10 @@ from rpc import d
 
 @Request.application
 def application(request):
+    print(request.data)
     response = JSONRPCResponseManager.handle(request.data, d)
+    response._data['id'] = 0
+    print(response.json)
     return Response(response.json, mimetype='application/json')
 
 

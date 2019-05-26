@@ -13,7 +13,7 @@ cfg = ConfigParser()
 cfg.read('sni.ini')
 
 
-def new_expires(days=None, hours=None):
+def new_expire(days=None, hours=None):
     days = days or int(cfg['session']['days'])
     hours = hours or int(cfg['session']['hours'])
     length = timedelta(days=days, hours=hours)
@@ -49,4 +49,4 @@ def check_reader(sess_id):
 
 def clean_locals(locals_, *keys):
     return {k: locals_[k] for k in locals_
-            if k != 'sess_id' and k not in keys}
+            if k != 'sessId' and k not in keys}
