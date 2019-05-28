@@ -6,8 +6,8 @@ from uuid import uuid1
 from jsonrpc import Dispatcher
 from pony import orm
 
-from db import Admin, Article, Borrow, Journal, Reader, Storage, Subs, User
-from utils import check_admin, check_pw, check_user, clean_locals, hash_pw, new_expire
+from sni.db import Admin, Article, Borrow, Journal, Reader, Storage, Subs, User
+from sni.utils import check_admin, check_pw, check_user, clean_locals, hash_pw, new_expire
 
 __all__ = ['d']
 d = Dispatcher()

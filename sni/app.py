@@ -8,15 +8,15 @@ from jsonrpc import JSONRPCResponseManager
 from jsonrpc.utils import JSONSerializable
 from werkzeug.wrappers import Request, Response
 
-from db import bind_sqlite
-from rpc import d
+from sni.db import bind_sqlite
+from sni.rpc import d
 
 
 @Request.application
 def application(request):
     print(request.data)
     response = JSONRPCResponseManager.handle(request.data, d)
-    response._data['id'] = 0
+    response._data['result'] = '中文测试'
     print(response.json)
     return Response(response.json, mimetype='application/json')
 

@@ -7,7 +7,7 @@ from hashlib import sha256
 
 import bcrypt
 
-from db import Admin, Reader, User
+from sni.db import Admin, Reader, User
 
 cfg = ConfigParser()
 cfg.read('sni.ini')
