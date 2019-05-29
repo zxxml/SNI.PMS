@@ -18,9 +18,9 @@ post_regex = re.compile(r'^\d{1,2}-\d{1,3}$')
 
 @d.add_method
 def restart_world():
-    # drop and create tables
-    db.db.drop_all_tables()
-    db.db.create_tables(True)
+    """Drop all tables and recreate them."""
+    db.db.drop_all_tables(with_all_data=True)
+    db.db.create_tables(check_tables=True)
 
 
 @d.add_method

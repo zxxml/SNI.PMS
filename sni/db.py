@@ -86,9 +86,9 @@ class Session(db.Entity, metaclass=EntityMeta):
 
 class Journal(db.Entity, metaclass=EntityMeta):
     name = orm.Required(str)
-    issn = orm.Required(str)
-    isbn = orm.Required(str)
-    post = orm.Required(str)
+    issn = orm.Required(str, unique=True)
+    isbn = orm.Required(str, unique=True)
+    post = orm.Required(str, unique=True)
     host = orm.Required(str)
     addr = orm.Required(str)
     freq = orm.Required(str)
@@ -102,6 +102,7 @@ class Subscribe(db.Entity, metaclass=EntityMeta):
     year    = orm.Required(int)
     journal = orm.Required('Journal')
     storage = orm.Set('Storage')
+    orm.composite_key(year, journal)
 
 
 class Storage(db.Entity, metaclass=EntityMeta):
@@ -110,6 +111,7 @@ class Storage(db.Entity, metaclass=EntityMeta):
     subscribe = orm.Required('Subscribe')
     articles  = orm.Set('Article')
     borrows   = orm.Set('Borrow')
+    orm.composite_key(volume, number, subscribe)
 
 
 class Article(db.Entity, metaclass=EntityMeta):
