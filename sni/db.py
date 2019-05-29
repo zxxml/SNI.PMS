@@ -1,21 +1,8 @@
 #!/usr/bin/env/python3
 # -*- coding: utf-8 -*-
-from configparser import ConfigParser
 from datetime import datetime
 
 from pony import orm
-
-db = orm.Database()
-cfg = ConfigParser()
-cfg.read('sni.ini')
-
-
-def bind_sqlite(filename):
-    db.bind('sqlite', filename, create_db=True)
-    db.generate_mapping(create_tables=True)
-    with orm.db_session:
-        # db.execute('PRAGMA synchronous = OFF')
-        db.execute('PRAGMA journal_mode = WAL')
 
 
 class EntityMeta(orm.core.EntityMeta):
@@ -24,10 +11,15 @@ class EntityMeta(orm.core.EntityMeta):
         return {k: kwargs[k] for k in kwargs
                 if kwargs[k] is not None}
 
+    def __getitem__(self, key):
+        if key is None: return None
+        return super().__getitem__(key)
+
     @orm.db_session
     def new(cls, *args, **kwargs):
         kwargs = cls.clean_kwargs(kwargs)
-        return cls(*args, **kwargs)
+        result = cls(*args, **kwargs)
+        return db.commit() or result
 
     @orm.db_session
     def exists(cls, *args, **kwargs):
@@ -44,123 +36,97 @@ class EntityMeta(orm.core.EntityMeta):
         kwargs = cls.clean_kwargs(kwargs)
         return super().select().filter(**kwargs)[:]
 
+    @staticmethod
+    @orm.db_session
+    def delete_db(self, **kwargs):
+        kwargs = EntityMeta.clean_kwargs(kwargs)
+        self.delete_db(**kwargs)
 
-@orm.db_session
-def delete_db(self, **kwargs):
-    kwargs = User.clean_kwargs(kwargs)
-    self.delete_db(**kwargs)
+    @staticmethod
+    @orm.db_session
+    def set_db(self, **kwargs):
+        kwargs = EntityMeta.clean_kwargs(kwargs)
+        self.set_db(**kwargs)
 
 
-@orm.db_session
-def set_db(self, **kwargs):
-    kwargs = User.clean_kwargs(kwargs)
-    self.set_db(**kwargs)
-
-
+db = orm.Database()
 db.Entity.delete_db = db.Entity.delete
 db.Entity.set_db = db.Entity.set
-db.Entity.delete = delete_db
-db.Entity.set = set_db
+db.Entity.delete = EntityMeta.delete_db
+db.Entity.set = EntityMeta.set_db
 
 
-# ////////////////////
-# /// region: User ///
-# ////////////////////
+def bind_sqlite(filename):
+    db.bind('sqlite', filename, create_db=True)
+    db.generate_mapping(create_tables=True)
+    with orm.db_session:
+        # db.execute('PRAGMA synchronous = OFF')
+        db.execute('PRAGMA journal_mode = WAL')
+
+
 class User(db.Entity, metaclass=EntityMeta):
-    userId   = orm.PrimaryKey(int, auto=True) # 用户 ID
-    sessId   = orm.Required(str, unique=True) # 会话 ID
-    expire   = orm.Required(datetime)         # 过期时间
-    username = orm.Required(str, unique=True) # 用户名
-    nickname = orm.Required(str)              # 昵称
-    password = orm.Required(str)              # 密码
-    foreName = orm.Optional(str)              # 名字
-    lastName = orm.Optional(str)              # 姓氏
-    mailAddr = orm.Optional(str)              # 邮箱
-    phoneNum = orm.Optional(str)              # 手机号
-class Admin(User): pass  # 扩展的管理员表
-class Reader(User): pass # 扩展的读者表
-# ///////////////////////
-# /// endregion: User ///
-# ///////////////////////
+    username = orm.Required(str, unique=True)
+    nickname = orm.Required(str, unique=True)
+    password = orm.Required(str)
+    forename = orm.Optional(str)
+    lastname = orm.Optional(str)
+    mailaddr = orm.Optional(str)
+    phonenum = orm.Optional(str)
+    session  = orm.Optional('Session', cascade_delete=True)
+    borrows  = orm.Set('Borrow', cascade_delete=True)
+class Admin(User): pass
+class Reader(User): pass
 
 
-# ///////////////////////
-# /// region: Journal ///
-# ///////////////////////
+class Session(db.Entity, metaclass=EntityMeta):
+    sessionid = orm.Required(str, unique=True)
+    shelflife = orm.Required(datetime)
+    user      = orm.Required('User')
+
+
 class Journal(db.Entity, metaclass=EntityMeta):
-    jourId  = orm.PrimaryKey(int, auto=True) # 期刊 ID
-    name    = orm.Required(str)              # 期刊名称
-    lang    = orm.Required(str)              # 语种
-    hist    = orm.Required(str)              # 创刊时间
-    freq    = orm.Required(str)              # 出版周期
-    issn    = orm.Required(str, unique=True) # ISSN 刊号
-    cnc     = orm.Required(str, unique=True) # CN 刊号
-    pdc     = orm.Required(str, unique=True) # 邮发代号
-    used    = orm.Optional(str)              # 曾用名
-    addr    = orm.Optional(str)              # 汇款地址
-    org     = orm.Optional(str)              # 主办单位
-    pub     = orm.Optional(str)              # 出版单位
-# //////////////////////////
-# /// endregion: Journal ///
-# //////////////////////////
+    name = orm.Required(str)
+    issn = orm.Required(str)
+    isbn = orm.Required(str)
+    post = orm.Required(str)
+    host = orm.Required(str)
+    addr = orm.Required(str)
+    freq = orm.Required(str)
+    lang = orm.Required(str)
+    hist = orm.Optional(str)
+    used = orm.Optional(str)
+    subscribe = orm.Set('Subscribe')
 
 
-# ////////////////////
-# /// region: Subs ///
-# ////////////////////
-class Subs(db.Entity, metaclass=EntityMeta):
-    subsId = orm.PrimaryKey(int, auto=True) # 征订 ID
-    jourId = orm.Required(int)              # 期刊 ID
-    year   = orm.Required(int)              # 征订年份
-    orm.composite_key(jourId, year)
-# ///////////////////////
-# /// endregion: Subs ///
-# ///////////////////////
+class Subscribe(db.Entity, metaclass=EntityMeta):
+    year    = orm.Required(int)
+    journal = orm.Required('Journal')
+    storage = orm.Set('Storage')
 
 
-# ///////////////////////
-# /// region: Storage ///
-# ///////////////////////
 class Storage(db.Entity, metaclass=EntityMeta):
-    stoId  = orm.PrimaryKey(int, auto=True) # 库存 ID
-    subsId = orm.Required(int)              # 征订 ID
-    volume = orm.Required(int)              # 卷
-    issue  = orm.Required(int)              # 期
-# //////////////////////////
-# /// endregion: Storage ///
-# //////////////////////////
+    volume    = orm.Required(int)
+    number    = orm.Required(int)
+    subscribe = orm.Required('Subscribe')
+    articles  = orm.Set('Article')
+    borrows   = orm.Set('Borrow')
 
 
-# ///////////////////////
-# /// region: Article ///
-# ///////////////////////
 class Article(db.Entity, metaclass=EntityMeta):
-    artId    = orm.PrimaryKey(int, auto=True) # 文章 ID
-    stoId    = orm.Required(int)              # 库存 ID
-    title    = orm.Required(str)              # 标题
-    author   = orm.Required(str)              # 作者
-    content  = orm.Required(str)              # 内容
-    pageNum  = orm.Required(int)              # 页码
-    keyword1 = orm.Required(str)              # 关键字
-    keyword2 = orm.Required(str)
-    keyword3 = orm.Required(str)
-    keyword4 = orm.Required(str)
-    keyword5 = orm.Required(str)
-# //////////////////////////
-# /// endregion: Article ///
-# //////////////////////////
+    title    = orm.Required(str)
+    author   = orm.Required(str)
+    pagenum  = orm.Required(str)
+    keyword1 = orm.Optional(str)
+    keyword2 = orm.Optional(str)
+    keyword3 = orm.Optional(str)
+    keyword4 = orm.Optional(str)
+    keyword5 = orm.Optional(str)
+    storage  = orm.Required('Storage')
 
 
-# //////////////////////
-# /// region: Borrow ///
-# //////////////////////
 class Borrow(db.Entity, metaclass=EntityMeta):
-    borId      = orm.PrimaryKey(int, auto=True) # 借阅 ID
-    stoId      = orm.Required(int)              # 库存 ID
-    userId     = orm.Required(int)              # 用户 ID
-    borrowTime = orm.Required(datetime)         # 借出时间
-    agreedTime = orm.Required(datetime)         # 应还时间
-    returnTime = orm.Required(datetime)         # 归还时间
-# /////////////////////////
-# /// endregion: Borrow ///
-# /////////////////////////
+    borrowtime = orm.Required(datetime)
+    agreedtime = orm.Required(datetime)
+    returntime = orm.Optional(datetime)
+    user       = orm.Required('User')
+    storage    = orm.Required('Storage')

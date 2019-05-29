@@ -1,13 +1,11 @@
 #!/usr/bin/env/python3
 # -*- coding: utf-8 -*-
 from datetime import datetime
-from uuid import uuid1
 
 from jsonrpc import Dispatcher
 from pony import orm
 
-from sni.db import Admin, Article, Borrow, Journal, Reader, Storage, Subs, User
-from sni.utils import check_admin, check_pw, check_user, clean_locals, hash_pw, new_expire
+from sni import db, utils
 
 __all__ = ['d']
 d = Dispatcher()
@@ -15,405 +13,329 @@ d = Dispatcher()
 
 @d.add_method
 @orm.db_session
-def adminSignUp(username: str,
-                nickname: str,
-                password: str,
-                foreName: str = None,
-                lastName: str = None,
-                mailAddr: str = None,
-                phoneNum: str = None):
-    sessId = uuid1().hex
-    expire = new_expire()
-    password = hash_pw(password)
-    user = Admin.new(**locals())
-    return user.sessId
+def admin_sign_up(username,
+                  nickname,
+                  password,
+                  forename=None,
+                  lastname=None,
+                  mailaddr=None,
+                  phonenum=None):
+    password = utils.hash_pw(password)
+    user = db.Admin.new(**locals())
+    session = utils.new_session(user)
+    return session.sessionid
 
 
 @d.add_method
 @orm.db_session
-def readerSignUp(username: str,
-                 nickname: str,
-                 password: str,
-                 foreName: str = None,
-                 lastName: str = None,
-                 mailAddr: str = None,
-                 phoneNum: str = None):
-    sessId = uuid1().hex
-    expire = new_expire()
-    password = hash_pw(password)
-    user = Reader.new(**locals())
-    return user.sessId
+def sign_up(username,
+            nickname,
+            password,
+            forename=None,
+            lastname=None,
+            mailaddr=None,
+            phonenum=None):
+    password = utils.hash_pw(password)
+    user = db.Reader.new(**locals())
+    session = utils.new_session(user)
+    return session.sessionid
 
 
 @d.add_method
 @orm.db_session
-def userSignIn(username: str,
-               password: str):
-    user = User.get(username=username)
-    assert check_pw(password, user.password)
-    user.sessId = uuid1().hex
-    user.expire = new_expire()
-    return user.sessId
+def sign_in(username, password):
+    assert db.User.exists(username=username)
+    user = db.User.get(username=username)
+    assert utils.check_pw(password, user.password)
+    session = utils.update_session(user)
+    return session.sessionid
 
 
 @d.add_method
 @orm.db_session
-def userSignOut(sessId: str):
-    user = User.get(sessId=sessId)
-    user.expire = new_expire(0, 0)
+@utils.check_session
+def sign_out(session):
+    session = db.Session.get(sessionid=session)
+    session.shelflife = utils.new_shelflife(0)
 
 
 @d.add_method
 @orm.db_session
-def getUser(sessId: str):
-    user = User.get(sessId=sessId)
-    return user.to_dict() if user else None
+@utils.check_session
+def get_user(session):
+    session = db.Session.get(sessionid=session)
+    return session.user.to_dict()
 
 
 @d.add_method
 @orm.db_session
-def setUser(sessId: str,
-            nickname: str = None,
-            password: str = None,
-            foreName: str = None,
-            lastName: str = None,
-            mailAddr: str = None,
-            phoneNum: str = None):
-    password = password and hash_pw(password)
-    User.get(sessId=sessId).set(**locals())
+@utils.check_session
+def set_user(session,
+             nickname=None,
+             password=None,
+             forename=None,
+             lastname=None,
+             mailaddr=None,
+             phonenum=None):
+    session = db.Session.get(sessionid=session)
+    password = password and utils.hash_pw(password)
+    session.user.set(**locals())
 
 
 @d.add_method
 @orm.db_session
-def delUser(sessId: str):
-    User.get(sessId=sessId).delete()
+@utils.check_session
+def del_user(session):
+    session = db.Session.get(sessionid=session)
+    session.user.delete()
 
 
 @d.add_method
 @orm.db_session
-def addJournal(sessId: str,
-               name: str,
-               lang: str,
-               hist: str,
-               freq: str,
-               issn: str,
-               cnc: str,
-               pdc: str,
-               used: str = None,
-               addr: str = None,
-               org: str = None,
-               pub: str = None):
-    assert check_admin(sessId)
-    kwargs = clean_locals(locals())
-    journal = Journal.new(**kwargs)
-    return journal.jourId
+@utils.check_admin
+def add_journal(name, issn,
+                isbn, post,
+                host, addr,
+                freq, lang,
+                hist=None,
+                used=None):
+    return db.Journal.new(**locals()).id
 
 
 @d.add_method
 @orm.db_session
-def getJournal(sessId: str,
-               jourId: int = None,
-               issn: str = None,
-               cnc: str = None,
-               pdc: str = None):
-    assert check_user(sessId)
-    kwargs = clean_locals(locals())
-    result = Journal.select(**kwargs)
-    return result[0] if result else None
+@utils.check_user
+def get_journal(id=None,
+                name=None, issn=None,
+                isbn=None, post=None,
+                host=None, addr=None,
+                freq=None, lang=None,
+                hist=None, used=None):
+    journals = db.Journal.select(**locals())
+    return [x.to_dict() for x in journals]
 
 
 @d.add_method
 @orm.db_session
-def getJournals(sessId: str,
-                jourId: int = None,
-                name: str = None,
-                lang: str = None,
-                hist: str = None,
-                freq: str = None,
-                issn: str = None,
-                cnc: str = None,
-                pdc: str = None,
-                used: str = None,
-                addr: str = None,
-                org: str = None,
-                pub: str = None):
-    assert check_user(sessId)
-    kwargs = clean_locals(locals())
-    return Journal.select(**kwargs)
+@utils.check_admin
+def set_journal(id,
+                name=None, issn=None,
+                isbn=None, post=None,
+                host=None, addr=None,
+                freq=None, lang=None,
+                hist=None, used=None):
+    db.Journal[id].set(**locals())
 
 
 @d.add_method
 @orm.db_session
-def setJournal(sessId: str,
-               jourId: int,
-               name: str = None,
-               lang: str = None,
-               hist: str = None,
-               freq: str = None,
-               issn: str = None,
-               cnc: str = None,
-               pdc: str = None,
-               used: str = None,
-               addr: str = None,
-               org: str = None,
-               pub: str = None):
-    assert check_admin(sessId)
-    kwargs = clean_locals(locals())
-    Journal[jourId].set(**kwargs)
+@utils.check_admin
+def del_journal(id):
+    db.Journal[id].delete()
 
 
 @d.add_method
 @orm.db_session
-def delJournal(sessId: str,
-               jourId: int):
-    assert check_admin(sessId)
-    Journal[jourId].delete()
+@utils.check_admin
+def add_subscribe(year, journal):
+    journal = journal and db.Journal[journal]
+    return db.Subscribe.new(**locals()).id
 
 
 @d.add_method
 @orm.db_session
-def addSubs(sessId: str,
-            jourId: int,
-            year: int):
-    assert check_admin(sessId)
-    kwargs = clean_locals(locals())
-    subs = Subs.new(**kwargs)
-    return subs.subsId
+@utils.check_user
+def get_subscribe(id=None,
+                  year=None,
+                  journal=None):
+    journal = journal and db.Journal[journal]
+    subscribe = db.Subscribe.select(**locals())
+    return [x.to_dict() for x in subscribe]
 
 
 @d.add_method
 @orm.db_session
-def getSubs(sessId: str,
-            subsId: int = None,
-            jourId: int = None,
-            year: int = None):
-    assert check_admin(sessId)
-    kwargs = clean_locals(locals())
-    result = Subs.select(**kwargs)
-    return result[0] if result else None
+@utils.check_admin
+def set_subscribe(id,
+                  year=None,
+                  journal=None):
+    journal = journal and db.Journal[journal]
+    db.Subscribe[id].set(**locals())
 
 
 @d.add_method
 @orm.db_session
-def getSubses(sessId: str,
-              jourId: int = None,
-              year: int = None):
-    assert check_admin(sessId)
-    kwargs = clean_locals(locals())
-    return Subs.select(**kwargs)
+@utils.check_admin
+def del_subscribe(id):
+    db.Subscribe[id].delete()
 
 
 @d.add_method
 @orm.db_session
-def setSubs(sessId: str,
-            subsId: int,
-            jourId: int = None,
-            year: int = None):
-    assert check_admin(sessId)
-    kwargs = clean_locals(locals())
-    Subs[subsId].set(**kwargs)
+@utils.check_admin
+def add_storage(volume,
+                number,
+                subscribe):
+    subscribe = db.Subscribe[subscribe]
+    return db.Storage.new(**locals()).id
 
 
 @d.add_method
 @orm.db_session
-def delSubs(sessId: str,
-            subsId: int):
-    assert check_admin(sessId)
-    Subs[subsId].delete()
+@utils.check_user
+def get_storage(id=None,
+                volume=None,
+                number=None,
+                subscribe=None):
+    subscribe = db.Subscribe[subscribe]
+    storage = db.Storage.select(**locals())
+    return [x.to_dict() for x in storage]
 
 
 @d.add_method
 @orm.db_session
-def addStorage(sessId: str,
-               subsId: int,
-               vol: int,
-               iss: int):
-    assert check_admin(sessId)
-    kwargs = clean_locals(locals())
-    storage = Storage.new(**kwargs)
-    return storage.stoId
+@utils.check_admin
+def set_storage(id,
+                volume=None,
+                number=None,
+                subscribe=None):
+    subscribe = db.Subscribe[subscribe]
+    db.Storage[id].set(**locals())
 
 
 @d.add_method
 @orm.db_session
-def getStorage(sessId: str,
-               stoId: int = None,
-               subsId: int = None,
-               vol: int = None,
-               iss: int = None):
-    assert check_user(sessId)
-    kwargs = clean_locals(locals())
-    result = Storage.select(**kwargs)
-    return result[0] if result else None
+@utils.check_admin
+def del_storage(id):
+    db.Storage[id].delete()
 
 
 @d.add_method
 @orm.db_session
-def getStorages(sessId: str,
-                stoId: int = None,
-                subsId: int = None,
-                vol: int = None,
-                iss: int = None):
-    assert check_user(sessId)
-    kwargs = clean_locals(locals())
-    return Storage.select(**kwargs)
+@utils.check_admin
+def add_article(title,
+                author,
+                pagenum,
+                storage,
+                keyword1=None,
+                keyword2=None,
+                keyword3=None,
+                keyword4=None,
+                keyword5=None):
+    storage = db.Storage[storage]
+    return db.Article.new(**locals()).id
 
 
 @d.add_method
 @orm.db_session
-def setStorage(sessId: str,
-               stoId: int,
-               subsId: int = None,
-               vol: int = None,
-               iss: int = None):
-    assert check_admin(sessId)
-    kwargs = clean_locals(locals())
-    Storage[stoId].set(**kwargs)
+@utils.check_user
+def get_article(id=None,
+                title=None,
+                author=None,
+                pagenum=None,
+                storage=None,
+                keyword1=None,
+                keyword2=None,
+                keyword3=None,
+                keyword4=None,
+                keyword5=None):
+    storage = storage and db.Storage[storage]
+    articles = db.Article.select(**locals())
+    return [x.to_dict() for x in articles]
 
 
 @d.add_method
 @orm.db_session
-def delStorage(sessId: str,
-               stoId: int):
-    assert check_admin(sessId)
-    kwargs = clean_locals(locals())
-    Storage[stoId].delete()
+@utils.check_admin
+def set_article(id,
+                title=None,
+                author=None,
+                pagenum=None,
+                storage=None,
+                keyword1=None,
+                keyword2=None,
+                keyword3=None,
+                keyword4=None,
+                keyword5=None):
+    storage = db.Storage[storage]
+    db.Article[id].set(**locals())
 
 
 @d.add_method
 @orm.db_session
-def addArticle(sessId: str,
-               stoId: int,
-               title: str,
-               author: str,
-               content: str,
-               pageNum: str,
-               keyword1: str = None,
-               keyword2: str = None,
-               keyword3: str = None,
-               keyword4: str = None,
-               keyword5: str = None):
-    assert check_admin(sessId)
-    kwargs = clean_locals(locals())
-    article = Article.new(**kwargs)
-    return article.artId
+@utils.check_admin
+def del_article(id):
+    db.Article[id].delete()
 
 
 @d.add_method
 @orm.db_session
-def getArticle(sessId: str,
-               artId: int):
-    assert check_user(sessId)
-    kwargs = clean_locals(locals())
-    result = Article.select(**kwargs)
-    return result[0] if result else None
+@utils.check_admin
+def add_borrow(user,
+               storage,
+               borrowtime=None,
+               agreedtime=None,
+               returntime=None):
+    user = db.User[user]
+    storage = db.Storage[storage]
+    borrowtime = borrowtime or datetime.now()
+    agreedtime = agreedtime or utils.new_shelflife(744)
+    return db.Borrow.new(**locals()).id
 
 
 @d.add_method
 @orm.db_session
-def getArticles(sessId: str,
-                artId: int = None,
-                stoId: int = None,
-                title: str = None,
-                author: str = None,
-                content: str = None,
-                pageNum: str = None,
-                keyword1: str = None,
-                keyword2: str = None,
-                keyword3: str = None,
-                keyword4: str = None,
-                keyword5: str = None):
-    assert check_user(sessId)
-    kwargs = clean_locals(locals())
-    return Article.select(**kwargs)
+@utils.check_user
+def get_borrow(id=None,
+               user=None,
+               storage=None,
+               borrowtime=None,
+               agreedtime=None,
+               returntime=None):
+    user = db.User[user]
+    storage = db.Storage[storage]
+    borrows = db.Borrow.select(**locals())
+    return [x.to_dict() for x in borrows]
 
 
 @d.add_method
 @orm.db_session
-def setArticle(sessId: str,
-               artId: int,
-               stoId: int = None,
-               title: str = None,
-               author: str = None,
-               content: str = None,
-               pageNum: str = None,
-               keyword1: str = None,
-               keyword2: str = None,
-               keyword3: str = None,
-               keyword4: str = None,
-               keyword5: str = None):
-    assert check_admin(sessId)
-    kwargs = clean_locals(locals())
-    Article[stoId].set(**kwargs)
+@utils.check_admin
+def set_borrow(id=None,
+               user=None,
+               storage=None,
+               borrowtime=None,
+               agreedtime=None,
+               returntime=None):
+    user = db.User[user]
+    storage = db.Storage[storage]
+    db.Borrow[id].set(**locals())
 
 
 @d.add_method
 @orm.db_session
-def delArticle(sessId: str,
-               artId: int):
-    assert check_admin(sessId)
-    kwargs = clean_locals(locals())
-    Article[artId].delete()
+@utils.check_admin
+def del_borrow():
+    db.Borrow[id].delete()
 
 
-@d.add_method
-@orm.db_session
-def addBorrow(sessId: str,
-              stoId: int,
-              userId: int,
-              borrowTime: datetime = None,
-              agreedTime: datetime = None,
-              returnTime: datetime = None):
-    assert check_admin(sessId)
-    kwargs = clean_locals(locals())
-    borrow = Borrow.new(**kwargs)
-    return borrow.borId
-
-
-@d.add_method
-@orm.db_session
-def getBorrow(sessId: str,
-              borId: int = None,
-              stoId: int = None,
-              userId: int = None):
-    assert check_user(sessId)
-    kwargs = clean_locals(locals())
-    result = Borrow.select(**kwargs)
-    return result[0] if result else None
-
-
-@d.add_method
-@orm.db_session
-def getBorrows(sessId: str,
-               borId: int = None,
-               stoId: int = None,
-               userId: int = None,
-               borrowTime: datetime = None,
-               agreedTime: datetime = None,
-               returnTime: datetime = None):
-    assert check_user(sessId)
-    kwargs = clean_locals(locals())
-    return Borrow.select(**kwargs)
-
-
-@d.add_method
-@orm.db_session
-def setBorrow(sessId: str,
-              borId: int = None,
-              stoId: int = None,
-              userId: int = None,
-              borrowTime: datetime = None,
-              agreedTime: datetime = None,
-              returnTime: datetime = None):
-    assert check_admin(sessId)
-    kwargs = clean_locals(locals())
-    Borrow[stoId].set(**kwargs)
-
-
-@d.add_method
-@orm.db_session
-def delBorrow(sessId: str,
-              borId: int = None):
-    assert check_admin(sessId)
-    kwargs = clean_locals(locals())
-    Borrow[borId].delete()
+if __name__ == '__main__':
+    db.bind_sqlite(':memory:')
+    sessionid = admin_sign_up('admin', 'admin', '123456')
+    print(sessionid)
+    sessionid = sign_in('admin', '123456')
+    print(sessionid)
+    print(get_user(sessionid))
+    # sign_out(sessionid)
+    # del_user(sessionid)
+    journalid = add_journal(sessionid, 'name', 'issn', 'isbn', 'post',
+                            'host', 'addr', 'freq', 'lang')
+    print(journalid)
+    journals = get_journal(sessionid, 'name')
+    print(journals)
+    set_journal(sessionid, journalid, 'anothername')
+    print(get_journal(sessionid, issn='issn'))
+    subscribeid = add_subscribe(sessionid, 1999, 1)
+    print(subscribeid)
+    subscribe = get_subscribe(sessionid, 1999)
+    print(subscribe)

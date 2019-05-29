@@ -8,16 +8,12 @@ from jsonrpc import JSONRPCResponseManager
 from jsonrpc.utils import JSONSerializable
 from werkzeug.wrappers import Request, Response
 
-from sni.db import bind_sqlite
-from sni.rpc import d
+from sni import db, rpc
 
 
 @Request.application
 def application(request):
-    print(request.data)
-    response = JSONRPCResponseManager.handle(request.data, d)
-    response._data['result'] = '中文测试'
-    print(response.json)
+    response = JSONRPCResponseManager.handle(request.data, rpc.d)
     return Response(response.json, mimetype='application/json')
 
 
@@ -35,10 +31,10 @@ def start_application():
     cfg.read('sni.ini')
     host = cfg['server']['host']
     port = cfg['server']['port']
-    bind_sqlite(cfg['sqlite']['path'])
+    db.bind_sqlite(cfg['sqlite']['path'])
     serve_forever(host, int(port))
 
 
 if __name__ == '__main__':
-    print(d.keys())
+    print(rpc.d.keys())
     start_application()

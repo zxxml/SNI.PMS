@@ -1,23 +1,14 @@
 #!/usr/bin/env/python3
 # -*- coding: utf-8 -*-
 from base64 import b64encode
-from configparser import ConfigParser
 from datetime import datetime, timedelta
+from functools import wraps
 from hashlib import sha256
+from uuid import uuid1
 
 import bcrypt
 
-from sni.db import Admin, Reader, User
-
-cfg = ConfigParser()
-cfg.read('sni.ini')
-
-
-def new_expire(days=None, hours=None):
-    days = days or int(cfg['session']['days'])
-    hours = hours or int(cfg['session']['hours'])
-    length = timedelta(days=days, hours=hours)
-    return datetime.now() + length
+from sni import db
 
 
 def hash_pw(pw: str) -> str:
@@ -32,21 +23,60 @@ def check_pw(pw: str, pw_hashed: str) -> bool:
     return bcrypt.checkpw(pw_sha256, pw_bcrypt)
 
 
-def check_user(sess_id):
-    user = User.get(sess_id=sess_id)
-    return user and datetime.now() < user.expires
+def new_shelflife(hours=12):
+    """Generate a shelflife with given hours.
+    Set the hours to 0 to make it expired."""
+    length = timedelta(hours=hours)
+    return datetime.now() + length
 
 
-def check_admin(sess_id):
-    user = Admin.get(sess_id=sess_id)
-    return user and datetime.now() < user.expires
+def new_session(user):
+    sessionid = uuid1().hex
+    shelflife = new_shelflife()
+    return db.Session.new(**locals())
 
 
-def check_reader(sess_id):
-    user = Reader.get(sess_id=sess_id)
-    return user and datetime.now() < user.expires
+def update_session(user):
+    user.session.sessionid = uuid1().hex
+    user.session.shelflife = new_shelflife()
+    return user.session
 
 
-def clean_locals(locals_, *keys):
-    return {k: locals_[k] for k in locals_
-            if k != 'sessId' and k not in keys}
+def check_session(function):
+    @wraps(function)
+    def _check_session(sessionid, *args, **kwargs):
+        assert db.Session.exists(sessionid=sessionid)
+        session = db.Session.get(sessionid=sessionid)
+        assert datetime.now() <= session.shelflife
+        return function(sessionid, *args, **kwargs)
+    return _check_session
+
+
+def check_user(function):
+    @check_session
+    @wraps(function)
+    def _check_user(sessionid, *args, **kwargs):
+        user = db.Session.get(sessionid=sessionid).user
+        assert isinstance(user, db.User)
+        return function(*args, **kwargs)
+    return _check_user
+
+
+def check_admin(function):
+    @check_session
+    @wraps(function)
+    def _check_admin(sessionid, *args, **kwargs):
+        user = db.Session.get(sessionid=sessionid).user
+        assert isinstance(user, db.Admin)
+        return function(*args, **kwargs)
+    return _check_admin
+
+
+def check_reader(function):
+    @check_session
+    @wraps(function)
+    def _check_reader(sessionid, *args, **kwargs):
+        user = db.Session.get(sessionid=sessionid).user
+        assert isinstance(user, db.Reader)
+        return function(*args, **kwargs)
+    return _check_reader
