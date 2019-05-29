@@ -56,7 +56,7 @@ db.Entity.delete = EntityMeta.delete_db
 db.Entity.set = EntityMeta.set_db
 
 
-def bind_sqlite(filename):
+def bind_sqlite(filename=':memory:'):
     db.bind('sqlite', filename, create_db=True)
     db.generate_mapping(create_tables=True)
     with orm.db_session:

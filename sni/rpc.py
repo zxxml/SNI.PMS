@@ -1,5 +1,6 @@
 #!/usr/bin/env/python3
 # -*- coding: utf-8 -*-
+import re
 from datetime import datetime
 
 from jsonrpc import Dispatcher
@@ -9,6 +10,17 @@ from sni import db, utils
 
 __all__ = ['d']
 d = Dispatcher()
+
+issn_regex = re.compile(r'^\d{4}-\d{4}$')
+isbn_regex = re.compile(r'^CN\d{2}-\d{4}$')
+post_regex = re.compile(r'^\d{1,2}-\d{1,3}$')
+
+
+@d.add_method
+def restart_world():
+    # drop and create tables
+    db.db.drop_all_tables()
+    db.db.create_tables(True)
 
 
 @d.add_method
@@ -99,6 +111,9 @@ def add_journal(name, issn,
                 freq, lang,
                 hist=None,
                 used=None):
+    assert issn_regex.match(issn)
+    assert isbn_regex.match(isbn)
+    assert post_regex.match(post)
     return db.Journal.new(**locals()).id
 
 
@@ -124,6 +139,9 @@ def set_journal(id,
                 host=None, addr=None,
                 freq=None, lang=None,
                 hist=None, used=None):
+    assert issn_regex.match(issn)
+    assert isbn_regex.match(isbn)
+    assert post_regex.match(post)
     db.Journal[id].set(**locals())
 
 
@@ -317,25 +335,3 @@ def set_borrow(id=None,
 @utils.check_admin
 def del_borrow():
     db.Borrow[id].delete()
-
-
-if __name__ == '__main__':
-    db.bind_sqlite(':memory:')
-    sessionid = admin_sign_up('admin', 'admin', '123456')
-    print(sessionid)
-    sessionid = sign_in('admin', '123456')
-    print(sessionid)
-    print(get_user(sessionid))
-    # sign_out(sessionid)
-    # del_user(sessionid)
-    journalid = add_journal(sessionid, 'name', 'issn', 'isbn', 'post',
-                            'host', 'addr', 'freq', 'lang')
-    print(journalid)
-    journals = get_journal(sessionid, 'name')
-    print(journals)
-    set_journal(sessionid, journalid, 'anothername')
-    print(get_journal(sessionid, issn='issn'))
-    subscribeid = add_subscribe(sessionid, 1999, 1)
-    print(subscribeid)
-    subscribe = get_subscribe(sessionid, 1999)
-    print(subscribe)
