@@ -1,9 +1,9 @@
 #!/usr/bin/env/python3
 # -*- coding: utf-8 -*-
-import re
 from datetime import datetime
 
 from jsonrpc import Dispatcher
+from jsonrpc.exceptions import JSONRPCDispatchException as Fault
 from pony import orm
 
 from sni import db, utils
@@ -11,9 +11,9 @@ from sni import db, utils
 __all__ = ['d']
 d = Dispatcher()
 
-issn_regex = re.compile(r'^\d{4}-\d{4}$')
-isbn_regex = re.compile(r'^CN\d{2}-\d{4}$')
-post_regex = re.compile(r'^\d{1,2}-\d{1,3}$')
+check_issn = utils.check_regex(r'^\d{4}-\d{4}$')
+check_isbn = utils.check_regex(r'^CN\d{2}-\d{4}$')
+check_post = utils.check_regex(r'^\d{1,2}-\d{1,3}$')
 
 
 @d.add_method
@@ -56,11 +56,15 @@ def sign_up(username,
 @d.add_method
 @orm.db_session
 def sign_in(username, password):
-    assert db.User.exists(username=username)
-    user = db.User.get(username=username)
-    assert utils.check_pw(password, user.password)
-    session = utils.update_session(user)
-    return session.sessionid
+    try:
+        assert db.User.exists(username=username)
+        user = db.User.get(username=username)
+        assert utils.check_pw(password, user.password)
+        session = utils.update_session(user)
+        return session.sessionid
+    except AssertionError:
+        text = 'Wrong Password.'
+        raise Fault(400, text)
 
 
 @d.add_method
@@ -111,10 +115,14 @@ def add_journal(name, issn,
                 freq, lang,
                 hist=None,
                 used=None):
-    assert issn_regex.match(issn)
-    assert isbn_regex.match(isbn)
-    assert post_regex.match(post)
-    return db.Journal.new(**locals()).id
+    try:
+        assert check_issn(issn)
+        assert check_isbn(isbn)
+        assert check_post(post)
+        return db.Journal.new(**locals()).id
+    except AssertionError:
+        text = 'Invalid Format.'
+        raise Fault(400, text)
 
 
 @d.add_method
@@ -139,10 +147,14 @@ def set_journal(id,
                 host=None, addr=None,
                 freq=None, lang=None,
                 hist=None, used=None):
-    assert issn_regex.match(issn)
-    assert isbn_regex.match(isbn)
-    assert post_regex.match(post)
-    db.Journal[id].set(**locals())
+    try:
+        assert issn is None or check_issn(issn)
+        assert issn is None or check_isbn(isbn)
+        assert issn is None or check_post(post)
+        db.Journal[id].set(**locals())
+    except AssertionError:
+        text = 'Invalid Format.'
+        raise Fault(400, text)
 
 
 @d.add_method
