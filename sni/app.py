@@ -1,11 +1,10 @@
 #!/usr/bin/env/python3
 # -*- coding: utf-8 -*-
+import json
 from configparser import ConfigParser
 from datetime import datetime
-from json import JSONEncoder
 
 import bjoern
-import simplejson
 from jsonrpc import JSONRPCResponseManager
 from jsonrpc.utils import JSONSerializable
 from werkzeug.wrappers import Request, Response
@@ -13,7 +12,7 @@ from werkzeug.wrappers import Request, Response
 from sni import db, rpc
 
 
-class DatetimeEncoder(JSONEncoder):
+class DatetimeEncoder(json.JSONEncoder):
     """Help to jsonify the datetime.
     Still need to loads it manually."""
     def default(self, o):
@@ -23,13 +22,11 @@ class DatetimeEncoder(JSONEncoder):
 
     @classmethod
     def dumps(cls, o):
-        """dumps method supports datetime."""
-        return simplejson.dumps(o, cls=cls)
+        return json.dumps(o, cls=cls)
 
     @classmethod
     def loads(cls, s):
-        """loads method supports datetime."""
-        return simplejson.loads(s)
+        return json.loads(s)
 
 
 @Request.application
