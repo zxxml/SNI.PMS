@@ -147,4 +147,5 @@ def new_agreedtime(value, default=744):
 
 def new_returntime(value):
     """Convert the value to datetime."""
-    return datetime.fromisoformat(value)
+    if value is None: return None
+    return datetime.fromtimestamp(value)

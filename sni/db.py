@@ -91,9 +91,9 @@ class Journal(db.Entity, metaclass=EntityMeta):
     post = orm.Required(str, unique=True)
     host = orm.Required(str)
     addr = orm.Required(str)
-    freq = orm.Required(str)
+    freq = orm.Required(int)
     lang = orm.Required(str)
-    hist = orm.Optional(str)
+    hist = orm.Optional(int)
     used = orm.Optional(str)
     subscribe = orm.Set('Subscribe')
 
@@ -117,7 +117,7 @@ class Storage(db.Entity, metaclass=EntityMeta):
 class Article(db.Entity, metaclass=EntityMeta):
     title    = orm.Required(str)
     author   = orm.Required(str)
-    pagenum  = orm.Required(str)
+    pagenum  = orm.Required(int)
     keyword1 = orm.Optional(str)
     keyword2 = orm.Optional(str)
     keyword3 = orm.Optional(str)
