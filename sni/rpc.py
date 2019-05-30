@@ -1,6 +1,5 @@
 #!/usr/bin/env/python3
 # -*- coding: utf-8 -*-
-from datetime import datetime
 
 from jsonrpc import Dispatcher
 from jsonrpc.exceptions import JSONRPCDispatchException as Fault
@@ -308,8 +307,9 @@ def add_borrow(user,
                returntime=None):
     user = db.User[user]
     storage = db.Storage[storage]
-    borrowtime = borrowtime or datetime.now()
-    agreedtime = agreedtime or utils.new_shelflife(744)
+    borrowtime = utils.new_borrowtime(borrowtime)
+    agreedtime = utils.new_agreedtime(agreedtime)
+    returntime = utils.new_returntime(returntime)
     return db.Borrow.new(**locals()).id
 
 
@@ -339,6 +339,9 @@ def set_borrow(id=None,
                returntime=None):
     user = db.User[user]
     storage = db.Storage[storage]
+    borrowtime = utils.new_borrowtime(borrowtime)
+    agreedtime = utils.new_agreedtime(agreedtime)
+    returntime = utils.new_returntime(returntime)
     db.Borrow[id].set(**locals())
 
 

@@ -1,14 +1,23 @@
 #!/usr/bin/env/python3
 # -*- coding: utf-8 -*-
 from configparser import ConfigParser
+from datetime import datetime
+from json import JSONEncoder
 
 import bjoern
-import ujson
 from jsonrpc import JSONRPCResponseManager
-from jsonrpc.utils import JSONSerializable
 from werkzeug.wrappers import Request, Response
 
 from sni import db, rpc
+
+
+class DatetimeEncoder(JSONEncoder):
+    """Help to jsonify the datetime.
+    Still need to loads it manually."""
+    def default(self, o):
+        if isinstance(o, datetime):
+            return o.isoformat()
+        return super().default(0)
 
 
 @Request.application
@@ -18,8 +27,6 @@ def application(request):
 
 
 def serve_forever(host, port):
-    JSONSerializable.serialize = ujson.dumps
-    JSONSerializable.deserialize = ujson.loads
     # bjoern is a fast and lightweight WSGI server
     # using it without any web server is convenient
     socket = bjoern.bind_and_listen(host, port)

@@ -131,3 +131,20 @@ def check_regex(regex):
         result = regex.match(text)
         return result is not None
     return _check_regex
+
+
+def new_borrowtime(value):
+    if value is not None:
+        return new_returntime(value)
+    return datetime.now()
+
+
+def new_agreedtime(value, default=744):
+    if value is not None:
+        return new_returntime(value)
+    return new_shelflife(default)
+
+
+def new_returntime(value):
+    """Convert the value to datetime."""
+    return datetime.fromisoformat(value)
