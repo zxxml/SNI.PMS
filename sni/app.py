@@ -12,7 +12,7 @@ from werkzeug.wrappers import Request, Response
 from sni import db, rpc
 
 
-class DatetimeEncoder(json.JSONEncoder):
+class JsonEncoder(json.JSONEncoder):
     """Help to jsonify the datetime.
     Still need to loads it manually."""
     def default(self, o):
@@ -36,8 +36,8 @@ def application(request):
 
 
 def serve_forever(host, port):
-    JSONSerializable.serialize = DatetimeEncoder.dumps
-    JSONSerializable.deserialize = DatetimeEncoder.loads
+    JSONSerializable.serialize = JsonEncoder.dumps
+    JSONSerializable.deserialize = JsonEncoder.loads
     # bjoern is a fast and lightweight WSGI server
     # using it without any web server is convenient
     socket = bjoern.bind_and_listen(host, port)
