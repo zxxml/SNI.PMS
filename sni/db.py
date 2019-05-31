@@ -73,7 +73,7 @@ class User(db.Entity, metaclass=EntityMeta):
     mailaddr = orm.Optional(str)
     phonenum = orm.Optional(str)
     session  = orm.Optional('Session', cascade_delete=True)
-    borrows  = orm.Set('Borrow', cascade_delete=True)
+    borrows  = orm.Set('Borrow', cascade_delete=False)
 class Admin(User): pass
 class Reader(User): pass
 
@@ -95,13 +95,13 @@ class Journal(db.Entity, metaclass=EntityMeta):
     lang = orm.Required(str)
     hist = orm.Optional(str)
     used = orm.Optional(str)
-    subscribe = orm.Set('Subscribe')
+    subscribe = orm.Set('Subscribe', cascade_delete=False)
 
 
 class Subscribe(db.Entity, metaclass=EntityMeta):
     year    = orm.Required(int)
     journal = orm.Required('Journal')
-    storage = orm.Set('Storage')
+    storage = orm.Set('Storage', cascade_delete=False)
     orm.composite_key(year, journal)
 
 
@@ -109,8 +109,8 @@ class Storage(db.Entity, metaclass=EntityMeta):
     volume    = orm.Required(int)
     number    = orm.Required(int)
     subscribe = orm.Required('Subscribe')
-    articles  = orm.Set('Article')
-    borrows   = orm.Set('Borrow')
+    articles  = orm.Set('Article', cascade_delete=False)
+    borrows   = orm.Set('Borrow', cascade_delete=False)
     orm.composite_key(volume, number, subscribe)
 
 

@@ -14,7 +14,7 @@ import bcrypt
 from enforce import runtime_validation as typechecked
 from enforce.exceptions import RuntimeTypeError as TypeError
 from jsonrpc.exceptions import JSONRPCDispatchException as Fault
-from pony.orm.core import TransactionIntegrityError as IntegrityError
+from pony.orm.core import ConstraintError, TransactionIntegrityError
 
 from sni import db
 
@@ -31,8 +31,11 @@ def catch_error(function):
         except TypeError:
             text = 'Incorrect type.'
             raise Fault(400, text)
-        except IntegrityError:
-            text = 'Conflict query.'
+        except ConstraintError:
+            text = 'Constraint error.'
+            raise Fault(409, text)
+        except TransactionIntegrityError:
+            text = 'Integrity error.'
             raise Fault(409, text)
         except Exception as e:
             print(type(e), str(e))
