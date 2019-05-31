@@ -16,6 +16,7 @@ check_post = utils.check_regex(r'^\d{1,2}-\d{1,3}$')
 
 
 @d.add_method
+@utils.catch_error
 def restart_world():
     """Drop all tables and recreate them."""
     db.db.drop_all_tables(with_all_data=True)
@@ -23,6 +24,7 @@ def restart_world():
 
 
 @d.add_method
+@utils.catch_error
 @orm.db_session
 def admin_sign_up(username,
                   nickname,
@@ -38,6 +40,7 @@ def admin_sign_up(username,
 
 
 @d.add_method
+@utils.catch_error
 @orm.db_session
 def sign_up(username,
             nickname,
@@ -53,6 +56,7 @@ def sign_up(username,
 
 
 @d.add_method
+@utils.catch_error
 @orm.db_session
 def sign_in(username, password):
     try:
@@ -67,6 +71,7 @@ def sign_in(username, password):
 
 
 @d.add_method
+@utils.catch_error
 @orm.db_session
 @utils.check_session
 def sign_out(session):
@@ -75,6 +80,7 @@ def sign_out(session):
 
 
 @d.add_method
+@utils.catch_error
 @orm.db_session
 @utils.check_session
 def get_user(session):
@@ -83,6 +89,7 @@ def get_user(session):
 
 
 @d.add_method
+@utils.catch_error
 @orm.db_session
 @utils.check_session
 def set_user(session,
@@ -98,6 +105,7 @@ def set_user(session,
 
 
 @d.add_method
+@utils.catch_error
 @orm.db_session
 @utils.check_session
 def del_user(session):
@@ -106,6 +114,7 @@ def del_user(session):
 
 
 @d.add_method
+@utils.catch_error
 @orm.db_session
 @utils.check_admin
 def add_journal(name, issn,
@@ -125,6 +134,7 @@ def add_journal(name, issn,
 
 
 @d.add_method
+@utils.catch_error
 @orm.db_session
 @utils.check_user
 def get_journal(id=None,
@@ -138,6 +148,7 @@ def get_journal(id=None,
 
 
 @d.add_method
+@utils.catch_error
 @orm.db_session
 @utils.check_admin
 def set_journal(id,
@@ -157,6 +168,7 @@ def set_journal(id,
 
 
 @d.add_method
+@utils.catch_error
 @orm.db_session
 @utils.check_admin
 def del_journal(id):
@@ -164,6 +176,7 @@ def del_journal(id):
 
 
 @d.add_method
+@utils.catch_error
 @orm.db_session
 @utils.check_admin
 def add_subscribe(year, journal):
@@ -172,6 +185,7 @@ def add_subscribe(year, journal):
 
 
 @d.add_method
+@utils.catch_error
 @orm.db_session
 @utils.check_user
 def get_subscribe(id=None,
@@ -183,6 +197,7 @@ def get_subscribe(id=None,
 
 
 @d.add_method
+@utils.catch_error
 @orm.db_session
 @utils.check_admin
 def set_subscribe(id,
@@ -193,6 +208,7 @@ def set_subscribe(id,
 
 
 @d.add_method
+@utils.catch_error
 @orm.db_session
 @utils.check_admin
 def del_subscribe(id):
@@ -200,6 +216,7 @@ def del_subscribe(id):
 
 
 @d.add_method
+@utils.catch_error
 @orm.db_session
 @utils.check_admin
 def add_storage(volume,
@@ -210,6 +227,7 @@ def add_storage(volume,
 
 
 @d.add_method
+@utils.catch_error
 @orm.db_session
 @utils.check_user
 def get_storage(id=None,
@@ -222,6 +240,7 @@ def get_storage(id=None,
 
 
 @d.add_method
+@utils.catch_error
 @orm.db_session
 @utils.check_admin
 def set_storage(id,
@@ -233,6 +252,7 @@ def set_storage(id,
 
 
 @d.add_method
+@utils.catch_error
 @orm.db_session
 @utils.check_admin
 def del_storage(id):
@@ -240,6 +260,7 @@ def del_storage(id):
 
 
 @d.add_method
+@utils.catch_error
 @orm.db_session
 @utils.check_admin
 def add_article(title,
@@ -256,6 +277,7 @@ def add_article(title,
 
 
 @d.add_method
+@utils.catch_error
 @orm.db_session
 @utils.check_user
 def get_article(id=None,
@@ -274,6 +296,7 @@ def get_article(id=None,
 
 
 @d.add_method
+@utils.catch_error
 @orm.db_session
 @utils.check_admin
 def set_article(id,
@@ -291,6 +314,7 @@ def set_article(id,
 
 
 @d.add_method
+@utils.catch_error
 @orm.db_session
 @utils.check_admin
 def del_article(id):
@@ -298,6 +322,7 @@ def del_article(id):
 
 
 @d.add_method
+@utils.catch_error
 @orm.db_session
 @utils.check_admin
 def add_borrow(user,
@@ -314,6 +339,7 @@ def add_borrow(user,
 
 
 @d.add_method
+@utils.catch_error
 @orm.db_session
 @utils.check_user
 def get_borrow(id=None,
@@ -329,6 +355,7 @@ def get_borrow(id=None,
 
 
 @d.add_method
+@utils.catch_error
 @orm.db_session
 @utils.check_admin
 def set_borrow(id=None,
@@ -346,6 +373,7 @@ def set_borrow(id=None,
 
 
 @d.add_method
+@utils.catch_error
 @orm.db_session
 @utils.check_admin
 def del_borrow():

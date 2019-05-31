@@ -93,7 +93,7 @@ class Journal(db.Entity, metaclass=EntityMeta):
     addr = orm.Required(str)
     freq = orm.Required(int)
     lang = orm.Required(str)
-    hist = orm.Optional(int)
+    hist = orm.Optional(str)
     used = orm.Optional(str)
     subscribe = orm.Set('Subscribe')
 

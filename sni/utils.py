@@ -1,10 +1,13 @@
 #!/usr/bin/env/python3
 # -*- coding: utf-8 -*-
+import inspect
 import re
 from base64 import b64encode
+from collections import OrderedDict
 from datetime import datetime, timedelta
 from functools import wraps
 from hashlib import sha256
+from types import MappingProxyType
 from uuid import uuid1
 
 import bcrypt
@@ -23,6 +26,7 @@ def catch_error(function):
             f = typechecked(function)
             return f(*args, **kwargs)
         except Fault as e:
+            # cut the traceback
             raise e from None
         except TypeError:
             text = 'Incorrect type.'
@@ -30,7 +34,8 @@ def catch_error(function):
         except IntegrityError:
             text = 'Conflict query.'
             raise Fault(409, text)
-        except Exception:
+        except Exception as e:
+            print(type(e), str(e))
             text = 'Server error.'
             raise Fault(500, text)
     return _catch_error
@@ -47,6 +52,10 @@ def check_session(function):
         except AssertionError:
             text = 'Invalid session.'
             raise Fault(401, text)
+    # add sessionid parameter to the signature of the wrapped function
+    _check_session.__signature__ = signature = inspect.signature(function)
+    parameter = ('session', inspect.Parameter('session', inspect.Parameter.POSITIONAL_OR_KEYWORD))
+    signature._parameters = MappingProxyType(OrderedDict([parameter, *signature.parameters.items()]))
     return _check_session
 
 
@@ -133,19 +142,22 @@ def check_regex(regex):
     return _check_regex
 
 
-def new_borrowtime(value):
+def new_borrowtime(value=None):
     if value is not None:
         return new_returntime(value)
-    return datetime.now()
+    date = datetime.now().date()
+    args = date.timetuple()[:6]
+    return datetime(*args)
 
 
-def new_agreedtime(value, default=744):
+def new_agreedtime(value=None, default=744):
     if value is not None:
         return new_returntime(value)
-    return new_shelflife(default)
+    length = timedelta(days=default)
+    return new_borrowtime() + length
 
 
-def new_returntime(value):
+def new_returntime(value=None):
     """Convert the value to datetime."""
     if value is None: return None
     return datetime.fromtimestamp(value)
