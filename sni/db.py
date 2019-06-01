@@ -1,7 +1,6 @@
 #!/usr/bin/env/python3
 # -*- coding: utf-8 -*-
 from datetime import datetime
-
 from pony import orm
 
 
@@ -124,6 +123,14 @@ class Article(db.Entity, metaclass=EntityMeta):
     keyword4 = orm.Optional(str)
     keyword5 = orm.Optional(str)
     storage  = orm.Required('Storage')
+
+    @property
+    def keywords(self):
+        return {self.keyword1,
+                self.keyword2,
+                self.keyword3,
+                self.keyword4,
+                self.keyword5}
 
 
 class Borrow(db.Entity, metaclass=EntityMeta):

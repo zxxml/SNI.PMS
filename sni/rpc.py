@@ -1,6 +1,5 @@
 #!/usr/bin/env/python3
 # -*- coding: utf-8 -*-
-
 from jsonrpc import Dispatcher
 from jsonrpc.exceptions import JSONRPCDispatchException as Fault
 from pony import orm
@@ -159,8 +158,8 @@ def set_journal(id,
                 hist=None, used=None):
     try:
         assert issn is None or check_issn(issn)
-        assert issn is None or check_isbn(isbn)
-        assert issn is None or check_post(post)
+        assert isbn is None or check_isbn(isbn)
+        assert post is None or check_post(post)
         db.Journal[id].set(**locals())
     except AssertionError:
         text = 'Invalid Format.'
@@ -293,6 +292,21 @@ def get_article(id=None,
     storage = storage and db.Storage[storage]
     articles = db.Article.select(**locals())
     return [x.to_dict() for x in articles]
+
+
+@d.add_method
+@utils.catch_error
+@orm.db_session
+@utils.check_user
+def get_article_advanced(id=None,
+                         title=None,
+                         author=None,
+                         pagenum=None,
+                         storage=None,
+                         keywords=None):
+    kwargs = {'id': id, 'title': title, 'author': author, 'pagenum': pagenum, 'storage': db.Storage[storage]}
+    result = db.Article.select().filter(**kwargs).filter(lambda x: x.keywords & set(keywords.split(' ')))
+    return [x.to_dict() for x in result]
 
 
 @d.add_method
