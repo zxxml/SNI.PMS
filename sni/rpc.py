@@ -305,7 +305,7 @@ def get_article_advanced(id=None,
                          storage=None,
                          keywords=None):
     kwargs = {'id': id, 'title': title, 'author': author, 'pagenum': pagenum, 'storage': db.Storage[storage]}
-    result = db.Article.select().filter(**kwargs).filter(lambda x: x.keywords & set(keywords.split(' ')))
+    result = db.Article.select().filter(**kwargs).filter(lambda x: x.keywords & set(keywords.split()))
     return [x.to_dict() for x in result]
 
 
