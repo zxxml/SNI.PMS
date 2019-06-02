@@ -90,6 +90,21 @@ def get_user(session):
 @d.add_method
 @utils.catch_error
 @orm.db_session
+@utils.check_user
+def get_user_advanced(username=None,
+                      nickname=None,
+                      password=None,
+                      forename=None,
+                      lastname=None,
+                      mailaddr=None,
+                      phonenum=None):
+    users = db.User.select(**locals())
+    return [x.to_dict() for x in users]
+
+
+@d.add_method
+@utils.catch_error
+@orm.db_session
 @utils.check_session
 def set_user(session,
              nickname=None,
