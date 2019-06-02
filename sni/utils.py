@@ -14,7 +14,7 @@ import bcrypt
 from enforce import runtime_validation as typechecked
 from enforce.exceptions import RuntimeTypeError as TypeError
 from jsonrpc.exceptions import JSONRPCDispatchException as Fault
-from pony.orm.core import ConstraintError, TransactionIntegrityError
+from pony.orm.core import ConstraintError, ObjectNotFound, TransactionIntegrityError
 
 from sni import db
 
@@ -31,6 +31,9 @@ def catch_error(function):
         except TypeError:
             text = 'Incorrect type.'
             raise Fault(400, text)
+        except ObjectNotFound:
+            text = 'Missing object.'
+            raise Fault(412, text)
         except ConstraintError:
             text = 'Constraint error.'
             raise Fault(409, text)
