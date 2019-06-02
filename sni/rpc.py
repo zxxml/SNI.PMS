@@ -164,6 +164,23 @@ def get_journal(id=None,
 @d.add_method
 @utils.catch_error
 @orm.db_session
+@utils.check_user
+def get_journal_reverse(subscribe=None, storage=None, borrow=None):
+    if subscribe is not None:
+        subscribe = db.Subscribe[subscribe]
+        return subscribe.journal.to_dict()
+    if storage is not None:
+        id = db.Storage[storage].subscribe.id
+        return get_journal_reverse(subscribe=id)
+    if borrow is not None:
+        id = db.Borrow[borrow].storage.id
+        return get_journal_reverse(storage=id)
+    raise Fault(400, 'Condition required.')
+
+
+@d.add_method
+@utils.catch_error
+@orm.db_session
 @utils.check_admin
 def set_journal(id,
                 name=None, issn=None,
