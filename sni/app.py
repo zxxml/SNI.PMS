@@ -36,6 +36,7 @@ def application(request):
 
 
 def serve_forever(host, port):
+    rpc.guest_sign_up('Guest', 'Guest', 'Guest')
     JSONSerializable.serialize = JsonEncoder.dumps
     JSONSerializable.deserialize = JsonEncoder.loads
     # bjoern is a fast and lightweight WSGI server

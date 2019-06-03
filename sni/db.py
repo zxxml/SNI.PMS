@@ -75,6 +75,7 @@ class User(db.Entity, metaclass=EntityMeta):
     borrows  = orm.Set('Borrow', cascade_delete=False)
 class Admin(User): pass
 class Reader(User): pass
+class Guest(User): pass
 
 
 class Session(db.Entity, metaclass=EntityMeta):

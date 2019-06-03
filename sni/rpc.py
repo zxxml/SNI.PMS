@@ -20,6 +20,7 @@ def restart_world():
     """Drop all tables and recreate them."""
     db.db.drop_all_tables(with_all_data=True)
     db.db.create_tables(check_tables=True)
+    guest_sign_up('Guest', 'Guest', 'Guest')
 
 
 @d.add_method
@@ -34,6 +35,22 @@ def admin_sign_up(username,
                   phonenum=None):
     password = utils.hash_pw(password)
     user = db.Admin.new(**locals())
+    session = utils.new_session(user)
+    return session.sessionid
+
+
+@d.add_method
+@utils.catch_error
+@orm.db_session
+def guest_sign_up(username,
+                  nickname,
+                  password,
+                  forename=None,
+                  lastname=None,
+                  mailaddr=None,
+                  phonenum=None):
+    password = utils.hash_pw(password)
+    user = db.Guest.new(**locals())
     session = utils.new_session(user)
     return session.sessionid
 
@@ -114,6 +131,7 @@ def set_user(session,
              mailaddr=None,
              phonenum=None):
     session = db.Session.get(sessionid=session)
+    if isinstance(session.user, db.Guest): return
     password = password and utils.hash_pw(password)
     session.user.set(**locals())
 
