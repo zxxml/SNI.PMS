@@ -443,7 +443,7 @@ def set_borrow(id=None,
 @orm.db_session
 @utils.check_admin
 def end_borrow(id):
-    returntime = utils.new_returntime()
+    returntime = utils.new_borrowtime()
     db.Borrow[id].set(**locals())
 
 
