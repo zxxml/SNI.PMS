@@ -1,7 +1,12 @@
 #!/usr/bin/env/python3
 # -*- coding: utf-8 -*-
+# @formatter:off
 from datetime import datetime
+from pathlib import Path
+
 from pony import orm
+
+from sni import rpc
 
 
 class EntityMeta(orm.core.EntityMeta):
@@ -58,14 +63,14 @@ db.Entity.set = EntityMeta.set_db
 def bind_sqlite(filename=':memory:'):
     db.bind('sqlite', filename, create_db=True)
     db.generate_mapping(create_tables=True)
-    with orm.db_session:
-        # db.execute('PRAGMA synchronous = OFF')
-        db.execute('PRAGMA journal_mode = WAL')
+    if not Path(filename).exists():
+        rpc.admin_sign_up('A00000000', 'Admin', '12345678')
+        rpc.guest_sign_up('G00000000', 'Guest', '12345678')
 
 
 class User(db.Entity, metaclass=EntityMeta):
     username = orm.Required(str, unique=True)
-    nickname = orm.Required(str, unique=True)
+    nickname = orm.Required(str)
     password = orm.Required(str)
     forename = orm.Optional(str)
     lastname = orm.Optional(str)

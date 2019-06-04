@@ -20,7 +20,8 @@ def restart_world():
     """Drop all tables and recreate them."""
     db.db.drop_all_tables(with_all_data=True)
     db.db.create_tables(check_tables=True)
-    guest_sign_up('Guest', 'Guest', 'Guest')
+    admin_sign_up('A00000000', 'Admin', '12345678')
+    guest_sign_up('G00000000', 'Guest', '12345678')
 
 
 @d.add_method
