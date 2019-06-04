@@ -442,5 +442,14 @@ def set_borrow(id=None,
 @utils.catch_error
 @orm.db_session
 @utils.check_admin
+def end_borrow(id):
+    returntime = utils.new_returntime()
+    db.Borrow[id].set(**locals())
+
+
+@d.add_method
+@utils.catch_error
+@orm.db_session
+@utils.check_admin
 def del_borrow():
     db.Borrow[id].delete()
