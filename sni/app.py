@@ -31,7 +31,9 @@ class JsonEncoder(json.JSONEncoder):
 
 @Request.application
 def application(request):
-    response = JSONRPCResponseManager.handle(request.data, rpc.d)
+    print('Receive message: {0}'.format(json.loads(request)))
+    response = JSONRPCResponseManager.handle(request, rpc.d)
+    print('Response message: {0}'.format(response.json))
     return Response(response.json, mimetype='application/json')
 
 
@@ -46,7 +48,7 @@ def serve_forever(host, port):
 
 def start_application():
     cfg = ConfigParser()
-    cfg.read('sni.ini')
+    cfg.read('../settings.ini')
     host = cfg['server']['host']
     port = cfg['server']['port']
     db.bind_sqlite(cfg['sqlite']['path'])
