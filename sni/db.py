@@ -1,11 +1,7 @@
 #!/usr/bin/env/python3
 # -*- coding: utf-8 -*-
-# @formatter:off
 from datetime import datetime
-from pathlib import Path
-
 from pony import orm
-
 from sni import rpc
 
 
@@ -63,7 +59,7 @@ db.Entity.set = EntityMeta.set_db
 def bind_sqlite(filename=':memory:'):
     db.bind('sqlite', filename, create_db=True)
     db.generate_mapping(create_tables=True)
-    if not Path(filename).exists():
+    if not Admin.exists(username='A00000000'):
         rpc.admin_sign_up('A00000000', 'Admin', '12345678')
         rpc.guest_sign_up('G00000000', 'Guest', '12345678')
 
