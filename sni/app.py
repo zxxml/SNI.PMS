@@ -31,8 +31,8 @@ class JsonEncoder(json.JSONEncoder):
 
 @Request.application
 def application(request):
-    print('Receive message: {0}'.format(str(json.loads(request))))
-    response = JSONRPCResponseManager.handle(request, rpc.d)
+    print('Receive message: {0}'.format(json.loads(request)))
+    response = JSONRPCResponseManager.handle(request.data, rpc.d)
     print('Response message: {0}'.format(response.json))
     return Response(response.json, mimetype='application/json')
 
