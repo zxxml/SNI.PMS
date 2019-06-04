@@ -109,7 +109,8 @@ def get_user(session):
 @utils.catch_error
 @orm.db_session
 @utils.check_user
-def get_user_advanced(username=None,
+def get_user_advanced(id=None,
+                      username=None,
                       nickname=None,
                       password=None,
                       forename=None,
