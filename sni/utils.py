@@ -1,49 +1,47 @@
 #!/usr/bin/env/python3
 # -*- coding: utf-8 -*-
-import inspect
-import re
 from base64 import b64encode
-from collections import OrderedDict
 from datetime import datetime, timedelta
 from functools import wraps
 from hashlib import sha256
-from types import MappingProxyType
 from uuid import uuid1
 
 import bcrypt
-from enforce import runtime_validation as typechecked
-from enforce.exceptions import RuntimeTypeError as TypeError
-from jsonrpc.exceptions import JSONRPCDispatchException as Fault
-from pony.orm.core import ConstraintError, ObjectNotFound, TransactionIntegrityError
+from jsonrpc import exceptions
+from pony.orm import core
 
 from sni import db
+
+
+class Fault(exceptions.JSONRPCDispatchException):
+    def __init__(self, code, message, details=None):
+        super().__init__(code, message.format(details))
 
 
 def catch_error(function):
     @wraps(function)
     def _catch_error(*args, **kwargs):
         try:
-            f = typechecked(function)
-            return f(*args, **kwargs)
+            return function(*args, **kwargs)
         except Fault as e:
             # cut the traceback
             raise e from None
-        except TypeError:
-            text = 'Incorrect type.'
-            raise Fault(400, text)
-        except ObjectNotFound:
-            text = 'Missing object.'
-            raise Fault(412, text)
-        except ConstraintError:
-            text = 'Constraint error.'
-            raise Fault(409, text)
-        except TransactionIntegrityError:
-            text = 'Integrity error.'
-            raise Fault(409, text)
+        except TypeError as e:
+            message = 'Invalid arguments: {0}'
+            raise Fault(400, message, e.args)
+        except core.ConstraintError as e:
+            message = 'Constraint error: {0}'
+            raise Fault(409, message, e.args)
+        except core.TransactionIntegrityError as e:
+            message = 'Integrity error: {0}'
+            raise Fault(409, message, e.args)
+        except core.ObjectNotFound as e:
+            message = 'Object not found: {0}'
+            raise Fault(412, message, e.args)
         except Exception as e:
-            print(type(e), str(e))
-            text = 'Server error.'
-            raise Fault(500, text)
+            print(type(e), str(e.args))
+            message = 'Internal server error: {0}'
+            raise Fault(500, message, e.args)
     return _catch_error
 
 
@@ -56,12 +54,8 @@ def check_session(function):
             assert datetime.now() <= session.shelflife
             return function(sessionid, *args, **kwargs)
         except AssertionError:
-            text = 'Invalid session.'
-            raise Fault(401, text)
-    # add sessionid parameter to the signature of the wrapped function
-    _check_session.__signature__ = signature = inspect.signature(function)
-    parameter = ('session', inspect.Parameter('session', inspect.Parameter.POSITIONAL_OR_KEYWORD))
-    signature._parameters = MappingProxyType(OrderedDict([parameter, *signature.parameters.items()]))
+            message = 'Invalid session.'
+            raise Fault(401, message)
     return _check_session
 
 
@@ -70,12 +64,12 @@ def check_user(function):
     @wraps(function)
     def _check_user(session, *args, **kwargs):
         try:
-            user = db.Session.get(sessionid=session).user
-            assert isinstance(user, db.User)
+            session = db.Session.get(sessionid=session)
+            assert isinstance(session.user, db.User)
             return function(*args, **kwargs)
         except AssertionError:
-            text = 'User required.'
-            raise Fault(403, text)
+            message = 'User required.'
+            raise Fault(403, message)
     return _check_user
 
 
@@ -84,12 +78,12 @@ def check_admin(function):
     @wraps(function)
     def _check_admin(session, *args, **kwargs):
         try:
-            user = db.Session.get(sessionid=session).user
-            assert isinstance(user, db.Admin)
+            session = db.Session.get(sessionid=session)
+            assert isinstance(session.user, db.Admin)
             return function(*args, **kwargs)
         except AssertionError:
-            text = 'Admin required.'
-            raise Fault(403, text)
+            message = 'Admin required.'
+            raise Fault(403, message)
     return _check_admin
 
 
@@ -98,12 +92,12 @@ def check_reader(function):
     @wraps(function)
     def _check_reader(session, *args, **kwargs):
         try:
-            user = db.Session.get(sessionid=session).user
-            assert isinstance(user, db.Reader)
+            session = db.Session.get(sessionid=session)
+            assert isinstance(session.user, db.Reader)
             return function(*args, **kwargs)
         except AssertionError:
-            text = 'Reader required.'
-            raise Fault(403, text)
+            message = 'Reader required.'
+            raise Fault(403, message)
     return _check_reader
 
 
@@ -141,7 +135,8 @@ def update_session(user):
 def check_regex(regex):
     """Generate a function to match the regex.
     The regex will be compiled to speed up."""
-    regex = re.compile(regex)
+    from re import compile
+    regex = compile(regex)
     def _check_regex(text):
         result = regex.match(text)
         return result is not None
@@ -149,6 +144,9 @@ def check_regex(regex):
 
 
 def new_borrowtime(value=None):
+    """Convert the value to datetime.
+    Return 0 o'clock today by default.
+    """
     if value is not None:
         return new_returntime(value)
     date = datetime.now().date()

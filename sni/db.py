@@ -60,8 +60,8 @@ def bind_sqlite(filename=':memory:'):
     db.bind('sqlite', filename, create_db=True)
     db.generate_mapping(create_tables=True)
     if not Admin.exists(username='A00000000'):
-        rpc.admin_sign_up('A00000000', 'Admin', '12345678')
-        rpc.guest_sign_up('G00000000', 'Guest', '12345678')
+        rpc._admin_sign_up('A00000000', 'Admin', '12345678')
+        rpc._guest_sign_up('G00000000', 'Guest', '12345678')
 
 
 class User(db.Entity, metaclass=EntityMeta):
