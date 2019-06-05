@@ -159,7 +159,7 @@ def new_borrowtime(value=None):
 def new_agreedtime(value=None, default=744):
     if value is not None:
         return new_returntime(value)
-    length = timedelta(days=default)
+    length = timedelta(hours=default)
     return new_borrowtime() + length
 
 
