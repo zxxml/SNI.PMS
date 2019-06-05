@@ -1,10 +1,10 @@
 #!/usr/bin/env/python3
 # -*- coding: utf-8 -*-
 from jsonrpc import Dispatcher
-from jsonrpc.exceptions import JSONRPCDispatchException as Fault
 from pony import orm
 
 from sni import db, utils
+from sni.utils import Fault
 
 __all__ = ['d']
 d = Dispatcher()
@@ -135,12 +135,12 @@ def _get_user(session):
 
 @d.add_method
 @utils.catch_error
+@utils.check_user
 def get_user_advanced(*args, **kwargs):
     return _get_user_advanced(*args, **kwargs)
 
 
 @orm.db_session
-@utils.check_user
 def _get_user_advanced(id=None,
                        username=None,
                        nickname=None,
@@ -189,12 +189,12 @@ def _del_user(session):
 
 @d.add_method
 @utils.catch_error
+@utils.check_admin
 def add_journal(*args, **kwargs):
     return _add_journal(*args, **kwargs)
 
 
 @orm.db_session
-@utils.check_admin
 def _add_journal(name, issn,
                  isbn, post,
                  host, addr,
@@ -213,12 +213,12 @@ def _add_journal(name, issn,
 
 @d.add_method
 @utils.catch_error
+@utils.check_user
 def get_journal(*args, **kwargs):
     return _get_journal(*args, **kwargs)
 
 
 @orm.db_session
-@utils.check_user
 def _get_journal(id=None,
                  name=None, issn=None,
                  isbn=None, post=None,
@@ -231,12 +231,12 @@ def _get_journal(id=None,
 
 @d.add_method
 @utils.catch_error
+@utils.check_user
 def get_journal_reverse(*args, **kwargs):
     return _get_journal_reverse(*args, **kwargs)
 
 
 @orm.db_session
-@utils.check_user
 def _get_journal_reverse(subscribe=None, storage=None, borrow=None):
     if subscribe is not None:
         subscribe = db.Subscribe[subscribe]
@@ -252,12 +252,12 @@ def _get_journal_reverse(subscribe=None, storage=None, borrow=None):
 
 @d.add_method
 @utils.catch_error
+@utils.check_admin
 def set_journal(*args, **kwargs):
     return _set_journal(*args, **kwargs)
 
 
 @orm.db_session
-@utils.check_admin
 def _set_journal(id,
                  name=None, issn=None,
                  isbn=None, post=None,
@@ -276,24 +276,24 @@ def _set_journal(id,
 
 @d.add_method
 @utils.catch_error
+@utils.check_admin
 def del_journal(*args, **kwargs):
     return _del_journal(*args, **kwargs)
 
 
 @orm.db_session
-@utils.check_admin
 def _del_journal(id):
     db.Journal[id].delete()
 
 
 @d.add_method
 @utils.catch_error
+@utils.check_admin
 def add_subscribe(*args, **kwargs):
     return _add_subscribe(*args, **kwargs)
 
 
 @orm.db_session
-@utils.check_admin
 def _add_subscribe(year, journal):
     journal = journal and db.Journal[journal]
     return db.Subscribe.new(**locals()).id
@@ -301,12 +301,12 @@ def _add_subscribe(year, journal):
 
 @d.add_method
 @utils.catch_error
+@utils.check_user
 def get_subscribe(*args, **kwargs):
     return _get_subscribe(*args, **kwargs)
 
 
 @orm.db_session
-@utils.check_user
 def _get_subscribe(id=None,
                    year=None,
                    journal=None):
@@ -317,12 +317,12 @@ def _get_subscribe(id=None,
 
 @d.add_method
 @utils.catch_error
+@utils.check_user
 def get_subscribe_full(*args, **kwargs):
     return _get_subscribe_full(*args, **kwargs)
 
 
 @orm.db_session
-@utils.check_user
 def _get_subscribe_full(id=None,
                         year=None,
                         journal=None):
@@ -333,12 +333,12 @@ def _get_subscribe_full(id=None,
 
 @d.add_method
 @utils.catch_error
+@utils.check_admin
 def set_subscribe(*args, **kwargs):
     return _set_subscribe(*args, **kwargs)
 
 
 @orm.db_session
-@utils.check_admin
 def _set_subscribe(id,
                    year=None,
                    journal=None):
@@ -348,24 +348,24 @@ def _set_subscribe(id,
 
 @d.add_method
 @utils.catch_error
+@utils.check_admin
 def del_subscribe(*args, **kwargs):
     return _del_subscribe(*args, **kwargs)
 
 
 @orm.db_session
-@utils.check_admin
 def _del_subscribe(id):
     db.Subscribe[id].delete()
 
 
 @d.add_method
 @utils.catch_error
+@utils.check_admin
 def add_storage(*args, **kwargs):
     return _add_storage(*args, **kwargs)
 
 
 @orm.db_session
-@utils.check_admin
 def _add_storage(volume,
                  number,
                  subscribe):
@@ -375,12 +375,12 @@ def _add_storage(volume,
 
 @d.add_method
 @utils.catch_error
+@utils.check_user
 def get_storage(*args, **kwargs):
     return _get_storage(*args, **kwargs)
 
 
 @orm.db_session
-@utils.check_user
 def _get_storage(id=None,
                  volume=None,
                  number=None,
@@ -392,12 +392,12 @@ def _get_storage(id=None,
 
 @d.add_method
 @utils.catch_error
+@utils.check_user
 def get_storage_full(*args, **kwargs):
     return _get_storage_full(*args, **kwargs)
 
 
 @orm.db_session
-@utils.check_user
 def _get_storage_full(id=None,
                       volume=None,
                       number=None,
@@ -409,12 +409,12 @@ def _get_storage_full(id=None,
 
 @d.add_method
 @utils.catch_error
+@utils.check_admin
 def set_storage(*args, **kwargs):
     return _set_storage(*args, **kwargs)
 
 
 @orm.db_session
-@utils.check_admin
 def _set_storage(id,
                  volume=None,
                  number=None,
@@ -425,24 +425,24 @@ def _set_storage(id,
 
 @d.add_method
 @utils.catch_error
+@utils.check_admin
 def del_storage(*args, **kwargs):
     return _del_storage(*args, **kwargs)
 
 
 @orm.db_session
-@utils.check_admin
 def _del_storage(id):
     db.Storage[id].delete()
 
 
 @d.add_method
 @utils.catch_error
+@utils.check_admin
 def add_article(*args, **kwargs):
     return _add_article(*args, **kwargs)
 
 
 @orm.db_session
-@utils.check_admin
 def _add_article(title,
                  author,
                  pagenum,
@@ -458,12 +458,12 @@ def _add_article(title,
 
 @d.add_method
 @utils.catch_error
+@utils.check_user
 def get_article(*args, **kwargs):
     return _get_article(*args, **kwargs)
 
 
 @orm.db_session
-@utils.check_user
 def _get_article(id=None,
                  title=None,
                  author=None,
@@ -481,12 +481,12 @@ def _get_article(id=None,
 
 @d.add_method
 @utils.catch_error
+@utils.check_user
 def get_article_advanced(*args, **kwargs):
     return _get_article_advanced(*args, **kwargs)
 
 
 @orm.db_session
-@utils.check_user
 def _get_article_advanced(id=None,
                           title=None,
                           author=None,
@@ -500,12 +500,12 @@ def _get_article_advanced(id=None,
 
 @d.add_method
 @utils.catch_error
+@utils.check_admin
 def set_article(*args, **kwargs):
     return _set_article(*args, **kwargs)
 
 
 @orm.db_session
-@utils.check_admin
 def _set_article(id,
                  title=None,
                  author=None,
@@ -522,24 +522,24 @@ def _set_article(id,
 
 @d.add_method
 @utils.catch_error
+@utils.check_admin
 def del_article(*args, **kwargs):
     return _del_article(*args, **kwargs)
 
 
 @orm.db_session
-@utils.check_admin
 def _del_article(id):
     db.Article[id].delete()
 
 
 @d.add_method
 @utils.catch_error
+@utils.check_admin
 def add_borrow(*args, **kwargs):
     return _add_borrow(*args, **kwargs)
 
 
 @orm.db_session
-@utils.check_admin
 def _add_borrow(user,
                 storage,
                 borrowtime=None,
@@ -555,12 +555,12 @@ def _add_borrow(user,
 
 @d.add_method
 @utils.catch_error
+@utils.check_user
 def get_borrow(*args, **kwargs):
     return _get_borrow(*args, **kwargs)
 
 
 @orm.db_session
-@utils.check_user
 def _get_borrow(id=None,
                 user=None,
                 storage=None,
@@ -575,12 +575,12 @@ def _get_borrow(id=None,
 
 @d.add_method
 @utils.catch_error
+@utils.check_user
 def get_borrow_full(*args, **kwargs):
     return _get_borrow_full(*args, **kwargs)
 
 
 @orm.db_session
-@utils.check_user
 def _get_borrow_full(id=None,
                      user=None,
                      storage=None,
@@ -595,12 +595,12 @@ def _get_borrow_full(id=None,
 
 @d.add_method
 @utils.catch_error
+@utils.check_admin
 def set_borrow(*args, **kwargs):
     return _set_borrow(*args, **kwargs)
 
 
 @orm.db_session
-@utils.check_admin
 def _set_borrow(id=None,
                 user=None,
                 storage=None,
@@ -617,12 +617,12 @@ def _set_borrow(id=None,
 
 @d.add_method
 @utils.catch_error
+@utils.check_admin
 def end_borrow(*args, **kwargs):
     return _end_borrow(*args, **kwargs)
 
 
 @orm.db_session
-@utils.check_admin
 def _end_borrow(id):
     returntime = utils.new_borrowtime()
     db.Borrow[id].set(**locals())
@@ -630,11 +630,11 @@ def _end_borrow(id):
 
 @d.add_method
 @utils.catch_error
+@utils.check_admin
 def del_borrow(*args, **kwargs):
     return _del_borrow(*args, **kwargs)
 
 
 @orm.db_session
-@utils.check_admin
 def _del_borrow():
     db.Borrow[id].delete()
