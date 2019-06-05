@@ -144,13 +144,14 @@ def get_user_advanced(*args, **kwargs):
 def _get_user_advanced(id=None,
                        username=None,
                        nickname=None,
-                       password=None,
                        forename=None,
                        lastname=None,
                        mailaddr=None,
                        phonenum=None):
     users = db.User.select(**locals())
-    return [x.to_dict() for x in users]
+    users = [x.to_dict() for x in users]
+    for x in users: x['password'] = str()
+    return users
 
 
 @d.add_method
@@ -327,7 +328,7 @@ def _get_subscribe_full(id=None,
                         year=None,
                         journal=None):
     results = _get_subscribe(id=id, year=year, journal=journal)
-    for x in results: x['journal'] = db.Journal[x['journal']]
+    for x in results: x['journal'] = _get_journal(x['journal'])[0]
     return results
 
 
@@ -403,7 +404,7 @@ def _get_storage_full(id=None,
                       number=None,
                       subscribe=None):
     results = _get_storage(id=id, volume=volume, number=number, subscribe=subscribe)
-    for x in results: x['subscribe'] = _get_subscribe_full(x['subscribe']['id'])
+    for x in results: x['subscribe'] = _get_subscribe_full(x['subscribe'])[0]
     return results
 
 
@@ -587,9 +588,9 @@ def _get_borrow_full(id=None,
                      borrowtime=None,
                      agreedtime=None,
                      returntime=None):
-    results = _get_storage(**locals())
-    for x in results: x['user'] = _get_user_advanced(x['user']['id'])
-    for x in results: x['storage'] = _get_storage_full(x['storage']['id'])
+    results = _get_borrow(**locals())
+    for x in results: x['user'] = _get_user_advanced(x['user'])[0]
+    for x in results: x['storage'] = _get_storage_full(x['storage'])[0]
     return results
 
 
