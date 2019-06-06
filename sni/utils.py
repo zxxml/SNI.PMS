@@ -65,7 +65,7 @@ def check_user(function):
     def _check_user(session, *args, **kwargs):
         try:
             session = db.Session.get(sessionid=session)
-            assert isinstance(session.user, db.User)
+            assert db.User.exists(id=session.user.id)
             return function(*args, **kwargs)
         except AssertionError:
             message = 'User required.'
@@ -79,7 +79,7 @@ def check_admin(function):
     def _check_admin(session, *args, **kwargs):
         try:
             session = db.Session.get(sessionid=session)
-            assert isinstance(session.user, db.Admin)
+            assert db.Admin.exists(id=session.user.id)
             return function(*args, **kwargs)
         except AssertionError:
             message = 'Admin required.'
@@ -93,7 +93,7 @@ def check_reader(function):
     def _check_reader(session, *args, **kwargs):
         try:
             session = db.Session.get(sessionid=session)
-            assert isinstance(session.user, db.Reader)
+            assert db.Reader.exists(id=session.user.id)
             return function(*args, **kwargs)
         except AssertionError:
             message = 'Reader required.'
