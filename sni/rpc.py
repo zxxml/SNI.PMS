@@ -203,9 +203,9 @@ def _add_journal(name, issn,
                  hist=None,
                  used=None):
     try:
-        # assert check_issn(issn), 'ISSN'
-        # assert check_isbn(isbn), 'ISBN'
-        # assert check_post(post), 'POST'
+        assert check_issn(issn), 'ISSN'
+        assert check_isbn(isbn), 'ISBN'
+        assert check_post(post), 'POST'
         return db.Journal.new(**locals()).id
     except AssertionError as e:
         message = 'Invalid format: {0}.'
