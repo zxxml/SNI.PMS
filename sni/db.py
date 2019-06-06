@@ -1,9 +1,7 @@
 #!/usr/bin/env/python3
 # -*- coding: utf-8 -*-
 from datetime import datetime
-
 from pony import orm
-
 from sni import rpc
 
 
@@ -130,6 +128,14 @@ class Article(db.Entity, metaclass=EntityMeta):
     keyword4 = orm.Optional(str)
     keyword5 = orm.Optional(str)
     storage  = orm.Required('Storage')
+
+    @property
+    def keywords(self):
+        return self.keyword1 + '\n' + \
+               self.keyword2 + '\n' + \
+               self.keyword3 + '\n' + \
+               self.keyword4 + '\n' + \
+               self.keyword5
 
 
 class Borrow(db.Entity, metaclass=EntityMeta):

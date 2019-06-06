@@ -143,19 +143,6 @@ def check_regex(regex):
     return _check_regex
 
 
-def check_keywords(article, keywords):
-    """Check whether the keywords matches.
-    It always returns true if no keywords."""
-    if keywords is None: return True
-    keywords = set(keywords.split())
-    article = {article['keyword1'],
-               article['keyword2'],
-               article['keyword3'],
-               article['keyword4'],
-               article['keyword5']}
-    return keywords & article is not None
-
-
 def new_borrowtime(value=None):
     """Convert the value to datetime.
     Return 0 o'clock today by default."""

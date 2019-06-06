@@ -203,9 +203,9 @@ def _add_journal(name, issn,
                  hist=None,
                  used=None):
     try:
-        assert check_issn(issn), 'ISSN'
-        assert check_isbn(isbn), 'ISBN'
-        assert check_post(post), 'POST'
+        # assert check_issn(issn), 'ISSN'
+        # assert check_isbn(isbn), 'ISBN'
+        # assert check_post(post), 'POST'
         return db.Journal.new(**locals()).id
     except AssertionError as e:
         message = 'Invalid format: {0}.'
@@ -228,6 +228,30 @@ def _get_journal(id=None,
                  hist=None, used=None):
     journals = db.Journal.select(**locals())
     return [x.to_dict() for x in journals]
+
+
+@d.add_method
+@utils.catch_error
+@utils.check_user
+def get_journal_advanced(id=None,
+                         name=None, issn=None,
+                         isbn=None, post=None,
+                         host=None, addr=None,
+                         freq=None, lang=None,
+                         hist=None, used=None):
+    return _get_journal_advanced(**locals())
+
+
+@orm.db_session
+def _get_journal_advanced(name=None,
+                          addr=None,
+                          used=None,
+                          **kwargs):
+    journals = db.Journal.select_db(**kwargs)
+    if name: journals = journals.filter(lambda x: name in x.name)
+    if addr: journals = journals.filter(lambda x: addr in x.addr)
+    if used: journals = journals.filter(lambda x: used in x.used)
+    return [x.to_dict() for x in list(journals)]
 
 
 @d.add_method
@@ -483,19 +507,26 @@ def _get_article(id=None,
 @d.add_method
 @utils.catch_error
 @utils.check_user
-def get_article_advanced(*args, **kwargs):
-    return _get_article_advanced(*args, **kwargs)
+def get_article_advanced(id=None,
+                         title=None,
+                         author=None,
+                         pagenum=None,
+                         storage=None,
+                         keywords=None):
+    return _get_article_advanced(**locals())
 
 
 @orm.db_session
-def _get_article_advanced(id=None,
-                          title=None,
+def _get_article_advanced(title=None,
                           author=None,
-                          pagenum=None,
-                          storage=None,
-                          keywords=None):
-    results = _get_article(id, title, author, pagenum, storage)
-    return [x for x in results if utils.check_keywords(x, keywords)]
+                          keywords=None,
+                          **kwargs):
+    results = db.Article.select_db(**kwargs)
+    if title: results = results.filter(lambda x: title in x.title)
+    if author: results = results.filter(lambda x: author in x.author)
+    keywords = keywords.split() if keywords is not None else tuple()
+    for k in keywords: results = results.filter(lambda x: k in x.keywords)
+    return [x.to_dict() for x in list(results)]
 
 
 @d.add_method
