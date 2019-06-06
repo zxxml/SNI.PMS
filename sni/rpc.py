@@ -31,7 +31,7 @@ def _restart_world():
 @d.add_method
 @utils.catch_error
 def admin_sign_up(*args, **kwargs):
-    _admin_sign_up(*args, **kwargs)
+    return _admin_sign_up(*args, **kwargs)
 
 
 @orm.db_session
@@ -494,9 +494,8 @@ def _get_article_advanced(id=None,
                           pagenum=None,
                           storage=None,
                           keywords=None):
-    kwargs = {'id': id, 'title': title, 'author': author, 'pagenum': pagenum, 'storage': db.Storage[storage]}
-    result = db.Article.select().filter(**kwargs).filter(lambda x: x.keywords & set(keywords.split()))
-    return [x.to_dict() for x in result]
+    results = _get_article(id, title, author, pagenum, storage)
+    return [x for x in results if utils.check_keywords(x, keywords)]
 
 
 @d.add_method

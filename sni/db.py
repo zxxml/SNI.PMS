@@ -1,7 +1,9 @@
 #!/usr/bin/env/python3
 # -*- coding: utf-8 -*-
 from datetime import datetime
+
 from pony import orm
+
 from sni import rpc
 
 
@@ -33,18 +35,21 @@ class EntityMeta(orm.core.EntityMeta):
 
     @orm.db_session
     def select(cls, **kwargs):
+        return cls.select_db(**kwargs)[:]
+
+    def select_db(cls, **kwargs):
         kwargs = cls.clean_kwargs(kwargs)
-        return super().select().filter(**kwargs)[:]
+        return super().select().filter(**kwargs)
 
     @staticmethod
     @orm.db_session
-    def delete_db(self, **kwargs):
+    def delete(self, **kwargs):
         kwargs = EntityMeta.clean_kwargs(kwargs)
         self.delete_db(**kwargs)
 
     @staticmethod
     @orm.db_session
-    def set_db(self, **kwargs):
+    def set(self, **kwargs):
         kwargs = EntityMeta.clean_kwargs(kwargs)
         self.set_db(**kwargs)
 
@@ -52,8 +57,8 @@ class EntityMeta(orm.core.EntityMeta):
 db = orm.Database()
 db.Entity.delete_db = db.Entity.delete
 db.Entity.set_db = db.Entity.set
-db.Entity.delete = EntityMeta.delete_db
-db.Entity.set = EntityMeta.set_db
+db.Entity.delete = EntityMeta.delete
+db.Entity.set = EntityMeta.set
 
 
 def bind_sqlite(filename=':memory:'):
@@ -125,14 +130,6 @@ class Article(db.Entity, metaclass=EntityMeta):
     keyword4 = orm.Optional(str)
     keyword5 = orm.Optional(str)
     storage  = orm.Required('Storage')
-
-    @property
-    def keywords(self):
-        return {self.keyword1,
-                self.keyword2,
-                self.keyword3,
-                self.keyword4,
-                self.keyword5}
 
 
 class Borrow(db.Entity, metaclass=EntityMeta):
