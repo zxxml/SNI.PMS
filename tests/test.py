@@ -1,9 +1,25 @@
 #!/usr/bin/env/python3
 # -*- coding: utf-8 -*-
 import json
+from functools import wraps
 
-from sni import db
-from sni.rpc import _add_article, _add_journal, _add_storage, _add_subscribe
+from sni import db, rpc
+
+
+def ignore_error(func):
+    @wraps(func)
+    def _ignore_error(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as e:
+            print(type(e), str(e.args))
+    return _ignore_error
+
+
+_add_journal = ignore_error(rpc._add_journal)
+_add_subscribe = ignore_error(rpc._add_subscribe)
+_add_storage = ignore_error(rpc._add_storage)
+_add_article = ignore_error(rpc._add_article)
 
 
 def load_from_json(content):
