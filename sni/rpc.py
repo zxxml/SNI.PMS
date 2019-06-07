@@ -434,6 +434,19 @@ def _get_storage_full(id=None,
 
 @d.add_method
 @utils.catch_error
+@utils.check_user
+def is_borrowed(*args, **kwargs):
+    return _is_borrowed(*args, **kwargs)
+
+
+@orm.db_session
+def _is_borrowed(id):
+    borrow = db.Borrow.select_db(storage=id)
+    return borrow.exists(returntime=None)
+
+
+@d.add_method
+@utils.catch_error
 @utils.check_admin
 def set_storage(*args, **kwargs):
     return _set_storage(*args, **kwargs)
@@ -576,12 +589,17 @@ def _add_borrow(user,
                 borrowtime=None,
                 agreedtime=None,
                 returntime=None):
-    user = db.User[user]
-    storage = db.Storage[storage]
-    borrowtime = utils.new_borrowtime(borrowtime)
-    agreedtime = utils.new_agreedtime(agreedtime)
-    returntime = utils.new_returntime(returntime)
-    return db.Borrow.new(**locals()).id
+    try:
+        assert not _is_borrowed(storage)
+        user = db.User[user]
+        storage = db.Storage[storage]
+        borrowtime = utils.new_borrowtime(borrowtime)
+        agreedtime = utils.new_agreedtime(agreedtime)
+        returntime = utils.new_returntime(returntime)
+        return db.Borrow.new(**locals()).id
+    except AssertionError:
+        message = 'Already borrowed.'
+        raise Fault(409, message)
 
 
 @d.add_method
