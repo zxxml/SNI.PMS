@@ -8,10 +8,10 @@ from sni.rpc import _add_article, _add_journal, _add_storage, _add_subscribe
 
 def load_from_json(content):
     data = json.loads(content)
-    load_journals(data['journals'])
+    _load_journals(data['journals'])
 
 
-def load_journals(journals):
+def _load_journals(journals):
     for x in journals:
         y = x.pop('subscribe')
         id = _add_journal(**x)
@@ -27,12 +27,7 @@ def _load_subscribe(subscribe, journal):
 def _load_storage(storage, subscribe):
     for x in storage:
         id = _add_storage(x['volume'], x['number'], subscribe)
-        _load_articles(x['articles'], storage=id)
-
-
-def _load_articles(articles, storage):
-    for x in articles:
-        _add_article(storage=storage, **x)
+        for y in x['articles']: _add_article(storage=id, **y)
 
 
 def test_main():

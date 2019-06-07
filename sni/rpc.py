@@ -1,6 +1,5 @@
 #!/usr/bin/env/python3
 # -*- coding: utf-8 -*-
-import json
 
 from jsonrpc import Dispatcher
 from pony import orm
@@ -443,7 +442,6 @@ def is_borrowed(*args, **kwargs):
 
 @orm.db_session
 def _is_borrowed(id):
-    # a storage is borrowed means borrowed and not returned
     return db.Borrow.exists_db(storage=id, returntime=None)
 
 
@@ -646,6 +644,18 @@ def _get_borrow_full(id=None,
 
 @d.add_method
 @utils.catch_error
+@utils.check_user
+def is_returned(*args, **kwargs):
+    return _is_borrowed(*args, **kwargs)
+
+
+@orm.db_session
+def _is_returned(id):
+    return db.Borrow[id].returntime is not None
+
+
+@d.add_method
+@utils.catch_error
 @utils.check_admin
 def set_borrow(*args, **kwargs):
     return _set_borrow(*args, **kwargs)
@@ -675,8 +685,13 @@ def end_borrow(*args, **kwargs):
 
 @orm.db_session
 def _end_borrow(id):
-    returntime = utils.new_borrowtime()
-    db.Borrow[id].set(**locals())
+    try:
+        assert not _is_borrowed(id)
+        returntime = utils.new_borrowtime()
+        db.Borrow[id].set(**locals())
+    except AssertionError:
+        message = 'Already returned.'
+        raise Fault(409, message)
 
 
 @d.add_method
@@ -689,8 +704,3 @@ def del_borrow(*args, **kwargs):
 @orm.db_session
 def _del_borrow():
     db.Borrow[id].delete()
-
-
-
-
-
