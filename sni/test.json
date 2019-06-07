@@ -431,6 +431,270 @@
           ]
         }
       ]
+    },
+    {
+      "name": "南亚研究",
+      "issn": "1002-8404",
+      "isbn": "CN11-1306",
+      "post": "82-980",
+      "host": "中国南亚学会；中国社会科学院亚太所；北京大学南亚文化研究所",
+      "addr": "北京东城区张自忠路3号东院",
+      "freq": 4,
+      "lang": "简体中文",
+      "hist": null,
+      "used": "",
+      "subscribe": [
+        {
+          "year": 2019,
+          "storage": [
+            {
+              "volume": 2019,
+              "number": 1,
+              "articles": [
+                {
+                  "title": "“保护的责任”中的非军事干预新模式——以缅甸若开邦罗兴亚人危机为例",
+                  "author": "祝湘辉",
+                  "pagenum": 117,
+                  "keyword1": "保护的责任",
+                  "keyword2": "非军事干预",
+                  "keyword3": "缅甸",
+                  "keyword4": "罗兴亚人",
+                  "keyword5": ""
+                },
+                {
+                  "title": "“一带一路”倡议下次区域合作机制化限度研究",
+                  "author": "刘晓伟",
+                  "pagenum": 101,
+                  "keyword1": "次区域合作",
+                  "keyword2": "公共产品",
+                  "keyword3": "机制化",
+                  "keyword4": "孟中印缅经济走廊",
+                  "keyword5": ""
+                },
+                {
+                  "title": "印度科技外交模式、特点和启示",
+                  "author": "孙海燕；辛仁杰",
+                  "pagenum": 82,
+                  "keyword1": "印度",
+                  "keyword2": "科技外交",
+                  "keyword3": "中印关系",
+                  "keyword4": "国际科技合作",
+                  "keyword5": ""
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "year": 2018,
+          "storage": [
+            {
+              "volume": 2018,
+              "number": 1,
+              "articles": [
+                {
+                  "title": "中国的甘地研究：20世纪80年代初至90年代末",
+                  "author": "尚劝余；尚沫含",
+                  "pagenum": 141,
+                  "keyword1": "甘地研究",
+                  "keyword2": "甘地主义",
+                  "keyword3": "非暴力",
+                  "keyword4": "",
+                  "keyword5": ""
+                },
+                {
+                  "title": "多视角浅析印度特殊经济区表现",
+                  "author": "雷定坤；赵可金",
+                  "pagenum": 114,
+                  "keyword1": "印度特殊经济区",
+                  "keyword2": "经济特区",
+                  "keyword3": "发展主义",
+                  "keyword4": "空间与资本",
+                  "keyword5": "政策试验"
+                },
+                {
+                  "title": "基于CiteSpace对巴基斯坦战略学界核学习的可视化分析",
+                  "author": "涂华忠；和红梅；宗蔚；涂波",
+                  "pagenum": 92,
+                  "keyword1": "巴基斯坦",
+                  "keyword2": "核学习",
+                  "keyword3": "北约",
+                  "keyword4": "可视化分析",
+                  "keyword5": ""
+                }
+              ]
+            },
+            {
+              "volume": 2018,
+              "number": 2,
+              "articles": [
+                {
+                  "title": "印度恐怖主义与社会经济因素的关系探究",
+                  "author": "程晓勇",
+                  "pagenum": 122,
+                  "keyword1": "印度",
+                  "keyword2": "恐怖主义",
+                  "keyword3": "经济因素",
+                  "keyword4": "莫迪经济改革",
+                  "keyword5": ""
+                },
+                {
+                  "title": "论印度对外干预——以印度介入斯里兰卡民族冲突为例",
+                  "author": "肖斌；袁思远",
+                  "pagenum": 153,
+                  "keyword1": "印度",
+                  "keyword2": "对外干预",
+                  "keyword3": "斯里兰卡",
+                  "keyword4": "民族冲突",
+                  "keyword5": "印斯关系"
+                },
+                {
+                  "title": "巴阿关系的囚徒困境及其治理",
+                  "author": "任炳卿；冯怀信",
+                  "pagenum": 105,
+                  "keyword1": "巴基斯坦",
+                  "keyword2": "阿富汗",
+                  "keyword3": "巴阿关系",
+                  "keyword4": "不信任",
+                  "keyword5": "囚徒困境"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "世界历史",
+      "issn": "1002-011X",
+      "isbn": "CN11-1046",
+      "post": "82-696",
+      "host": "中国社会科学院世界历史研究所",
+      "addr": "北京王府井大街东厂胡同1号",
+      "freq": 6,
+      "lang": "简体中文",
+      "hist": null,
+      "used": "",
+      "subscribe": [
+        {
+          "year": 2019,
+          "storage": [
+            {
+              "volume": 2019,
+              "number": 1,
+              "articles": [
+                {
+                  "title": "《亚述王表》与亚述王权",
+                  "author": "陈飞",
+                  "pagenum": 122,
+                  "keyword1": "亚述",
+                  "keyword2": "亚述王表",
+                  "keyword3": "亚述王权",
+                  "keyword4": "",
+                  "keyword5": ""
+                },
+                {
+                  "title": "“中国礼仪之争”的缘起和中西学统的关系",
+                  "author": "纪建勋",
+                  "pagenum": 112,
+                  "keyword1": "中国礼仪之争",
+                  "keyword2": "恩典观",
+                  "keyword3": "决疑论",
+                  "keyword4": "文明冲突论",
+                  "keyword5": "中西学统"
+                },
+                {
+                  "title": "载泽使团访日与日本的因应",
+                  "author": "王美平",
+                  "pagenum": 100,
+                  "keyword1": "载泽使团",
+                  "keyword2": "清廷出洋考察",
+                  "keyword3": "中日关系",
+                  "keyword4": "日俄战争",
+                  "keyword5": "清末新政"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "year": 2018,
+          "storage": [
+            {
+              "volume": 2018,
+              "number": 1,
+              "articles": [
+                {
+                  "title": "第五届世界史研究前沿论坛在中山大学召开",
+                  "author": "李干",
+                  "pagenum": 150,
+                  "keyword1": "世界史研究",
+                  "keyword2": "中山大学",
+                  "keyword3": "论坛",
+                  "keyword4": "《世界历史》",
+                  "keyword5": "华东师范大学"
+                },
+                {
+                  "title": "西方史学界的人权史研究述评",
+                  "author": "刘祥",
+                  "pagenum": 138,
+                  "keyword1": "学术史",
+                  "keyword2": "人权史",
+                  "keyword3": "人权革命",
+                  "keyword4": "权利理念",
+                  "keyword5": ""
+                },
+                {
+                  "title": "日本的东亚史研究及其启示",
+                  "author": "陈奉林",
+                  "pagenum": 123,
+                  "keyword1": "日本史学",
+                  "keyword2": "东亚史研究",
+                  "keyword3": "研究方法",
+                  "keyword4": "学科体系",
+                  "keyword5": ""
+                }
+              ]
+            },
+            {
+              "volume": 2018,
+              "number": 2,
+              "articles": [
+                {
+                  "title": "中世纪晚期英格兰市民资格的变革与社会流动",
+                  "author": "姜启舟",
+                  "pagenum": 144,
+                  "keyword1": "中世纪晚期",
+                  "keyword2": "英格兰城市",
+                  "keyword3": "市民资格",
+                  "keyword4": "社会流动",
+                  "keyword5": ""
+                },
+                {
+                  "title": "民族起源神话与英格兰文艺复兴时期的盎格鲁—撒克逊研究",
+                  "author": "孙超",
+                  "pagenum": 134,
+                  "keyword1": "盎格鲁-撒克逊",
+                  "keyword2": "“移民神话”",
+                  "keyword3": "民族认同",
+                  "keyword4": "英格兰",
+                  "keyword5": "文艺复兴"
+                },
+                {
+                  "title": "中世纪晚期德意志的邦国制",
+                  "author": "王亚平",
+                  "pagenum": 121,
+                  "keyword1": "德意志",
+                  "keyword2": "“大空位时期”",
+                  "keyword3": "邦国制",
+                  "keyword4": "绝对主义王权",
+                  "keyword5": ""
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 }
