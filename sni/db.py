@@ -24,6 +24,9 @@ class EntityMeta(orm.core.EntityMeta):
     @orm.db_session
     def exists(cls, *args, **kwargs):
         kwargs = cls.clean_kwargs(kwargs)
+        return cls.exists_db(cls, *args, **kwargs)
+
+    def exists_db(cls, *args, **kwargs):
         return super().exists(*args, **kwargs)
 
     @orm.db_session
