@@ -565,6 +565,174 @@
       ]
     },
     {
+      "name": "世界哲学",
+      "issn": "1671-4318",
+      "isbn": "CN11-4748",
+      "post": "2-202",
+      "host": "中国社会科学院哲学所",
+      "addr": "北京建国门内大街5号",
+      "freq": 6,
+      "lang": "简体中文",
+      "hist": 1956,
+      "used": "",
+      "subscribe": [
+        {
+          "year": 2019,
+          "storage": [
+            {
+              "volume": 2019,
+              "number": 1,
+              "articles": [
+                {
+                  "title": "确证非必要性论题的实证研究",
+                  "author": "曹剑波",
+                  "pagenum": 151,
+                  "keyword1": "知识",
+                  "keyword2": "确证",
+                  "keyword3": "确证非必要性论题",
+                  "keyword4": "实证研究",
+                  "keyword5": ""
+                },
+                {
+                  "title": "论“拉康欲望图式”及其政治哲学意蕴",
+                  "author": "周文莲",
+                  "pagenum": 135,
+                  "keyword1": "拉康",
+                  "keyword2": "欲望图式",
+                  "keyword3": "政治哲学意蕴",
+                  "keyword4": "",
+                  "keyword5": ""
+                },
+                {
+                  "title": "社会结构:制度性三位一体",
+                  "author": "韩东屏",
+                  "pagenum": 122,
+                  "keyword1": "社会结构",
+                  "keyword2": "社会制度",
+                  "keyword3": "制度意识形态",
+                  "keyword4": "制度保障机器",
+                  "keyword5": "制度安排者"
+                }
+              ]
+            },
+            {
+              "volume": 2019,
+              "number": 2,
+              "articles": [
+                {
+                  "title": "“后习俗社会”道德规范有效性的证成——从学习机制到道德商谈",
+                  "author": "黄秋萍",
+                  "pagenum": 152,
+                  "keyword1": "后习俗",
+                  "keyword2": "道德规范",
+                  "keyword3": "有效性",
+                  "keyword4": "学习",
+                  "keyword5": "商谈"
+                },
+                {
+                  "title": "自由市场与程序正义",
+                  "author": "李石",
+                  "pagenum": 143,
+                  "keyword1": "程序",
+                  "keyword2": "正义",
+                  "keyword3": "分配",
+                  "keyword4": "税收",
+                  "keyword5": ""
+                },
+                {
+                  "title": "论当代平等理论的三大特征",
+                  "author": "金辛迪",
+                  "pagenum": 133,
+                  "keyword1": "当代平等理论的发端",
+                  "keyword2": "四要素分析框架",
+                  "keyword3": "三大特征",
+                  "keyword4": "",
+                  "keyword5": ""
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "year": 2018,
+          "storage": [
+            {
+              "volume": 2018,
+              "number": 1,
+              "articles": [
+                {
+                  "title": "平等的观念",
+                  "author": "B．威廉姆斯；汪沛",
+                  "pagenum": 149,
+                  "keyword1": "平等",
+                  "keyword2": "共同人性",
+                  "keyword3": "道德能力",
+                  "keyword4": "分配",
+                  "keyword5": ""
+                },
+                {
+                  "title": "规范性重构与社会自由——兼论正义范式的当代转换",
+                  "author": "宋建丽",
+                  "pagenum": 142,
+                  "keyword1": "规范性重构",
+                  "keyword2": "社会自由",
+                  "keyword3": "承认机制",
+                  "keyword4": "正义秩序",
+                  "keyword5": ""
+                },
+                {
+                  "title": "当代全球分配正义的理论论辩",
+                  "author": "陈俊",
+                  "pagenum": 131,
+                  "keyword1": "全球分配正义",
+                  "keyword2": "关系主义",
+                  "keyword3": "非关系主义",
+                  "keyword4": "底限主义",
+                  "keyword5": "平等主义"
+                }
+              ]
+            },
+            {
+              "volume": 2018,
+              "number": 2,
+              "articles": [
+                {
+                  "title": "真与悖论的逻辑分析：从目的论解释到定量描述?",
+                  "author": "赵艺；熊明",
+                  "pagenum": 152,
+                  "keyword1": "悖论",
+                  "keyword2": "定量描述",
+                  "keyword3": "目的论解释",
+                  "keyword4": "T-模式",
+                  "keyword5": "真"
+                },
+                {
+                  "title": "宇宙是一个计算机吗？——论基于自然计算的泛计算主义",
+                  "author": "李建会；夏永红",
+                  "pagenum": 145,
+                  "keyword1": "泛计算主义",
+                  "keyword2": "自然计算",
+                  "keyword3": "图灵计算",
+                  "keyword4": "丘奇-图灵论题",
+                  "keyword5": "信息-计算主义"
+                },
+                {
+                  "title": "全球正义的进路与人道主义关怀",
+                  "author": "龚群",
+                  "pagenum": 137,
+                  "keyword1": "全球正义",
+                  "keyword2": "人道主义援助",
+                  "keyword3": "饥荒",
+                  "keyword4": "生存权",
+                  "keyword5": ""
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
       "name": "世界历史",
       "issn": "1002-011X",
       "isbn": "CN11-1046",
@@ -689,6 +857,342 @@
                   "keyword3": "邦国制",
                   "keyword4": "绝对主义王权",
                   "keyword5": ""
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "数量经济技术经济研究",
+      "issn": "1000-3894",
+      "isbn": "CN11-1087",
+      "post": "2-745",
+      "host": "数量经济与技术经济研究所",
+      "addr": "北京建国门内大街5号",
+      "freq": 12,
+      "lang": "简体中文",
+      "hist": null,
+      "used": "",
+      "subscribe": [
+        {
+          "year": 2019,
+          "storage": [
+            {
+              "volume": 2019,
+              "number": 1,
+              "articles": [
+                {
+                  "title": "带高次趋势项的ADF单位根检验",
+                  "author": "左秀霞",
+                  "pagenum": 152,
+                  "keyword1": "单位根",
+                  "keyword2": "ADF检验",
+                  "keyword3": "高次趋势",
+                  "keyword4": "渐近分布",
+                  "keyword5": "临界值"
+                },
+                {
+                  "title": "基于逻辑函数平滑转移模型和截面相关的非线性面板单位根检验",
+                  "author": "王维国；杜重华；薛景",
+                  "pagenum": 133,
+                  "keyword1": "单位根检验",
+                  "keyword2": "逻辑函数",
+                  "keyword3": "平滑转移模型",
+                  "keyword4": "截面相关",
+                  "keyword5": "购买力平价"
+                },
+                {
+                  "title": "加总偏误校正研究:一种Castle-IV方法",
+                  "author": "覃琼霞；江涛",
+                  "pagenum": 113,
+                  "keyword1": "加总偏误",
+                  "keyword2": "校正",
+                  "keyword3": "Castle-IV方法",
+                  "keyword4": "",
+                  "keyword5": ""
+                }
+              ]
+            },
+            {
+              "volume": 2019,
+              "number": 2,
+              "articles": [
+                {
+                  "title": "一种R&D资本平均服务寿命的估计方法及应用研究",
+                  "author": "朱发仓；郝敏；高慧洁",
+                  "pagenum": 135,
+                  "keyword1": "平均服务寿命",
+                  "keyword2": "R&D",
+                  "keyword3": "资本核算",
+                  "keyword4": "发明专利",
+                  "keyword5": ""
+                },
+                {
+                  "title": "一种基于差分灰狼算法的消费者信心预测指数的设计",
+                  "author": "邹鸿飞；王建州",
+                  "pagenum": 120,
+                  "keyword1": "消费者信心指数",
+                  "keyword2": "混合神经网络",
+                  "keyword3": "预测模型",
+                  "keyword4": "差分灰狼优化算法",
+                  "keyword5": ""
+                },
+                {
+                  "title": "全球产出调整分析框架下汇率升值的产出效应研究",
+                  "author": "赵永亮；吴辰星；俞萍萍",
+                  "pagenum": 103,
+                  "keyword1": "全球产出调整分析框架",
+                  "keyword2": "全球价值链",
+                  "keyword3": "汇率",
+                  "keyword4": "行业",
+                  "keyword5": "WIOD"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "year": 2018,
+          "storage": [
+            {
+              "volume": 2018,
+              "number": 1,
+              "articles": [
+                {
+                  "title": "一种新的包含可变时间效应的内生时空权重矩阵构建方法",
+                  "author": "范巧",
+                  "pagenum": 131,
+                  "keyword1": "权重矩阵",
+                  "keyword2": "时间效应",
+                  "keyword3": "变异性",
+                  "keyword4": "Moran指数",
+                  "keyword5": ""
+                },
+                {
+                  "title": "中国多机制门限金融状况指数编制及应用",
+                  "author": "周德才；朱志亮；贾青",
+                  "pagenum": 111,
+                  "keyword1": "金融状况指数",
+                  "keyword2": "门限模型",
+                  "keyword3": "资产价格",
+                  "keyword4": "货币政策",
+                  "keyword5": "经济增长"
+                },
+                {
+                  "title": "中国行业层面研究与试验发展资本存量核算",
+                  "author": "王亚菲；王春云",
+                  "pagenum": 94,
+                  "keyword1": "研究与试验发展",
+                  "keyword2": "研发资本化",
+                  "keyword3": "资本存量核算",
+                  "keyword4": "",
+                  "keyword5": ""
+                }
+              ]
+            },
+            {
+              "volume": 2018,
+              "number": 2,
+              "articles": [
+                {
+                  "title": "时空动态半参数变系数随机效应面板模型的估计?",
+                  "author": "刘玉；唐礼智",
+                  "pagenum": 131,
+                  "keyword1": "半参数",
+                  "keyword2": "变系数",
+                  "keyword3": "时空动态",
+                  "keyword4": "随机效应",
+                  "keyword5": ""
+                },
+                {
+                  "title": "税收优惠对企业研发投入的政策效应研究",
+                  "author": "程瑶；闫慧慧",
+                  "pagenum": 116,
+                  "keyword1": "研发投入",
+                  "keyword2": "倾向得分匹配",
+                  "keyword3": "税收优惠",
+                  "keyword4": "",
+                  "keyword5": ""
+                },
+                {
+                  "title": "产品内国际分工下中国工业部门收入分配格局对产业升级影响研究",
+                  "author": "王娟；张鹏",
+                  "pagenum": 99,
+                  "keyword1": "产品内分工",
+                  "keyword2": "相对工资差距",
+                  "keyword3": "劳动生产率",
+                  "keyword4": "产业升级",
+                  "keyword5": ""
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "世界社会主义研究",
+      "issn": "2096-2630",
+      "isbn": "CN10-1443",
+      "post": "2-262",
+      "host": "中国社会科学院信息情报研究院；社会科学文献出版社",
+      "addr": "北京市东城区建国门内大街5号",
+      "freq": 12,
+      "lang": "简体中文",
+      "hist": 2016,
+      "used": "",
+      "subscribe": [
+        {
+          "year": 2019,
+          "storage": [
+            {
+              "volume": 2019,
+              "number": 1,
+              "articles": [
+                {
+                  "title": "西方给中国贴“国家资本主义”标签的真实用意",
+                  "author": "陈尧",
+                  "pagenum": 92,
+                  "keyword1": "西方资本主义",
+                  "keyword2": "国家资本主义",
+                  "keyword3": "中国模式",
+                  "keyword4": "社会主义发展道路",
+                  "keyword5": "标签"
+                },
+                {
+                  "title": "美国对外意识形态输出的战略与策略",
+                  "author": "金家新",
+                  "pagenum": 91,
+                  "keyword1": "文化意识形态",
+                  "keyword2": "美国",
+                  "keyword3": "好莱坞电影",
+                  "keyword4": "“公民宗教”",
+                  "keyword5": "联邦政府"
+                },
+                {
+                  "title": "网络意识形态已成为意识形态体系的重要组成部分",
+                  "author": "朱箭容",
+                  "pagenum": 91,
+                  "keyword1": "信息网络技术",
+                  "keyword2": "意识形态",
+                  "keyword3": "组成",
+                  "keyword4": "中国特色社会主义",
+                  "keyword5": "社会条件"
+                }
+              ]
+            },
+            {
+              "volume": 2019,
+              "number": 2,
+              "articles": [
+                {
+                  "title": "全面认识西方“福利陷阱”",
+                  "author": "江宇",
+                  "pagenum": 92,
+                  "keyword1": "西方国家",
+                  "keyword2": "社会福利",
+                  "keyword3": "资本主义社会",
+                  "keyword4": "经济困境",
+                  "keyword5": "中等收入陷阱"
+                },
+                {
+                  "title": "美国如何打造主流意识形态",
+                  "author": "黄树东",
+                  "pagenum": 92,
+                  "keyword1": "主流意识形态",
+                  "keyword2": "美国",
+                  "keyword3": "言论自由",
+                  "keyword4": "统治阶级",
+                  "keyword5": "生存问题"
+                },
+                {
+                  "title": "美国基金会“慈善”的内幕和实质",
+                  "author": "程恩富；蒯正明",
+                  "pagenum": 91,
+                  "keyword1": "基金会",
+                  "keyword2": "慈善家",
+                  "keyword3": "美国",
+                  "keyword4": "内幕",
+                  "keyword5": "私人企业"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "year": 2018,
+          "storage": [
+            {
+              "volume": 2018,
+              "number": 1,
+              "articles": [
+                {
+                  "title": "新自由主义的新动向新特点",
+                  "author": "丁晓钦",
+                  "pagenum": 92,
+                  "keyword1": "新自由主义",
+                  "keyword2": "国际金融危机",
+                  "keyword3": "2008年",
+                  "keyword4": "主流地位",
+                  "keyword5": "西方社会"
+                },
+                {
+                  "title": "美国民主制皮走向衰退的现象",
+                  "author": "胡懋仁",
+                  "pagenum": 91,
+                  "keyword1": "民主制度",
+                  "keyword2": "美国",
+                  "keyword3": "政治学家",
+                  "keyword4": "精英阶层",
+                  "keyword5": ""
+                },
+                {
+                  "title": "不平等问题成胁资本主义制度",
+                  "author": "马丁·沃尔夫",
+                  "pagenum": 91,
+                  "keyword1": "资本主义制度",
+                  "keyword2": "不平等问题",
+                  "keyword3": "收入不平等程度",
+                  "keyword4": "撒哈拉以南非洲",
+                  "keyword5": "实际收入"
+                }
+              ]
+            },
+            {
+              "volume": 2018,
+              "number": 2,
+              "articles": [
+                {
+                  "title": "为何越来越多国家不想追随美国?",
+                  "author": "杨丹志",
+                  "pagenum": 93,
+                  "keyword1": "美国政策",
+                  "keyword2": "国家",
+                  "keyword3": "世界经济发展",
+                  "keyword4": "全球化发展",
+                  "keyword5": "领袖地位"
+                },
+                {
+                  "title": "美国通过文化渗透塑造各国人民的价值观",
+                  "author": "戴旭",
+                  "pagenum": 93,
+                  "keyword1": "文化渗透",
+                  "keyword2": "价值观",
+                  "keyword3": "美国",
+                  "keyword4": "人民",
+                  "keyword5": "21世纪"
+                },
+                {
+                  "title": "美国特朗普政府的对外政策为何失败",
+                  "author": "〔西〕巴勃罗·霍夫雷",
+                  "pagenum": 93,
+                  "keyword1": "特朗普",
+                  "keyword2": "对外政策",
+                  "keyword3": "政府",
+                  "keyword4": "美国",
+                  "keyword5": "失败"
                 }
               ]
             }
