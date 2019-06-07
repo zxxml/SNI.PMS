@@ -442,7 +442,7 @@ def is_borrowed(*args, **kwargs):
 @orm.db_session
 def _is_borrowed(id):
     borrow = db.Borrow.select_db(storage=id)
-    return borrow.exists_db(lambda x: x.returntime is None)
+    return borrow.exists_db(returntime=None)
 
 
 @d.add_method
