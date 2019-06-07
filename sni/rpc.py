@@ -441,6 +441,7 @@ def is_borrowed(*args, **kwargs):
 
 @orm.db_session
 def _is_borrowed(id):
+    # a storage is borrowed means borrowed and not returned
     return db.Borrow.exists_db(storage=id, returntime=None)
 
 
