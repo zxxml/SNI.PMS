@@ -26,7 +26,7 @@ def catch_error(function):
         except Fault as e:
             # cut the traceback
             raise e from None
-        except TypeError as e:
+        except (TypeError, ValueError) as e:
             message = 'Invalid arguments: {0}'
             raise Fault(400, message, e.args)
         except core.ConstraintError as e:
