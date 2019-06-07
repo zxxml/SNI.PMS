@@ -686,7 +686,7 @@ def end_borrow(*args, **kwargs):
 @orm.db_session
 def _end_borrow(id):
     try:
-        assert not _is_borrowed(id)
+        assert not _is_returned(id)
         returntime = utils.new_borrowtime()
         db.Borrow[id].set(**locals())
     except AssertionError:
