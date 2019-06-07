@@ -9,7 +9,7 @@ from sni.utils import Fault
 __all__ = ['d']
 d = Dispatcher()
 
-check_issn = utils.check_regex(r'^\d{4}-\d{4}$')
+check_issn = utils.check_regex(r'^\d{4}-\d{3}[0-9X]$')
 check_isbn = utils.check_regex(r'^CN\d{2}-\d{4}$')
 check_post = utils.check_regex(r'^\d{1,2}-\d{1,3}$')
 

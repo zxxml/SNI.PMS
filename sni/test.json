@@ -1,0 +1,436 @@
+{
+  "journals": [
+    {
+      "name": "当代亚太",
+      "issn": "1007-161X",
+      "isbn": "CN11-3706",
+      "post": "2-554",
+      "host": "中国社会科学院亚太与全球战略研究所；中国亚洲太平洋学会",
+      "addr": "北京东城区张自忠路3号东院",
+      "freq": 6,
+      "lang": "简体中文",
+      "hist": null,
+      "used": "",
+      "subscribe": [
+        {
+          "year": 2019,
+          "storage": [
+            {
+              "volume": 2019,
+              "number": 1,
+              "articles": [
+                {
+                  "title": "微区域安全及其治理的逻辑——以“一带一路”倡议下的“大湄公河微区域”安全为例",
+                  "author": "李峰；洪邮生",
+                  "pagenum": 118,
+                  "keyword1": "跨境合作",
+                  "keyword2": "微区域安全",
+                  "keyword3": "安全治理",
+                  "keyword4": "“一带一路”",
+                  "keyword5": "“大湄公河微区域”"
+                },
+                {
+                  "title": "追随战略的“黄昏”:基于东南亚国家对中美两国战略取向的分析",
+                  "author": "连波",
+                  "pagenum": 88,
+                  "keyword1": "东南亚国家",
+                  "keyword2": "追随战略",
+                  "keyword3": "大国平衡",
+                  "keyword4": "地区安全机制",
+                  "keyword5": "东盟"
+                },
+                {
+                  "title": "周边国家应对中国崛起的战略选择:一种基于制衡能力和制衡意愿的解释",
+                  "author": "陈小鼎；王翠梅",
+                  "pagenum": 56,
+                  "keyword1": "中国崛起",
+                  "keyword2": "周边外交",
+                  "keyword3": "制衡能力",
+                  "keyword4": "制衡意愿",
+                  "keyword5": "战略选择"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "year": 2018,
+          "storage": [
+            {
+              "volume": 2018,
+              "number": 1,
+              "articles": [
+                {
+                  "title": "南海与中国的核心利益：争论、回归及超越",
+                  "author": "罗肖",
+                  "pagenum": 122,
+                  "keyword1": "南海",
+                  "keyword2": "中国核心利益",
+                  "keyword3": "核心利益具体化",
+                  "keyword4": "南海维权",
+                  "keyword5": "和平崛起"
+                },
+                {
+                  "title": "权利竞争：对相互竞争的区域贸易协定的解释",
+                  "author": "王隽毅",
+                  "pagenum": 99,
+                  "keyword1": "权利竞争",
+                  "keyword2": "区域贸易协定",
+                  "keyword3": "国家再形成",
+                  "keyword4": "全球经济治理结构",
+                  "keyword5": ""
+                },
+                {
+                  "title": "“两面结盟”分类与大国共治逻辑——兼答周方银、王旭彤对《盟国的敌人还是盟国？》的评论",
+                  "author": "曹玮；杨原",
+                  "pagenum": 67,
+                  "keyword1": "两面结盟",
+                  "keyword2": "大国共治",
+                  "keyword3": "同盟理论",
+                  "keyword4": "朝贡体系",
+                  "keyword5": "同盟"
+                }
+              ]
+            },
+            {
+              "volume": 2018,
+              "number": 2,
+              "articles": [
+                {
+                  "title": "日本媒体报道与中日关系恶化",
+                  "author": "王京滨",
+                  "pagenum": 126,
+                  "keyword1": "中日关系",
+                  "keyword2": "媒体报道",
+                  "keyword3": "“南海仲裁案”",
+                  "keyword4": "军事威胁",
+                  "keyword5": "集结效果"
+                },
+                {
+                  "title": "战后日本对外援助的动态演进及其援助战略分析——基于欧美的比较视角",
+                  "author": "赵剑治；欧阳喆",
+                  "pagenum": 92,
+                  "keyword1": "日本对外援助",
+                  "keyword2": "动态演进",
+                  "keyword3": "援助战略",
+                  "keyword4": "欧美比较",
+                  "keyword5": ""
+                },
+                {
+                  "title": "政治互疑条件下的东北亚区域能源合作路径——兼论“一带一路”倡议与东北亚区域能源合作",
+                  "author": "朴光姬；郭霞；李芳",
+                  "pagenum": 68,
+                  "keyword1": "东北亚",
+                  "keyword2": "能源合作",
+                  "keyword3": "政治互疑",
+                  "keyword4": "“一带一路”倡议",
+                  "keyword5": ""
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "金融评论",
+      "issn": "1674-7690",
+      "isbn": "CN11-5865",
+      "post": "2-340",
+      "host": "中国社会科学院金融所",
+      "addr": "北京朝阳区曙光西里28号中冶大厦11层",
+      "freq": 6,
+      "lang": "简体中文",
+      "hist": 2009,
+      "used": "",
+      "subscribe": [
+        {
+          "year": 2019,
+          "storage": [
+            {
+              "volume": 2019,
+              "number": 1,
+              "articles": [
+                {
+                  "title": "宏观杠杆率与系统性金融风险的门槛效应——基于跨国面板数据的经验研究",
+                  "author": "王桂虎；郭金龙",
+                  "pagenum": 112,
+                  "keyword1": "宏观杠杆率",
+                  "keyword2": "系统性金融风险",
+                  "keyword3": "门槛效应",
+                  "keyword4": "",
+                  "keyword5": ""
+                },
+                {
+                  "title": "信贷中介链条拉长是否会显著提高实体经济部门融资成本",
+                  "author": "郭强；张明；刘玚",
+                  "pagenum": 95,
+                  "keyword1": "信贷中介链条",
+                  "keyword2": "融资成本",
+                  "keyword3": "社会融资规模",
+                  "keyword4": "",
+                  "keyword5": ""
+                },
+                {
+                  "title": "独立董事参与度对CEO超额薪酬影响研究——基于深度与广度的双元视角",
+                  "author": "刘鑫；张雯宇",
+                  "pagenum": 73,
+                  "keyword1": "独立董事",
+                  "keyword2": "CEO超额薪酬",
+                  "keyword3": "参与深度",
+                  "keyword4": "参与广度",
+                  "keyword5": ""
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "year": 2018,
+          "storage": [
+            {
+              "volume": 2018,
+              "number": 1,
+              "articles": [
+                {
+                  "title": "马克思主义关于金融风险的思想及其最新发展",
+                  "author": "郭金龙；周小燕",
+                  "pagenum": 118,
+                  "keyword1": "马克思主义",
+                  "keyword2": "金融风险",
+                  "keyword3": "防范金融风险",
+                  "keyword4": "",
+                  "keyword5": ""
+                },
+                {
+                  "title": "投资者情绪的信贷冲击是对称的吗？——基于信贷规模与产权性质差异的研究",
+                  "author": "黄宏斌；尚文华",
+                  "pagenum": 100,
+                  "keyword1": "投资者情绪",
+                  "keyword2": "信贷融资",
+                  "keyword3": "非对称性",
+                  "keyword4": "产权性质",
+                  "keyword5": ""
+                },
+                {
+                  "title": "核心技术员工激励与公司绩效",
+                  "author": "于换军",
+                  "pagenum": 87,
+                  "keyword1": "核心员工",
+                  "keyword2": "股权激励",
+                  "keyword3": "公司绩效",
+                  "keyword4": "",
+                  "keyword5": ""
+                }
+              ]
+            },
+            {
+              "volume": 2018,
+              "number": 2,
+              "articles": [
+                {
+                  "title": "保险系统性风险及其监管:文献述评",
+                  "author": "王向楠；王超",
+                  "pagenum": 111,
+                  "keyword1": "保险",
+                  "keyword2": "系统性",
+                  "keyword3": "风险监管",
+                  "keyword4": "文献述评",
+                  "keyword5": ""
+                },
+                {
+                  "title": "村镇银行发展对农业生产效率的影响研究——基于四川省县级区域数据的分析",
+                  "author": "毛日昇；罗骏",
+                  "pagenum": 96,
+                  "keyword1": "村镇银行",
+                  "keyword2": "农业生产效率",
+                  "keyword3": "随机前沿",
+                  "keyword4": "工业和服务业",
+                  "keyword5": "农村基础设施"
+                },
+                {
+                  "title": "成长经济环境对个人投资者投资行为的影响",
+                  "author": "陈紫琳",
+                  "pagenum": 85,
+                  "keyword1": "城市人均GDP",
+                  "keyword2": "个人投资者",
+                  "keyword3": "行为偏差",
+                  "keyword4": "",
+                  "keyword5": ""
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "马克思主义研究",
+      "issn": "1006-5199",
+      "isbn": "CN11-3591",
+      "post": "82-686",
+      "host": "马克思主义研究学部马克思主义研究院",
+      "addr": "北京建国门内大街5号",
+      "freq": 12,
+      "lang": "简体中文",
+      "hist": null,
+      "used": "",
+      "subscribe": [
+        {
+          "year": 2019,
+          "storage": [
+            {
+              "volume": 2019,
+              "number": 1,
+              "articles": [
+                {
+                  "title": "国外马克思主义研究与新时代中国特色社会主义建设——“第五届全国国外马克思主义研究论坛”综述",
+                  "author": "汤志华；潘何琴",
+                  "pagenum": 164,
+                  "keyword1": "马克思主义研究",
+                  "keyword2": "中国特色社会主义建设",
+                  "keyword3": "国外",
+                  "keyword4": "论坛",
+                  "keyword5": "中国特色社会主义思想"
+                },
+                {
+                  "title": "中国特色社会主义新时代与马克思主义的新发展——“第十一届全国马克思主义青年学者论坛”综述",
+                  "author": "董树彬",
+                  "pagenum": 161,
+                  "keyword1": "马克思主义中国化",
+                  "keyword2": "中国特色社会主义思想",
+                  "keyword3": "青年学者论坛",
+                  "keyword4": "中国特色社会主义理论体系",
+                  "keyword5": "《马克思主义研究》"
+                },
+                {
+                  "title": "改革开放与21世纪世界社会主义发展——“改革开放与21世纪世界社会主义国际研讨会”综述",
+                  "author": "赵振辉；方正",
+                  "pagenum": 157,
+                  "keyword1": "世界社会主义运动",
+                  "keyword2": "改革开放",
+                  "keyword3": "国际研讨会",
+                  "keyword4": "21世纪",
+                  "keyword5": "社会主义发展"
+                }
+              ]
+            },
+            {
+              "volume": 2019,
+              "number": 2,
+              "articles": [
+                {
+                  "title": "新时代无神论的使命和任务--“中国无神论学会第五次会员代表大会暨2018年学术年会”综述",
+                  "author": "管素叶；黄艳红",
+                  "pagenum": 156,
+                  "keyword1": "中国社会科学院",
+                  "keyword2": "第五次会员代表大会",
+                  "keyword3": "科学无神论",
+                  "keyword4": "学术年会",
+                  "keyword5": "学会"
+                },
+                {
+                  "title": "改革开放四十周年与中国马克思主义发展的新任务--“第十一届全国马克思主义院长论坛”综述",
+                  "author": "张会芸；王建军",
+                  "pagenum": 153,
+                  "keyword1": "中国社会科学院",
+                  "keyword2": "马克思主义发展",
+                  "keyword3": "改革开放",
+                  "keyword4": "论坛",
+                  "keyword5": "院长"
+                },
+                {
+                  "title": "改革开放研究的成就、问题及未来趋势--“中国改革开放40年国际学术研讨会”综述",
+                  "author": "董佳",
+                  "pagenum": 149,
+                  "keyword1": "国际学术研讨会",
+                  "keyword2": "中国政治",
+                  "keyword3": "改革开放",
+                  "keyword4": "中国人民大学",
+                  "keyword5": "中国社会科学院"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "year": 2018,
+          "storage": [
+            {
+              "volume": 2018,
+              "number": 1,
+              "articles": [
+                {
+                  "title": "世界文化多样性与中国特色社会主义文化-“第二届世界文化论坛”综述",
+                  "author": "翟婵",
+                  "pagenum": 154,
+                  "keyword1": "中国特色社会主义文化理论",
+                  "keyword2": "文化论坛",
+                  "keyword3": "文化多样性",
+                  "keyword4": "世界",
+                  "keyword5": "中国社会科学院"
+                },
+                {
+                  "title": "“一带一路”倡议下的中欧合作-“第四届中国道路欧洲论坛”综述",
+                  "author": "陈志刚",
+                  "pagenum": 149,
+                  "keyword1": "中国社会科学院",
+                  "keyword2": "中欧合作",
+                  "keyword3": "论坛",
+                  "keyword4": "欧洲",
+                  "keyword5": "道路"
+                },
+                {
+                  "title": "国外共产党评析中国特色社会主义新时代",
+                  "author": "于海青",
+                  "pagenum": 141,
+                  "keyword1": "中国特色社会主义",
+                  "keyword2": "国外共产党",
+                  "keyword3": "中国共产党",
+                  "keyword4": "全国代表大会",
+                  "keyword5": "党报党刊"
+                }
+              ]
+            },
+            {
+              "volume": 2018,
+              "number": 2,
+              "articles": [
+                {
+                  "title": "外国经济学说与“一带一路”建设——“中华外国经济学说研究会第25届研讨会”综述",
+                  "author": "徐则荣",
+                  "pagenum": 156,
+                  "keyword1": "中华外国经济学说研究会",
+                  "keyword2": "综述",
+                  "keyword3": "学术研讨会",
+                  "keyword4": "中国社科院",
+                  "keyword5": "师范大学"
+                },
+                {
+                  "title": "《资本论》与新时代中国特色社会主义——“第六届全国马克思主义经济学论坛”综述",
+                  "author": "肖斌；袁思远",
+                  "pagenum": 153,
+                  "keyword1": "马克思主义经济学",
+                  "keyword2": "中国特色社会主义",
+                  "keyword3": "《资本论》",
+                  "keyword4": "青年论坛",
+                  "keyword5": "马克思主义理论学科建设"
+                },
+                {
+                  "title": "不断推进马克思主义本土化发展21世纪马克思主义——“纪念十月革命一百周年学术研讨会”综述",
+                  "author": "唐庆；陈兴亮",
+                  "pagenum": 150,
+                  "keyword1": "马克思主义",
+                  "keyword2": "学术研讨会",
+                  "keyword3": "本土化发展",
+                  "keyword4": "十月革命",
+                  "keyword5": "21世纪"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
