@@ -16,6 +16,7 @@ from sni import db
 class Fault(exceptions.JSONRPCDispatchException):
     def __init__(self, code, message, details=None):
         super().__init__(code, message.format(details))
+        self.args = self.error.code, self.error.message
 
 
 def catch_error(function):
