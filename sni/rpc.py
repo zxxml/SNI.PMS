@@ -1,5 +1,6 @@
 #!/usr/bin/env/python3
 # -*- coding: utf-8 -*-
+from configparser import ConfigParser
 
 from jsonrpc import Dispatcher
 from pony import orm
@@ -7,8 +8,9 @@ from pony import orm
 from sni import db, utils
 from sni.utils import Fault
 
-__all__ = ['d']
 d = Dispatcher()
+cfg = ConfigParser()
+cfg.read('../settings.ini')
 
 check_issn = utils.check_regex(r'^\d{4}-\d{3}[0-9X]$')
 check_isbn = utils.check_regex(r'^CN\d{2}-\d{4}$')
@@ -590,16 +592,17 @@ def _add_borrow(user,
                 agreedtime=None,
                 returntime=None):
     try:
-        assert not _is_borrowed(storage)
+        assert not _is_abused(user), 'abused'
+        assert not _is_borrowed(storage), 'borrowed'
         user = db.User[user]
         storage = db.Storage[storage]
         borrowtime = utils.new_borrowtime(borrowtime)
         agreedtime = utils.new_agreedtime(agreedtime)
         returntime = utils.new_returntime(returntime)
         return db.Borrow.new(**locals()).id
-    except AssertionError:
-        message = 'Already borrowed.'
-        raise Fault(409, message)
+    except AssertionError as e:
+        message = 'Already {0}.'
+        raise Fault(409, message, e)
 
 
 @d.add_method
@@ -646,12 +649,25 @@ def _get_borrow_full(id=None,
 @utils.catch_error
 @utils.check_user
 def is_returned(*args, **kwargs):
-    return _is_borrowed(*args, **kwargs)
+    return _is_returned(*args, **kwargs)
 
 
 @orm.db_session
 def _is_returned(id):
     return db.Borrow[id].returntime is not None
+
+
+@d.add_method
+@utils.catch_error
+@utils.check_user
+def is_abused(*args, **kwargs):
+    return _is_abused(*args, **kwargs)
+
+
+@orm.db_session
+def _is_abused(user):
+    results = db.Borrow.select_db(user=user, returntime=None)
+    return results.count() > int(cfg['borrow']['limit'])
 
 
 @d.add_method
