@@ -76,10 +76,10 @@ def test_articles(articles, storage):
 
 
 def test_readers():
-    sign_up('reader', 'little', '123456')
-    session = sign_in('reader', '123456')
-    print(get_user_advanced(username='reader'))
-    set_user(session, mailaddr='reader@sni.cn')
+    sign_up('R00000000', 'Reader', '12345678')
+    session = sign_in('R00000000', '12345678')
+    print(get_user_advanced(username='R00000000'))
+    set_user(session, mailaddr='reader@sni.pms.cn')
     get_user(session)
     sign_out(session)
 
@@ -93,7 +93,7 @@ def test_borrow():
 
 
 def test_main():
-    db.bind_sqlite(':memory:')
+    db.bind_sqlite('../sni.db')
     test_journals('test.json')
     test_readers()
     test_borrow()

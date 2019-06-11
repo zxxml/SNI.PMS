@@ -1199,6 +1199,1093 @@
           ]
         }
       ]
+    },
+    {
+      "name": "中国当代史研究",
+      "issn": "1005-4952",
+      "isbn": "CN11-3200",
+      "post": "82-647",
+      "host": "当代中国研究所",
+      "addr": "北京地安西大街旌勇里8号",
+      "freq": 6,
+      "lang": "简体中文",
+      "hist": 1994,
+      "used": "",
+      "subscribe": [
+        {
+          "year": 2019,
+          "storage": [
+            {
+              "volume": 2019,
+              "number": 1,
+              "articles": [
+                {
+                  "title": "习近平致中国社会科学院中国历史研究院成立的贺信",
+                  "author": "习近平",
+                  "pagenum": 0,
+                  "keyword1": "中国社会科学院",
+                  "keyword2": "中国历史",
+                  "keyword3": "研究院",
+                  "keyword4": "习近平",
+                  "keyword5": "中国特色社会主义"
+                },
+                {
+                  "title": "改革开放以来中非关系快速发展的内在逻辑与成功经验",
+                  "author": "张宏明",
+                  "pagenum": 153,
+                  "keyword1": "中非关系",
+                  "keyword2": "成功经验",
+                  "keyword3": "改革开放",
+                  "keyword4": "内在逻辑",
+                  "keyword5": "20世纪80年代初"
+                },
+                {
+                  "title": "我国对外开放40年经验与启示",
+                  "author": "张伯里",
+                  "pagenum": 153,
+                  "keyword1": "对外开放",
+                  "keyword2": "经验",
+                  "keyword3": "社会主义市场经济",
+                  "keyword4": "市场经济规律",
+                  "keyword5": "国际经济事务"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "year": 2018,
+          "storage": [
+            {
+              "volume": 2018,
+              "number": 1,
+              "articles": [
+                {
+                  "title": "新世纪以来中国国际关系理论发展的特点和趋势",
+                  "author": "范蔚文; 吴超",
+                  "pagenum": 120,
+                  "keyword1": "中国国际关系理论",
+                  "keyword2": "国际关系学",
+                  "keyword3": "实践经验",
+                  "keyword4": "中国外交",
+                  "keyword5": "中国特色"
+                },
+                {
+                  "title": "建国初期人民海军作战指导思想形成发展述评",
+                  "author": "吴超",
+                  "pagenum": 120,
+                  "keyword1": "人民海军",
+                  "keyword2": "作战指导思想",
+                  "keyword3": "建国初期",
+                  "keyword4": "述评",
+                  "keyword5": "海上安全环境"
+                },
+                {
+                  "title": "当代中国社会史研究的基点",
+                  "author": "宋学勤; 李晋珩",
+                  "pagenum": 120,
+                  "keyword1": "中国社会史研究",
+                  "keyword2": "当代",
+                  "keyword3": "基点",
+                  "keyword4": "地方史料",
+                  "keyword5": "精细化"
+                }
+              ]
+            },
+            {
+              "volume": 2018,
+              "number": 2,
+              "articles": [
+                {
+                  "title": "中国—欧盟关系的结构性变化",
+                  "author": "崔洪建",
+                  "pagenum": 122,
+                  "keyword1": "结构性变化",
+                  "keyword2": "中国外交",
+                  "keyword3": "欧盟",
+                  "keyword4": "欧洲政策",
+                  "keyword5": "政治力量"
+                },
+                {
+                  "title": "改革开放以来中国外交理念的演进",
+                  "author": "韩召颖; 姜潭",
+                  "pagenum": 122,
+                  "keyword1": "中国外交政策",
+                  "keyword2": "外交理念",
+                  "keyword3": "演进",
+                  "keyword4": "改革开放",
+                  "keyword5": "中国共产党全国代表大会"
+                },
+                {
+                  "title": "京津冀区域发展的政策变迁",
+                  "author": "杨宏山; 石晋昕",
+                  "pagenum": 122,
+                  "keyword1": "京津冀一体化",
+                  "keyword2": "政策变迁",
+                  "keyword3": "区域发展",
+                  "keyword4": "20世纪90年代",
+                  "keyword5": "协同治理"
+                }
+              ]
+            },
+            {
+              "volume": 2018,
+              "number": 3,
+              "articles": [
+                {
+                  "title": "改革开放40年中国国际秩序观的嬗变",
+                  "author": "范明英; 白晓东",
+                  "pagenum": 121,
+                  "keyword1": "国际秩序",
+                  "keyword2": "改革开放",
+                  "keyword3": "秩序观",
+                  "keyword4": "中国",
+                  "keyword5": "和平共处五项原则"
+                },
+                {
+                  "title": "乡村建设重在推进城乡统筹",
+                  "author": "李文",
+                  "pagenum": 121,
+                  "keyword1": "城乡统筹",
+                  "keyword2": "乡村建设",
+                  "keyword3": "统筹城乡经济社会发展",
+                  "keyword4": "中共十六届五中全会",
+                  "keyword5": "中国现代化进程"
+                },
+                {
+                  "title": "1949年以来我国口述历史的发展与出版",
+                  "author": "颜井平",
+                  "pagenum": 121,
+                  "keyword1": "口述历史",
+                  "keyword2": "出版过程",
+                  "keyword3": "1949年",
+                  "keyword4": "20世纪八九十年代",
+                  "keyword5": "社会科学界"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "经济研究",
+      "issn": "0577-9154",
+      "isbn": "CN11-1081",
+      "post": "2-251",
+      "host": "中国社会科学院经济研究所",
+      "addr": "北京阜外月坛北小街2号",
+      "freq": 12,
+      "lang": "简体中文",
+      "hist": 1995,
+      "used": "",
+      "subscribe": [
+        {
+          "year": 2019,
+          "storage": [
+            {
+              "volume": 2019,
+              "number": 1,
+              "articles": [
+                {
+                  "title": "中囯青年经济学家奖(2019)评奖公告",
+                  "author": "中国青年经济学者论坛学术理事会",
+                  "pagenum": 214,
+                  "keyword1": "经济学家",
+                  "keyword2": "青年学者",
+                  "keyword3": "评奖",
+                  "keyword4": "经济理论研究",
+                  "keyword5": "中国青年"
+                },
+                {
+                  "title": "第十九届中国青年经济学者论坛征文启事",
+                  "author": "中国青年经济学者论坛学术理事会",
+                  "pagenum": 212,
+                  "keyword1": "中国社会科学院",
+                  "keyword2": "青年经济学者",
+                  "keyword3": "论坛",
+                  "keyword4": "征文启事",
+                  "keyword5": "北京大学光华管理学院"
+                },
+                {
+                  "title": "宏微观交叉研究再出发--第七届宏观经济政策与微观企业行为交叉研究学术研讨会综述",
+                  "author": "饶品贵; 陈冬华; 孟为; 姜国华; 陆正飞",
+                  "pagenum": 199,
+                  "keyword1": "宏观经济政策",
+                  "keyword2": "学术研讨会",
+                  "keyword3": "企业行为",
+                  "keyword4": "研讨会综述",
+                  "keyword5": "北京大学光华管理学院"
+                }
+              ]
+            },
+            {
+              "volume": 2019,
+              "number": 2,
+              "articles": [
+                {
+                  "title": "家族主义文化、“去家族化”治理改革与公司绩效",
+                  "author": "吴超鹏; 薛南枝; 张琦; 吴世农",
+                  "pagenum": 182,
+                  "keyword1": "家族主义文化",
+                  "keyword2": "去家族化治理改革",
+                  "keyword3": "公司绩效",
+                  "keyword4": "Familism Culture",
+                  "keyword5": ""
+                },
+                {
+                  "title": "我国经营者集中的反垄断审查与执法者的“行为性救济”偏好分析——兼论专利密集领域的执法困境",
+                  "author": "白让让",
+                  "pagenum": 166,
+                  "keyword1": "兼并审查",
+                  "keyword2": "经营者集中",
+                  "keyword3": "行为性救济",
+                  "keyword4": "反垄断法",
+                  "keyword5": "Merger Remedies"
+                },
+                {
+                  "title": "中国的城市化推进与雾霾治理",
+                  "author": "邵帅; 李欣; 曹建华",
+                  "pagenum": 148,
+                  "keyword1": "城市化",
+                  "keyword2": "雾霾污染",
+                  "keyword3": "PM2.5浓度",
+                  "keyword4": "夜间灯光数据",
+                  "keyword5": "GS2SLS"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "year": 2018,
+          "storage": [
+            {
+              "volume": 2018,
+              "number": 1,
+              "articles": [
+                {
+                  "title": "中国与“一带一路”沿线国家双边贸易的新比较优势——公共安全的视角",
+                  "author": "李兵; 颜晓晨",
+                  "pagenum": 183,
+                  "keyword1": "恐怖袭击",
+                  "keyword2": "贸易",
+                  "keyword3": "Terrorism",
+                  "keyword4": "Trade",
+                  "keyword5": "Belt and Road"
+                },
+                {
+                  "title": "区域服务贸易协定如何影响服务贸易流量？——基于增加值贸易的研究视角",
+                  "author": "林僖; 鲍晓华",
+                  "pagenum": 169,
+                  "keyword1": "区域服务贸易协定",
+                  "keyword2": "服务贸易",
+                  "keyword3": "增加值出口",
+                  "keyword4": "Regional Service Trade Agreements",
+                  "keyword5": "Trade in Service"
+                },
+                {
+                  "title": "股权质押、控制权转移风险与税收规避",
+                  "author": "王雄元; 欧阳才越; 史震阳",
+                  "pagenum": 138,
+                  "keyword1": "股权质押",
+                  "keyword2": "控制权转移风险",
+                  "keyword3": "税收规避",
+                  "keyword4": "Shares Pledge",
+                  "keyword5": "Risk of Losing Control Rights"
+                }
+              ]
+            },
+            {
+              "volume": 2018,
+              "number": 1,
+              "articles": [
+                {
+                  "title": "风险投资与企业创新：“增值”与“攫取”的权衡视角",
+                  "author": "温军; 冯根福",
+                  "pagenum": 185,
+                  "keyword1": "风险投资",
+                  "keyword2": "增值与攫取",
+                  "keyword3": "创新效应",
+                  "keyword4": "",
+                  "keyword5": ""
+                },
+                {
+                  "title": "企业异质性、贸易自由化与市场扭曲",
+                  "author": "毛海涛; 钱学锋; 张洁",
+                  "pagenum": 170,
+                  "keyword1": "企业异质性",
+                  "keyword2": "贸易自由化",
+                  "keyword3": "市场扭曲",
+                  "keyword4": "",
+                  "keyword5": ""
+                },
+                {
+                  "title": "生产线升级与企业内性别工资差距的收敛",
+                  "author": "魏下海; 曹晖; 吴春秀",
+                  "pagenum": 156,
+                  "keyword1": "生产线升级",
+                  "keyword2": "性别工资差距",
+                  "keyword3": "技能回报",
+                  "keyword4": "",
+                  "keyword5": ""
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "世界民族",
+      "issn": "1006-8287",
+      "isbn": "CN11-3673",
+      "post": "82-793",
+      "host": "中国社会科学院民族学与人类学研究所",
+      "addr": "北京市海淀区中关村南大街27号",
+      "freq": 6,
+      "lang": "简体中文",
+      "hist": 1979,
+      "used": "",
+      "subscribe": [
+        {
+          "year": 2019,
+          "storage": [
+            {
+              "volume": 2019,
+              "number": 1,
+              "articles": [
+                {
+                  "title": "内蒙古华俄后裔的身份选择与认同",
+                  "author": "白萍",
+                  "pagenum": 104,
+                  "keyword1": "跨境族群",
+                  "keyword2": "多重身份认同",
+                  "keyword3": "华俄后裔",
+                  "keyword4": "民族身份选择",
+                  "keyword5": "民族身份认同"
+                },
+                {
+                  "title": "试析21世纪分离性公投的主要诱因--基于认同冲突的视角",
+                  "author": "石亚洲; 尚大超",
+                  "pagenum": 94,
+                  "keyword1": "分离性公投",
+                  "keyword2": "国家认同危机",
+                  "keyword3": "族性因素",
+                  "keyword4": "变量",
+                  "keyword5": "反思与启示"
+                },
+                {
+                  "title": "“一带一路”背景下民族主义与地区主义关系的互动与重塑--以环阿尔泰山次区域合作模式为例",
+                  "author": "王海燕; 朱启迅",
+                  "pagenum": 83,
+                  "keyword1": "一带一路",
+                  "keyword2": "民族主义",
+                  "keyword3": "地区主义",
+                  "keyword4": "全球化",
+                  "keyword5": "阿勒泰地区"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "year": 2018,
+          "storage": [
+            {
+              "volume": 2018,
+              "number": 1,
+              "articles": [
+                {
+                  "title": "缅甸勐稳华人身份本土化问题研究",
+                  "author": "方天建",
+                  "pagenum": 90,
+                  "keyword1": "缅甸",
+                  "keyword2": "勐稳华人",
+                  "keyword3": "身份本土化",
+                  "keyword4": "情感转向",
+                  "keyword5": ""
+                },
+                {
+                  "title": "“非遗”清单编制与非洲裔巴西人文化权利维护：历史、现实与启示",
+                  "author": "马千里",
+                  "pagenum": 82,
+                  "keyword1": "非物质文化遗产",
+                  "keyword2": "清单编制",
+                  "keyword3": "非洲裔巴西人",
+                  "keyword4": "文化权利维护",
+                  "keyword5": ""
+                },
+                {
+                  "title": "浅析阿富汗普什图瓦里的内涵与功能",
+                  "author": "畅红",
+                  "pagenum": 72,
+                  "keyword1": "阿富汗",
+                  "keyword2": "普什图瓦里",
+                  "keyword3": "内涵与功能",
+                  "keyword4": "",
+                  "keyword5": ""
+                }
+              ]
+            },
+            {
+              "volume": 2018,
+              "number": 2,
+              "articles": [
+                {
+                  "title": "气候变化背景下的民族文化权利运动——以秘鲁安第斯山普诺地区土著民族为例",
+                  "author": "尹仑",
+                  "pagenum": 99,
+                  "keyword1": "秘鲁",
+                  "keyword2": "土著民族",
+                  "keyword3": "气候变化",
+                  "keyword4": "民族文化权利",
+                  "keyword5": ""
+                },
+                {
+                  "title": "津巴布韦土地重新安置与种族和解研究",
+                  "author": "沈晓雷; 孙晓萌",
+                  "pagenum": 86,
+                  "keyword1": "津巴布韦",
+                  "keyword2": "土地重新安置",
+                  "keyword3": "“快车道”",
+                  "keyword4": "土地改革",
+                  "keyword5": ""
+                },
+                {
+                  "title": "法国穆斯林移民社会融入问题研究",
+                  "author": "汪丽娟",
+                  "pagenum": 76,
+                  "keyword1": "移民",
+                  "keyword2": "社会融入",
+                  "keyword3": "社会整合",
+                  "keyword4": "文化融合",
+                  "keyword5": "法国穆斯林"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "世界宗教文化",
+      "issn": "1007-6255",
+      "isbn": "CN11-3631",
+      "post": "82-267",
+      "host": "世界宗教研究所",
+      "addr": "北京建国门内大街5号",
+      "freq": 6,
+      "lang": "简体中文",
+      "hist": null,
+      "used": "",
+      "subscribe": [
+        {
+          "year": 2019,
+          "storage": [
+            {
+              "volume": 2019,
+              "number": 1,
+              "articles": [
+                {
+                  "title": "古代城市中的儒家空间性质略论——以明中晚期开封为例",
+                  "author": "陈立长",
+                  "pagenum": 168,
+                  "keyword1": "功德祠",
+                  "keyword2": "空间功能",
+                  "keyword3": "空间叙事",
+                  "keyword4": "",
+                  "keyword5": ""
+                },
+                {
+                  "title": "“四论师”“四论宗”“四论学派”考辨",
+                  "author": "蔡晓菁",
+                  "pagenum": 161,
+                  "keyword1": "四论师",
+                  "keyword2": "四论宗",
+                  "keyword3": "四论学派",
+                  "keyword4": "",
+                  "keyword5": ""
+                },
+                {
+                  "title": "从斯里兰卡到中国:佛教二部僧戒的传入、发展与回传",
+                  "author": "常红星",
+                  "pagenum": 155,
+                  "keyword1": "二部僧戒",
+                  "keyword2": "斯里兰卡",
+                  "keyword3": "传入",
+                  "keyword4": "发展",
+                  "keyword5": "回传"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "year": 2018,
+          "storage": [
+            {
+              "volume": 2018,
+              "number": 1,
+              "articles": [
+                {
+                  "title": "《庄子》思想与王阳明心学对比研究",
+                  "author": "斯日古楞; 何建朝",
+                  "pagenum": 147,
+                  "keyword1": "《庄子》",
+                  "keyword2": "王阳明",
+                  "keyword3": "心学",
+                  "keyword4": "道",
+                  "keyword5": ""
+                },
+                {
+                  "title": "“大千世界”与“洞天福地”——佛、道教神灵世界的宗教意蕴之比较",
+                  "author": "冯川",
+                  "pagenum": 143,
+                  "keyword1": "佛教",
+                  "keyword2": "道教",
+                  "keyword3": "神灵世界佛道比较",
+                  "keyword4": "宗教义理",
+                  "keyword5": ""
+                },
+                {
+                  "title": "佛教临终关怀服务的实践与传播——基于南京市玄武湖喇嘛庙的个案研究",
+                  "author": "张晶晶; 魏圆源",
+                  "pagenum": 137,
+                  "keyword1": "佛教",
+                  "keyword2": "临终关怀",
+                  "keyword3": "生死观",
+                  "keyword4": "因果论",
+                  "keyword5": "文化调适"
+                }
+              ]
+            },
+            {
+              "volume": 2018,
+              "number": 2,
+              "articles": [
+                {
+                  "title": "“从虚到实”——先秦儒家廉政思想的当代转化",
+                  "author": "杜俊奇",
+                  "pagenum": 154,
+                  "keyword1": "先秦儒家廉政思想",
+                  "keyword2": "廉政建设",
+                  "keyword3": "民本思想",
+                  "keyword4": "",
+                  "keyword5": ""
+                },
+                {
+                  "title": "道教三天观新论——以清微天等三天与九天关系为例",
+                  "author": "路旻",
+                  "pagenum": 148,
+                  "keyword1": "道教",
+                  "keyword2": "三天",
+                  "keyword3": "九天",
+                  "keyword4": "清微天",
+                  "keyword5": "禹余天"
+                },
+                {
+                  "title": "颜真卿与麻姑文化",
+                  "author": "刘晓艳",
+                  "pagenum": 142,
+                  "keyword1": "颜真卿",
+                  "keyword2": "麻姑文化",
+                  "keyword3": "《麻姑仙坛记》",
+                  "keyword4": "",
+                  "keyword5": ""
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "世界宗教研究",
+      "issn": "1000-4289",
+      "isbn": "CN11-1299",
+      "post": "82-266",
+      "host": "中国社会科学院世界宗教研究所",
+      "addr": "北京建国门内大街5号",
+      "freq": 6,
+      "lang": "简体中文",
+      "hist": null,
+      "used": "",
+      "subscribe": [
+        {
+          "year": 2019,
+          "storage": [
+            {
+              "volume": 2019,
+              "number": 1,
+              "articles": [
+                {
+                  "title": "“海丝”视野下的妈祖信俗研究新探——第二届贤良港妈祖文化论坛综述",
+                  "author": "曾伟",
+                  "pagenum": 190,
+                  "keyword1": "妈祖信仰",
+                  "keyword2": "文化论坛",
+                  "keyword3": "贤良",
+                  "keyword4": "中国社会科学院",
+                  "keyword5": "福建师范大学"
+                },
+                {
+                  "title": "2017年国民宗教信仰调查报告",
+                  "author": "宋玉荣; 古屿鑫",
+                  "pagenum": 185,
+                  "keyword1": "宗教信仰",
+                  "keyword2": "国民",
+                  "keyword3": "世俗生活",
+                  "keyword4": "宗教渗透",
+                  "keyword5": "网络舆论"
+                },
+                {
+                  "title": "多向互动视野下的金元全真道研究新成果——评钟海连博士新著《金元之际全真道兴盛研究—以丘处机为中心》",
+                  "author": "张义生",
+                  "pagenum": 167,
+                  "keyword1": "全真道",
+                  "keyword2": "多向互动",
+                  "keyword3": "兴盛",
+                  "keyword4": "南京大学出版社",
+                  "keyword5": "上海古籍出版社"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "year": 2018,
+          "storage": [
+            {
+              "volume": 2018,
+              "number": 1,
+              "articles": [
+                {
+                  "title": "历史深处的回望 东方与西方的相遇——中国首届景教研究国际论坛会议综述",
+                  "author": "张迎迎",
+                  "pagenum": 191,
+                  "keyword1": "中国社会科学院",
+                  "keyword2": "宗教研究",
+                  "keyword3": "国际论坛",
+                  "keyword4": "论坛会",
+                  "keyword5": "中央社会主义学院"
+                },
+                {
+                  "title": "动物与宗教：物质主义与情动转向的理论反思",
+                  "author": "陈怀宇",
+                  "pagenum": 185,
+                  "keyword1": "宗教学",
+                  "keyword2": "动物",
+                  "keyword3": "物质主义",
+                  "keyword4": "反思",
+                  "keyword5": "生活世界"
+                },
+                {
+                  "title": "道教研究领域与研究方法的双突破——评《中国近世道教送瘟仪式研究》",
+                  "author": "胡瀚霆",
+                  "pagenum": 182,
+                  "keyword1": "道教研究",
+                  "keyword2": "中国大陆",
+                  "keyword3": "仪式",
+                  "keyword4": "人民出版社",
+                  "keyword5": "填补空白"
+                }
+              ]
+            },
+            {
+              "volume": 2018,
+              "number": 2,
+              "articles": [
+                {
+                  "title": "佛教神话研究的精审之作——评陈明著《印度佛教神话:书写与流传》",
+                  "author": "王萱",
+                  "pagenum": 190,
+                  "keyword1": "佛教神话",
+                  "keyword2": "印度文明",
+                  "keyword3": "神话研究",
+                  "keyword4": "现实世界",
+                  "keyword5": "流传"
+                },
+                {
+                  "title": "《二元神论——古波斯宗教神话研究》后记",
+                  "author": "元文琪",
+                  "pagenum": 188,
+                  "keyword1": "宗教发展",
+                  "keyword2": "神话研究",
+                  "keyword3": "元神",
+                  "keyword4": "波斯",
+                  "keyword5": "中国社会科学出版社"
+                },
+                {
+                  "title": "《禅宗何以成为禅宗:关于开悟的争论和宋代禅宗的形成》评述",
+                  "author": "孔雁",
+                  "pagenum": 179,
+                  "keyword1": "禅宗语录",
+                  "keyword2": "宋代",
+                  "keyword3": "争论",
+                  "keyword4": "博士论文",
+                  "keyword5": "中国士大夫"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "世界史研究：英文版",
+      "issn": "2095-677",
+      "isbn": "CN10-1180",
+      "post": "82-249",
+      "host": "中国社会科学院世界历史研究所；社会科学文献出版社",
+      "addr": "北京市东城区王府井大街东厂胡同1号",
+      "freq": 2,
+      "lang": "英文",
+      "hist": 2014,
+      "used": "",
+      "subscribe": [
+        {
+          "year": 2018,
+          "storage": [
+            {
+              "volume": 2018,
+              "number": 2,
+              "articles": [
+                {
+                  "title": "栗原纯:《日本帝国主义与鸦片:台湾总督府的鸦片政策》",
+                  "author": "Wang Meiping",
+                  "pagenum": 125,
+                  "keyword1": "日本帝国主义",
+                  "keyword2": "台湾总督府",
+                  "keyword3": "鸦片",
+                  "keyword4": "政策",
+                  "keyword5": "most have the one"
+                },
+                {
+                  "title": "梁茂信:《美国人才吸引战略与政策史研究》",
+                  "author": "Lyu Hongyan",
+                  "pagenum": 122,
+                  "keyword1": "人才吸引",
+                  "keyword2": "梁茂信",
+                  "keyword3": "because",
+                  "keyword4": "政策",
+                  "keyword5": "美国"
+                },
+                {
+                  "title": "王立新:《踌躇的霸权:美国崛起后的身份困惑与秩序追求(1913-1945)》",
+                  "author": "Wang Xinyang",
+                  "pagenum": 117,
+                  "keyword1": "身份困惑",
+                  "keyword2": "王立新",
+                  "keyword3": "before between",
+                  "keyword4": "秩序",
+                  "keyword5": "美国"
+                }
+              ]
+            },
+            {
+              "volume": 2018,
+              "number": 1,
+              "articles": [
+                {
+                  "title": "The Disappearance of Salmon in the Thames and the Failure of Clause 33 of Magna Carta 1215",
+                  "author": "Gao Dai",
+                  "pagenum": 81,
+                  "keyword1": "Salmon",
+                  "keyword2": "the ThamesMagna Carta",
+                  "keyword3": "Environmental History",
+                  "keyword4": "England",
+                  "keyword5": ""
+                },
+                {
+                  "title": "Intellectual Liberty during the Han Dynasty： A Comparative Study of the Religious Criticism of Lucian and Wang Chong",
+                  "author": "Ni Tengda",
+                  "pagenum": 45,
+                  "keyword1": "Ancient Rome",
+                  "keyword2": "he Eastern Han dynasty",
+                  "keyword3": "Lucian",
+                  "keyword4": "Wang Chong",
+                  "keyword5": "religion"
+                },
+                {
+                  "title": "A Reassessment of the Trial of Mose",
+                  "author": "Song Huicong; Guo Dantong",
+                  "pagenum": 33,
+                  "keyword1": "Scribe",
+                  "keyword2": "Mose",
+                  "keyword3": "Law",
+                  "keyword4": "Landlnheritance",
+                  "keyword5": "Law-court"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "台湾研究",
+      "issn": "1006-6683",
+      "isbn": "CN11-1728",
+      "post": "82-356",
+      "host": "中国社会科学院台湾研究所",
+      "addr": "北京市海淀区中关村东路21号",
+      "freq": 6,
+      "lang": "简体中文",
+      "hist": null,
+      "used": "",
+      "subscribe": [
+        {
+          "year": 2019,
+          "storage": [
+            {
+              "volume": 2019,
+              "number": 1,
+              "articles": [
+                {
+                  "title": "光复后台湾学院儒学中的“文化学”探索--试论钱穆“文化学”思想发展与在台体系建构",
+                  "author": "千帆; 曹润青",
+                  "pagenum": 82,
+                  "keyword1": "台湾",
+                  "keyword2": "学院儒学",
+                  "keyword3": "文化学",
+                  "keyword4": "体系",
+                  "keyword5": "儒学"
+                },
+                {
+                  "title": "台湾金融改革对金融效率的影响及启示:2000-2016",
+                  "author": "朱兴婷; 邓利娟; 杨林波",
+                  "pagenum": 72,
+                  "keyword1": "金融改革",
+                  "keyword2": "效率",
+                  "keyword3": "台湾",
+                  "keyword4": "大陆",
+                  "keyword5": "Financial reform"
+                },
+                {
+                  "title": "以新经济合作促进两岸电子信息产业融合发展",
+                  "author": "柳英",
+                  "pagenum": 60,
+                  "keyword1": "新经济",
+                  "keyword2": "台商",
+                  "keyword3": "电子信息产业",
+                  "keyword4": "中美经贸摩擦",
+                  "keyword5": "New economy"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "year": 2018,
+          "storage": [
+            {
+              "volume": 2018,
+              "number": 1,
+              "articles": [
+                {
+                  "title": "“刘自然事件”后的台与美——兼及“反美”之辩",
+                  "author": "冯琳",
+                  "pagenum": 85,
+                  "keyword1": "刘自然事件",
+                  "keyword2": "蒋介石",
+                  "keyword3": "蒋经国",
+                  "keyword4": "反美",
+                  "keyword5": ""
+                },
+                {
+                  "title": "台湾地区“反恐立法”的规范考察",
+                  "author": "莫洪宪; 薛文超",
+                  "pagenum": 78,
+                  "keyword1": "台湾",
+                  "keyword2": "恐怖活动",
+                  "keyword3": "立法",
+                  "keyword4": "两岸协助",
+                  "keyword5": "涉恐融资"
+                },
+                {
+                  "title": "台湾社区经济发展探析——以三个典型社区为例",
+                  "author": "谢楠",
+                  "pagenum": 71,
+                  "keyword1": "社区经济",
+                  "keyword2": "社会企业",
+                  "keyword3": "社区产业",
+                  "keyword4": "",
+                  "keyword5": ""
+                }
+              ]
+            },
+            {
+              "volume": 2018,
+              "number": 2,
+              "articles": [
+                {
+                  "title": "中美建交前后布热津斯基处理台湾问题的主要方案及其三重防范",
+                  "author": "钟厚涛",
+                  "pagenum": 84,
+                  "keyword1": "布热津斯基",
+                  "keyword2": "台湾问题",
+                  "keyword3": "解决方案",
+                  "keyword4": "防范意识",
+                  "keyword5": "Brzezinski"
+                },
+                {
+                  "title": "近二十年台湾关于孙中山先生的表述变迁与形象建构研究",
+                  "author": "张羽; 徐嘉",
+                  "pagenum": 76,
+                  "keyword1": "孙中山",
+                  "keyword2": "表述变迁",
+                  "keyword3": "形象建构",
+                  "keyword4": "Sun Yat-sen",
+                  "keyword5": "Expression Changes"
+                },
+                {
+                  "title": "台湾青年运动抗争政治的“媒戏化模式”——大数据视域下的台湾学生“反课纲”运动",
+                  "author": "邹思容",
+                  "pagenum": 63,
+                  "keyword1": "台湾青年运动",
+                  "keyword2": "抗争政治",
+                  "keyword3": "反课纲运动",
+                  "keyword4": "媒体化",
+                  "keyword5": "戏剧化"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "中国地方志",
+      "issn": "1002-672X",
+      "isbn": "CN11-1395",
+      "post": "80-996",
+      "host": "中国地方志指导小组",
+      "addr": "北京市朝阳区潘家园东里9号",
+      "freq": 6,
+      "lang": "简体中文",
+      "hist": 1981,
+      "used": "",
+      "subscribe": [
+        {
+          "year": 2019,
+          "storage": [
+            {
+              "volume": 2019,
+              "number": 1,
+              "articles": [
+                {
+                  "title": "北京永定河碑刻概说",
+                  "author": "周峰",
+                  "pagenum": 113,
+                  "keyword1": "北京",
+                  "keyword2": "永定河",
+                  "keyword3": "碑刻",
+                  "keyword4": "",
+                  "keyword5": ""
+                },
+                {
+                  "title": "流寓越中的南宋无为王氏--新发现宋沂国太夫人方清觉墓志考释",
+                  "author": "钱汝平",
+                  "pagenum": 104,
+                  "keyword1": "无为",
+                  "keyword2": "王氏",
+                  "keyword3": "濡须",
+                  "keyword4": "王栐",
+                  "keyword5": "王杆"
+                },
+                {
+                  "title": "清末温州士绅与地方教育转型考察",
+                  "author": "尤育号",
+                  "pagenum": 96,
+                  "keyword1": "地方教育转型",
+                  "keyword2": "士绅",
+                  "keyword3": "温州",
+                  "keyword4": "学务分处",
+                  "keyword5": ""
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "year": 2018,
+          "storage": [
+            {
+              "volume": 2018,
+              "number": 1,
+              "articles": [
+                {
+                  "title": "龙启瑞致周必超手札三通考述",
+                  "author": "罗天",
+                  "pagenum": 118,
+                  "keyword1": "龙启瑞",
+                  "keyword2": "周必超",
+                  "keyword3": "手札",
+                  "keyword4": "考述",
+                  "keyword5": ""
+                },
+                {
+                  "title": "《宣汉历代县志集成》出版",
+                  "author": "四川省宣汉县地方志办公室",
+                  "pagenum": 117,
+                  "keyword1": "宣汉县",
+                  "keyword2": "县志",
+                  "keyword3": "集成",
+                  "keyword4": "历代",
+                  "keyword5": "出版"
+                },
+                {
+                  "title": "民国时期华北地区婚姻论财研究",
+                  "author": "简玉祥",
+                  "pagenum": 107,
+                  "keyword1": "婚姻论财",
+                  "keyword2": "冲击",
+                  "keyword3": "应对",
+                  "keyword4": "华北地区",
+                  "keyword5": "民国时期"
+                }
+              ]
+            },
+            {
+              "volume": 2018,
+              "number": 2,
+              "articles": [
+                {
+                  "title": "《江源年鉴(2017)》出版",
+                  "author": "龙志刚",
+                  "pagenum": 102,
+                  "keyword1": "出版社",
+                  "keyword2": "中国人民政治协商会议",
+                  "keyword3": "年鉴",
+                  "keyword4": "人民代表大会常务委员会",
+                  "keyword5": "编纂委员会"
+                },
+                {
+                  "title": "明万历《宿迁县志》点校出版",
+                  "author": "蔡兆银",
+                  "pagenum": 89,
+                  "keyword1": "出版发行",
+                  "keyword2": "宿迁市",
+                  "keyword3": "点校",
+                  "keyword4": "县志",
+                  "keyword5": "万历"
+                },
+                {
+                  "title": "“明清《黄州府志》丛刊”(点校本)出版",
+                  "author": "黄冈市地方志办公室",
+                  "pagenum": 65,
+                  "keyword1": "武汉大学出版社",
+                  "keyword2": "黄州府",
+                  "keyword3": "点校本",
+                  "keyword4": "丛刊",
+                  "keyword5": "明清"
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 }
